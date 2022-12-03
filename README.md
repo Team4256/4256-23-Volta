@@ -6,6 +6,8 @@ The Cyborg Cats' 2023 Java Code
 Team members:
 Max Burgdorf - Reroute the Scout
 Lucas - Assistant to the Intern
-Yemi
+Yemi- Grasmick doesn't tolerate harrassment
 Ella I don't have a slogan 
 Mayfield - The OG Mayfield
+Caralena- the BETTER Mayfield
+Cheyenne- what Yemi said
