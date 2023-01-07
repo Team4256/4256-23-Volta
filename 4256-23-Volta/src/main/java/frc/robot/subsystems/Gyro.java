@@ -2,20 +2,20 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-import frc.robot.Parameters;
+import frc.robot.Constants;
 public class Gyro extends AHRS {
 	public final Compass compass;
 	public static Gyro instance = null;
 	
 	private Gyro(final byte updateHz) {
 	//		super(I2C.Port.kOnboard, updateHz);
-		super(SPI.Port.kMXP, Parameters.GYRO_UPDATE_HZ);
+		super(SPI.Port.kMXP, Constants.GYRO_UPDATE_HZ);
 		compass = new Compass();
 	}
 
 	public static synchronized Gyro getInstance() {
 		if (instance == null) {
-			instance = new Gyro(Parameters.GYRO_UPDATE_HZ);
+			instance = new Gyro(Constants.GYRO_UPDATE_HZ);
 		} 
 		return instance;
 	}

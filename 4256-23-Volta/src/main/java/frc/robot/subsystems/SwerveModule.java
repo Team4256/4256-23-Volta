@@ -10,7 +10,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Parameters;
+import frc.robot.Constants;
 
 public final class SwerveModule {
 	public static final double ROTATOR_GEAR_RATIO = 1.0;
@@ -41,7 +41,7 @@ public final class SwerveModule {
     }
 
 	public double getMPS() {
-		return driveMotor.getRPS() * Parameters.RPS_TO_METERS_PER_SECOND;
+		return driveMotor.getRPS() * Constants.RPS_TO_METERS_PER_SECOND;
 	}
 
 	public double getAngle() {

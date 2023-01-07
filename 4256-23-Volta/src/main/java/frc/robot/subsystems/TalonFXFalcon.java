@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Parameters;
+import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -80,11 +80,11 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         this.isInverted = isInverted;
 
-        encoderMaxVoltage = Parameters.angleEncoderMaxVoltage[analogEncoderID];
+        encoderMaxVoltage = Constants.angleEncoderMaxVoltage[analogEncoderID];
 
-        encoderMinVoltage = Parameters.angleEncoderMinVoltage[analogEncoderID];
+        encoderMinVoltage = Constants.angleEncoderMinVoltage[analogEncoderID];
 
-        encoderTareVoltage = Parameters.angleEncoderTareVoltage[analogEncoderID];
+        encoderTareVoltage = Constants.angleEncoderTareVoltage[analogEncoderID];
 
         encoderPort = new AnalogInput(analogEncoderID);
 
@@ -187,7 +187,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
        
         // double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
-        // double expectedSpeed = inputPercentageSpeed*Parameters.FALCON_PERCENT_TO_ENCODER_SPEED;
+        // double expectedSpeed = inputPercentageSpeed*Constants.FALCON_PERCENT_TO_ENCODER_SPEED;
         // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
 
         // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
