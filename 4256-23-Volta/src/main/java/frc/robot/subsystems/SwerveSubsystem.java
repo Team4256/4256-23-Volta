@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Parameters;
+import frc.robot.Constants;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -38,33 +38,39 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   private final SwerveModule moduleA = new SwerveModule(
-    Parameters.TRACTION_MOTOR_A_ID,
-    Parameters.ROTATION_MOTOR_A_ID,
-    Parameters.ROTATION_ENCODER_A_ID,
+    Constants.TRACTION_MOTOR_A_ID,
+    Constants.ROTATION_MOTOR_A_ID,
+    Constants.ROTATION_ENCODER_A_ID,
     "A"
   );
   private final SwerveModule moduleB = new SwerveModule(
-    Parameters.TRACTION_MOTOR_B_ID,
-    Parameters.ROTATION_MOTOR_B_ID,
-    Parameters.ROTATION_ENCODER_B_ID,
+    Constants.TRACTION_MOTOR_B_ID,
+    Constants.ROTATION_MOTOR_B_ID,
+    Constants.ROTATION_ENCODER_B_ID,
     "B"
   );
   private final SwerveModule moduleC = new SwerveModule(
-    Parameters.TRACTION_MOTOR_C_ID,
-    Parameters.ROTATION_MOTOR_C_ID,
-    Parameters.ROTATION_ENCODER_C_ID,
+    Constants.TRACTION_MOTOR_C_ID,
+    Constants.ROTATION_MOTOR_C_ID,
+    Constants.ROTATION_ENCODER_C_ID,
     "C"
   );
   private final SwerveModule moduleD = new SwerveModule(
-    Parameters.TRACTION_MOTOR_D_ID,
-    Parameters.ROTATION_MOTOR_D_ID,
-    Parameters.ROTATION_ENCODER_D_ID,
+    Constants.TRACTION_MOTOR_D_ID,
+    Constants.ROTATION_MOTOR_D_ID,
+    Constants.ROTATION_ENCODER_D_ID,
     "D"
   );
 
   private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(
-    Parameters.DRIVE_KINEMATICS,
-    new Rotation2d(0)
+    Constants.DRIVE_KINEMATICS,
+    new Rotation2d(0),
+    new SwerveModulePosition[] {
+        moduleA.getPosition(),
+        moduleB.getPosition(),
+        moduleC.getPosition(),
+        moduleD.getPosition()
+      }
   );
 
   public SwerveSubsystem() {
@@ -98,7 +104,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // The input parameter 'pose' includes the direction of the path, which we do not want to be
   //    included in the odometry orientation. Instead, create a new Pose2d variable with constructor
-  //    parameters of pose.getX(), pose.getY(), and getRotation2d(), and pass that to the function.
+  //    Constants of pose.getX(), pose.getY(), and getRotation2d(), and pass that to the function.
   //    getRotation2d() gets used twice. The first one says this is the orientation of the robot. The
   //    second says this is the reading of our gyro, which should be correct since we set the offset.
 
@@ -184,7 +190,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds( 
       desiredStates, 
-      Parameters.MAX_METERS_PER_SECOND
+      Constants.MAX_METERS_PER_SECOND
       );
 
     moduleA.setDesiredState(desiredStates[0]);

@@ -1,11 +1,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DPad.Direction;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class Xbox extends Joystick{
@@ -24,8 +25,8 @@ public class Xbox extends Joystick{
 	public JoystickButton leftStickButton = new JoystickButton(this, 9);
 	public JoystickButton rightStickButton = new JoystickButton(this, 10);
 	public JoystickButton DPadUpButton = new JoystickButton(this, 11);
-	public Button leftTriggerButton = new LeftTrigger(this);
-	public Button rightTriggerButton = new RightTrigger(this);
+	public Trigger leftTriggerButton = new LeftTrigger(this);
+	public Trigger rightTriggerButton = new RightTrigger(this);
     
 	private int m_outputs;
 	private short m_leftRumble;
@@ -65,18 +66,19 @@ public class Xbox extends Joystick{
 		setRumble(RumbleType.kRightRumble, rightValue);
 	}
 
-	public void setRumble(RumbleType type, double value) {
-		if (value < 0) {
-			value = 0;
-		} else if (value > 1) {
-			value = 1;
-		}
-		if (type == RumbleType.kLeftRumble) {
-			m_leftRumble = (short) (value * 65535);
-		} else {
-			m_rightRumble = (short) (value * 65535);
-		}
-		HAL.setJoystickOutputs((byte) getPort(), m_outputs, m_leftRumble, m_rightRumble);
-	}
+	// public void setRumble(RumbleType type, double value) {
+	// 	if (value < 0) {
+	// 		value = 0;
+	// 	} else if (value > 1) {
+	// 		value = 1;
+	// 	}
+	// 	if (type == RumbleType.kLeftRumble) {
+	// 		m_leftRumble = (short) (value * 65535);
+	// 	} else {
+	// 		m_rightRumble = (short) (value * 65535);
+	// 	}
+	// 	//HAL.setJoystickOutputs((byte) getPort(), m_outputs, m_leftRumble, m_rightRumble);
+    //     XboxController.setRumble(GenericHID.RumbleType.kRightRumble, value);
+	// }
 
 }
