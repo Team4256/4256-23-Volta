@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -39,6 +40,11 @@ public final class SwerveModule {
         driveMotor.resetEncoder();
 		turningMotor.resetEncoder();
     }
+
+	public SwerveModulePosition getPosition() {
+		return new SwerveModulePosition(
+			driveMotor.getPositionFromIntegratedSensor(), new Rotation2d(turningMotor.getAbsoluteEncoder()));
+	  }
 
 	public double getMPS() {
 		return driveMotor.getRPS() * Constants.RPS_TO_METERS_PER_SECOND;

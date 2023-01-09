@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -110,7 +111,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void resetOdometer(Pose2d pose) {
     Pose2d newPose = new Pose2d( pose.getX(), pose.getY(), getRotation2d());
-    odometer.resetPosition(newPose, getRotation2d());
+    odometer.resetPosition(getRotation2d(), new SwerveModulePosition[] {
+      moduleA.getPosition(),
+      moduleB.getPosition(),
+      moduleC.getPosition(),
+      moduleD.getPosition()
+    }, newPose);
     
   }
 
@@ -122,13 +128,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometer.update(
-      getRotation2d(),
-      moduleA.getState(),
-      moduleB.getState(),
-      moduleC.getState(),
-      moduleD.getState()
-    );
+
+    odometer.update(getRotation2d(), new SwerveModulePosition[] {
+      moduleA.getPosition(),
+      moduleB.getPosition(),
+      moduleC.getPosition(),
+      moduleD.getPosition()
+    });
 
     SmartDashboard.putString("moduleAOdometerFeed", moduleA.getState().toString());
     SmartDashboard.putString("Odometer", odometer.getPoseMeters().toString());
