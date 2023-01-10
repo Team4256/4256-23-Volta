@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -30,6 +32,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private double modBMin = 10;
   private double modCMin = 10;
   private double modDMin = 10;
+  private final SlewRateLimiter xLimiter, yLimiter, angularLimiter;
 
   public static synchronized SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -78,7 +81,43 @@ public class SwerveSubsystem extends SubsystemBase {
     zeroHeading();
     nt = NetworkTableInstance.getDefault();
     table = nt.getTable("table");
+    this.xLimiter = new SlewRateLimiter(Constants.MAX_ACCELERATION);
+    this.yLimiter = new SlewRateLimiter(Constants.MAX_ACCELERATION);
+    this.angularLimiter = new SlewRateLimiter(Constants.TELEOP_MAX_ANGULAR_ACCELERATION);
   }
+
+
+
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed        Speed of the robot in the x direction (forward).
+   * @param ySpeed        Speed of the robot in the y direction (sideways).
+   * @param rot           Angular rate of the robot.
+   * @param fieldRelative Whether the provided x and y speeds are relative to the
+   *                      field.
+   */
+  @SuppressWarnings("ParameterName")
+  public void drive(double xSpeed, double ySpeed, double angularSpeed, boolean fieldRelative) {
+ // 2. Apply deadband
+ xSpeed = Math.abs(xSpeed) > Constants.CONTROLLER_DEADBAND ? xSpeed : 0.0;
+ ySpeed = Math.abs(ySpeed) > Constants.CONTROLLER_DEADBAND ? ySpeed : 0.0;
+ angularSpeed = Math.abs(angularSpeed) > Constants.CONTROLLER_DEADBAND ? angularSpeed : 0.0;
+ // 3. Make the driving smoother
+ xSpeed = xLimiter.calculate(xSpeed) * Constants.TELEOP_SPEED_LIMIT_MPS;
+ ySpeed = yLimiter.calculate(ySpeed) * Constants.TELEOP_SPEED_LIMIT_MPS;
+ angularSpeed = angularLimiter.calculate(angularSpeed)
+         * Constants.TELEOP_ANGULAR_SPEED_LIMIT_RADIANS_PER_SECOND;
+    // creates an array of the desired swerve module states based on driver command
+    // and if the commands are field relative or not
+    
+    var swerveModuleStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(
+        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, angularSpeed, getRotation2d())
+            : new ChassisSpeeds(xSpeed, ySpeed, angularSpeed));
+
+    setModuleStates(swerveModuleStates);
+  }
+
 
   public void zeroHeading() {
     gyro.reset();
