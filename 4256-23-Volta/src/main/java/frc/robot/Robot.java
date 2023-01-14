@@ -19,6 +19,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Limelight limelight = new Limelight();
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -81,7 +83,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    limelight.outputToSmartDashboard();
+  }
 
   @Override
   public void testInit() {

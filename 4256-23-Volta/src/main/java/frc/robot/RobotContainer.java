@@ -5,12 +5,16 @@
 package frc.robot;
 
 
+import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ControllerDrive;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -25,6 +29,8 @@ public class RobotContainer {
   XboxController operatorController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
+  private final Limelight camera = new Limelight();
+  private final Command alignToTarget = new AlignToTarget(robotDrive, camera);
 
 
 
@@ -47,11 +53,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
    
+    new JoystickButton(driverController, Button.kA.value).whileTrue(alignToTarget);
+    
   }
 
 //   /**
