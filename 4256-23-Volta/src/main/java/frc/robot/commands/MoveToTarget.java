@@ -4,21 +4,22 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Limelight;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class ControllerDrive extends CommandBase {
+public class MoveToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
-  private final XboxController controller;
+  private final Limelight limelight;
   private boolean fieldOrient = true;
+  private PIDController orientationPID = new PIDController(-.0242, 0, 0); //Values must be negative
 
-
-
-  public ControllerDrive(SwerveSubsystem swerve, XboxController controller) {
+  public MoveToTarget(SwerveSubsystem swerve, Limelight camera) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
-    this.controller = controller; // Set the private member to the input controller
+    limelight = camera;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
                                    // use this as the default
   }
@@ -31,17 +32,23 @@ public class ControllerDrive extends CommandBase {
   @Override
   public void execute() {
 
-    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), -controller.getRightX(), fieldOrient);
+    double xSpeed = orientationPID.calculate(limelight.getTargetOffsetDegrees(),0);
+    double ySpeed = orientationPID.calculate(limelight.getTargetOffsetDegrees(),0);
+    double angularSpeed = orientationPID.calculate(limelight.getTargetOffsetDegrees(),0);
+    
 
-      SmartDashboard.putBoolean("Controller Drive", true);
+    swerveDrive.drive(0, 0, angularSpeed, fieldOrient);
+
+      SmartDashboard.putNumber("ALignment Speed", angularSpeed);
+      SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted)  {
 
-    SmartDashboard.putBoolean("DrivingByController", false);
+    SmartDashboard.putBoolean("DrivingByLimelight", true);
 
   }
 

@@ -143,14 +143,15 @@ public class Constants {
    * Swerve #9 = 1.00
    */
   public static final double angleEncoderTareVoltage[] = {
-    // 3.4033,
-    // 2.877,
-    // 2.388,
-    // 1.355,
-    1.22,
-    2.89,
-    4.35,
-    1.00
+   //2022 Competition Values
+    // 1.22,
+    // 2.89,
+    // 4.35,
+    // 1.00
+    1.20,
+    1.02,
+    1.12,
+    4.20
   };
 
   // Aligner tolerances

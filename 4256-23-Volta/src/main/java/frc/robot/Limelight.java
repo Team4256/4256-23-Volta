@@ -43,6 +43,12 @@ public class Limelight {
     }
 
 
+    // returns the horizontal offset in degrees of the robot to the limelight
+    public double getXOffset() {
+       double xOffset = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
+        return xOffset;
+    }
+
     /**
      * A periodically run function that uses vison to compute direction, speed, and spin for swerve in order to score autonomously.
      */
@@ -79,6 +85,8 @@ public class Limelight {
         return d;
 
     }
+
+    
 
     public synchronized double putTxToDashboard() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
