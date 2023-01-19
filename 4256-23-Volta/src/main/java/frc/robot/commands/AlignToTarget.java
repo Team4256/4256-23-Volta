@@ -15,13 +15,15 @@ public class AlignToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.017, 0, -0.015); //Values must be negative
+  private PIDController orientationPID = new PIDController(-0.01, 0, 0); //Values must be negative
+  
 
   public AlignToTarget(SwerveSubsystem swerve, Limelight camera) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
+  
 
   // Called when the command is initially scheduled.
   @Override
@@ -32,10 +34,12 @@ public class AlignToTarget extends CommandBase {
   public void execute() {
 
     double angularSpeed = -orientationPID.calculate(limelight.getXOffset(),0);
-    
-    swerveDrive.drive(0, 0, angularSpeed, fieldOrient);
+    double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
+    swerveDrive.drive(0, 0, spinSpeed, fieldOrient);
 
-      SmartDashboard.putNumber("Alignment Speed", angularSpeed);
+      
+      SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
+      SmartDashboard.putNumber("Alignment Speed", spinSpeed);
       SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
