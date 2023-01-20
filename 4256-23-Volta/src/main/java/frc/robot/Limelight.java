@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +16,7 @@ public class Limelight {
     private double commandedDirection = 0.0;
     private double commandedSpeed = 0.0;
     private double commandedSpin = 0.0;
+    private NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("limelight");
 
     private double previousDirection = 0.0;//updateVisionTrackingSticky
     private boolean hasPreviousDirection = false;//updateVisionTrackingSticky
@@ -49,6 +51,10 @@ public class Limelight {
         return xOffset;
     }
 
+    public double getDistanceOffset() {
+        double distance = networkTable.getEntry("tx").getDouble(0.0);\
+        return distance;
+    }
     /**
      * A periodically run function that uses vison to compute direction, speed, and spin for swerve in order to score autonomously.
      */
@@ -76,7 +82,6 @@ public class Limelight {
 
     public synchronized double getDistanceToTarget() {
         double a2 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0.0);
-        //SmartDashboard.putNumber("ty", a2);
         double a1 = 12;
         double h1 = 22;
         double h2 = 98.25;
@@ -85,8 +90,6 @@ public class Limelight {
         return d;
 
     }
-
-    
 
     public synchronized double putTxToDashboard() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
