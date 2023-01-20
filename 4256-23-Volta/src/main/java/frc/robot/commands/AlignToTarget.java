@@ -15,7 +15,7 @@ public class AlignToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.01, 0, 0); //Values must be negative
+  private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
   
 
   public AlignToTarget(SwerveSubsystem swerve, Limelight camera) {

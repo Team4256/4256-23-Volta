@@ -9,7 +9,7 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   // Controller
-  public static final double CONTROLLER_DEADBAND = 0.25;
+  public static final double CONTROLLER_DEADBAND = 0;//.25
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
   
@@ -115,19 +115,19 @@ public class Constants {
   //   0.01220703,
   //   0.026855466,
   0.021,
-  0.017,
-  0.010,
-  0.011
+  0.041,
+  0.020,
+  0.028
    };
   public static final double angleEncoderMaxVoltage[] = {
     // 4.921874496,
     // 4.921874496,
     // 4.913329475000001,
     // 4.887694812,
-    4.951,
-    4.952,
-    4.952,
-    4.949
+    4.91,
+    4.92,
+    4.91,
+    4.91
   };
   // COMPETITION ROBOT
   //ensure swerves are on analog 0-3
@@ -149,9 +149,9 @@ public class Constants {
     // 4.35,
     // 1.00
     1.20,
-    1.02,
-    1.12,
-    4.20
+    1.13,
+    1.15,
+    1.77
   };
 
   // Aligner tolerances
