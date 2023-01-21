@@ -14,13 +14,15 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class AlignToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
+  private final XboxController controller;
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
   
 
-  public AlignToTarget(SwerveSubsystem swerve, Limelight camera) {
+  public AlignToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
+    this.controller = controller;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
   
@@ -35,7 +37,7 @@ public class AlignToTarget extends CommandBase {
 
     double angularSpeed = -orientationPID.calculate(limelight.getXOffset(),0);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
-    swerveDrive.drive(0, 0, spinSpeed, fieldOrient);
+    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), spinSpeed, fieldOrient);
 
       
       SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());

@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignToTarget;
+import frc.robot.commands.MoveToTarget;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ControllerDrive;
 import frc.robot.subsystems.Gyro;
@@ -32,7 +33,8 @@ public class RobotContainer {
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
-  private final Command alignToTarget = new AlignToTarget(robotDrive, camera);
+  private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
+  private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
   private final Gyro gyro = Gyro.getInstance();
 
   
@@ -58,6 +60,7 @@ public class RobotContainer {
   private void configureBindings() {
    
     new JoystickButton(driverController, Button.kA.value).whileTrue(alignToTarget);
+    new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     
   }

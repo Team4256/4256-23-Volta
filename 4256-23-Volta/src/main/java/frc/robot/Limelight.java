@@ -41,7 +41,6 @@ public class Limelight {
     public void trackLimelight() {
         
 
-
     }
 
 
@@ -52,7 +51,7 @@ public class Limelight {
     }
 
     public double getDistanceOffset() {
-        double distance = networkTable.getEntry("tx").getDouble(0.0);\
+        double distance = networkTable.getEntry("tx").getDouble(0.0);
         return distance;
     }
     /**
