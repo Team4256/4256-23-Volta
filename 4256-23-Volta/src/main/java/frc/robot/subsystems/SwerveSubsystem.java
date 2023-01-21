@@ -127,6 +127,19 @@ public class SwerveSubsystem extends SubsystemBase {
     
   }
 
+  public void formX() {
+     moduleA.swivelTo(45.0);
+     moduleB.swivelTo(-45.0); 
+     moduleC.swivelTo(-45.0); 
+     moduleD.swivelTo(45.0);
+    // moduleA.swivelTo(0);
+    //  moduleB.swivelTo(0); 
+    //  moduleC.swivelTo(0); 
+    //  moduleD.swivelTo(0);
+  }
+
+
+
   public double getHeading() {
     return Math.IEEEremainder(gyro.getCurrentAngle(), 360);
   } //  public double getHeading() {

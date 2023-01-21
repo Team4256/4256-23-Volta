@@ -114,20 +114,20 @@ public class Constants {
   //   .020751951,
   //   0.01220703,
   //   0.026855466,
-  0.021,
-  0.041,
-  0.020,
-  0.028
+  0.018,
+  0.062,
+  0.018,
+  0.020
    };
   public static final double angleEncoderMaxVoltage[] = {
     // 4.921874496,
     // 4.921874496,
     // 4.913329475000001,
     // 4.887694812,
-    4.91,
     4.92,
     4.91,
-    4.91
+    4.92,
+    4.94
   };
   // COMPETITION ROBOT
   //ensure swerves are on analog 0-3
@@ -148,10 +148,10 @@ public class Constants {
     // 2.89,
     // 4.35,
     // 1.00
+    1.22,
+    1.08,
     1.20,
-    1.13,
-    1.15,
-    1.77
+    4.25
   };
 
   // Aligner tolerances

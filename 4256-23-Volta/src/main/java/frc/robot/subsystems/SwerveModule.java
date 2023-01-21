@@ -23,6 +23,7 @@ public final class SwerveModule {
 	private double tractionDeltaPathLength = 0.0;
 	private double tractionPreviousPathLength = 0.0;
 	public final PIDController turningPidController;
+	public final PIDController turningPidController2;
 	public String moduleName;
 	
 
@@ -35,6 +36,7 @@ public final class SwerveModule {
         driveMotor = new TractionControl(driveMotorId);
         turningMotor = new RotationControl(turningMotorId, absoluteEncoderId);
 		turningPidController = new PIDController(2, 0, 0);
+		turningPidController2 = new PIDController(3, 0, 0);
         turningPidController.enableContinuousInput(-180, 180);
 
         driveMotor.resetEncoder();
@@ -84,6 +86,10 @@ public final class SwerveModule {
 	public void driveToDirection(double direction) {
 		driveMotor.set(.5);
 		turningMotor.SetAngle(direction);
+	}
+
+	public void swivelTo(double direction) {
+		turningMotor.SetAngle(turningPidController.calculate(getAngle(), direction));
 	}
 
     public void stop() {

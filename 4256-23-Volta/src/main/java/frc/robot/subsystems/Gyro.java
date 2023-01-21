@@ -46,6 +46,8 @@ public class Gyro extends AHRS {
 		this.setAngleAdjustment(-offset);
 	}
 
+	
+
 	public double getOffset() {
 		return -this.getAngleAdjustment();
 	}
