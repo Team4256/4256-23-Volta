@@ -5,12 +5,13 @@
 package frc.robot;
 
 
-import frc.robot.commands.AlignToTarget;
-import frc.robot.commands.AlignToZero;
-import frc.robot.commands.MoveToTarget;
+import frc.robot.commands.Swerve.AlignToTarget;
+import frc.robot.commands.Swerve.AlignToZero;
+import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.ControllerDrive;
+import frc.robot.commands.Swerve.FormX;
+import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ControllerDrive;
-import frc.robot.commands.FormX;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -38,6 +39,7 @@ public class RobotContainer {
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
+  private final Command autoBalance = new AutoBalance(robotDrive, camera, driverController);
   private final Command formX = new FormX(robotDrive);
   private final Gyro gyro = Gyro.getInstance();
 
@@ -63,7 +65,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
    
-    new JoystickButton(driverController, Button.kA.value).whileTrue(alignToTarget);
+    new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
