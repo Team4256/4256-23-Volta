@@ -17,12 +17,9 @@ public class Constants {
   // Gyro
   public static final byte GYRO_UPDATE_HZ = 50;
   public static final double GYRO_OFFSET = 0;
+  public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
+  public static final double BEAM_BALANACED_DRIVE_KP = .001;
 
-  // Ball Chute
-  public static final int BALL_SENSOR_ID = 0;
-
-  // Sensors
-  public static final int PROXIMITY_SENSOR_ID = 4;
 
   // Swerve
   // Distance between right and left wheels

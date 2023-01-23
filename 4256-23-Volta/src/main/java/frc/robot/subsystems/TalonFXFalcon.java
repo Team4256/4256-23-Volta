@@ -185,26 +185,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     @Override
     public void setSpeed(final double inputPercentageSpeed) {
 
-       
-        // double motorSpeed = getSensorCollection().getIntegratedSensorVelocity();
-        // double expectedSpeed = inputPercentageSpeed*Constants.FALCON_PERCENT_TO_ENCODER_SPEED;
-        // double adjustmentToSpeedAdjustment = falconVelocityPID.calculate(motorSpeed, expectedSpeed);
-
-        // adjustmentToSpeedAdjustment = Math.abs(adjustmentToSpeedAdjustment) <=0.01 ? adjustmentToSpeedAdjustment: Math.signum(adjustmentToSpeedAdjustment )*0.01;
-        // tractionSppeedAdjustment += adjustmentToSpeedAdjustment;
-
-        // tractionSppeedAdjustment = Math.abs(tractionSppeedAdjustment) <=0.01 ? tractionSppeedAdjustment: Math.signum(tractionSppeedAdjustment )*0.01;
-
-        // if(getDeviceID() == 21){
-        //     SmartDashboard.putNumber("Speed adjustment", tractionSppeedAdjustment);
-        //     SmartDashboard.putNumber("Adjustment to Speed adjustment", adjustmentToSpeedAdjustment);
-        //     SmartDashboard.putNumber("input percentage speed", inputPercentageSpeed);
-        //     SmartDashboard.putNumber("motor speed", motorSpeed);
-        //     SmartDashboard.putNumber("expected speed", expectedSpeed);
-        // }
-
         double adjustedPercentageSpeed = inputPercentageSpeed;
-        //adjustedPercentageSpeed = inputPercentageSpeed;
         
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;
@@ -246,9 +227,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         super.set(percentSpeed);
         updated = true;
         lastSetpoint = percentSpeed; 
-        SmartDashboard.putNumber("targetPoint", targetPoint);
-        SmartDashboard.putNumber("encoderPosition", encoderPosition);
-        SmartDashboard.putNumber("percentSpeed", percentSpeed);
 
     }
 

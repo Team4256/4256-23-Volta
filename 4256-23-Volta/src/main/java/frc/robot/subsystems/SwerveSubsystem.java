@@ -132,6 +132,11 @@ public class SwerveSubsystem extends SubsystemBase {
      moduleB.swivelTo(-45.0); 
      moduleC.swivelTo(-45.0); 
      moduleD.swivelTo(45.0);
+     
+     moduleA.stopTraction();
+     moduleB.stopTraction();
+     moduleC.stopTraction();
+     moduleD.stopTraction();
     // moduleA.swivelTo(0);
     //  moduleB.swivelTo(0); 
     //  moduleC.swivelTo(0); 

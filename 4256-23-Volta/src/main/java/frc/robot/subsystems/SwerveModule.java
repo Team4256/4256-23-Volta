@@ -92,6 +92,10 @@ public final class SwerveModule {
 		turningMotor.SetAngle(turningPidController.calculate(getAngle(), direction));
 	}
 
+	public void stopTraction() {
+		driveMotor.set(0);
+	}
+
     public void stop() {
         driveMotor.set(0);
 		turningMotor.SetAngle(0);
