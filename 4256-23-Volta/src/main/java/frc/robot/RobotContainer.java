@@ -11,12 +11,15 @@ import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
-import frc.robot.commands.Autos;
+import frc.robot.commands.Auto.DirectBalance;
+import frc.robot.commands.Auto.TwoConeAutoTop;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -41,15 +44,22 @@ public class RobotContainer {
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
   private final Command autoBalance = new AutoBalance(robotDrive, camera, driverController);
   private final Command formX = new FormX(robotDrive);
+  private final Command twoConeAutoTop = new TwoConeAutoTop();
+  private final Command directBalance = new DirectBalance();
   private final Gyro gyro = Gyro.getInstance();
-
+  SendableChooser<Command> chooser = new SendableChooser<>();
   
 
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    chooser.setDefaultOption("Two Cone Auto Top", twoConeAutoTop);
+    chooser.addOption("Direct Balance", directBalance);
+    
+    // Put the chooser on the dashboard
+    Shuffleboard.getTab("Competition").add(chooser);
 
     robotDrive.setDefaultCommand(swerveDrive);
   }
@@ -79,7 +89,7 @@ public class RobotContainer {
 //    * @return the command to run in autonomous
 //    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(swerveDrive);
+    
+    return chooser.getSelected();
   }
 }
