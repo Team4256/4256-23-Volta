@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
-
 import frc.robot.commands.Swerve.*;
 import frc.robot.subsystems.*;
 
@@ -25,20 +24,9 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
   Gyro gyro = Gyro.getInstance();
     PIDController xController = new PIDController(1, 0, 0);
     PIDController yController = new PIDController(1, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(
-      5,
-      0,
-      0,
-      Constants.THETA_CONTROLLER_CONSTRAINTS
-    );
+    PIDController thetaController = new PIDController(5, 0, 0);
     
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("3 ball bottom", 1, 1);
-
-
-
-
-  
-
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Two Cone Auto Top", 1, 1);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
     autoPath,
@@ -55,7 +43,6 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
   /** Creates a new ThreeBallAutoBottom. */
   public TwoConeAutoTop() { 
     addCommands(
-      new InstantCommand(() -> gyro.setOffset(160)),
       new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
       new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
       command,
