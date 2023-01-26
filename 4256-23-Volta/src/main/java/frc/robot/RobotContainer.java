@@ -4,12 +4,26 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+
+import frc.robot.commands.Swerve.AlignToTarget;
+import frc.robot.commands.Swerve.AlignToZero;
+import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.ControllerDrive;
+import frc.robot.commands.Swerve.FormX;
+import frc.robot.commands.Swerve.MoveToTarget;
+import frc.robot.commands.Auto.DirectBalance;
+import frc.robot.commands.Auto.TwoConeAutoTop;
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -20,16 +34,34 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
+  XboxController operatorController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  private final SwerveSubsystem robotDrive = new SwerveSubsystem();
+  private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
+  private final Limelight camera = new Limelight();
+  private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
+  private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
+  private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
+  private final Command autoBalance = new AutoBalance(robotDrive, camera, driverController);
+  private final Command formX = new FormX(robotDrive);
+  private final Command twoConeAutoTop = new TwoConeAutoTop();
+  private final Command directBalance = new DirectBalance();
+  private final Gyro gyro = Gyro.getInstance();
+  SendableChooser<Command> chooser = new SendableChooser<>();
+  
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    chooser.setDefaultOption("Two Cone Auto Top", twoConeAutoTop);
+    chooser.addOption("Direct Balance", directBalance);
+    
+    // Put the chooser on the dashboard
+    Shuffleboard.getTab("Competition").add(chooser);
+
+    robotDrive.setDefaultCommand(swerveDrive);
   }
 
   /**
@@ -42,22 +74,22 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+   
+    new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
+    new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
+    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
+    new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
+    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero); 
+    
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+//   /**
+//    * Use this to pass the autonomous command to the main {@link Robot} class.
+//    *
+//    * @return the command to run in autonomous
+//    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    
+    return chooser.getSelected();
   }
 }
