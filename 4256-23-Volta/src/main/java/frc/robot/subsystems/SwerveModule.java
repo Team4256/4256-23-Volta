@@ -38,7 +38,6 @@ public final class SwerveModule {
 		turningPidController = new PIDController(2, 0, 0);
 		turningPidController2 = new PIDController(3, 0, 0);
         turningPidController.enableContinuousInput(-180, 180);
-
         driveMotor.resetEncoder();
 		turningMotor.resetEncoder();
     }

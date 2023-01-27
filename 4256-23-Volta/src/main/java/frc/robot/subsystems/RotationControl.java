@@ -11,7 +11,7 @@ public class RotationControl{
 
     //constructor
    public RotationControl(int deviceID, int analogEncoderID){
-          rotationMotor = MotorFactory.createRotationMotor(deviceID, analogEncoderID);  
+          rotationMotor = MotorFactory.createRotationMotor(deviceID);  
    }
 
    public void SetAngle(double angle){
@@ -29,8 +29,6 @@ public class RotationControl{
    public void completeLoopUpdate(){  
     rotationMotor.completeLoopUpdate();
    }
-
-
 
    public double getCurrentAngle(){
        return rotationMotor.getCurrentAngle();

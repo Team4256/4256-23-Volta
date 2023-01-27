@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenixpro.hardware.TalonFX;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,12 +29,13 @@ public class MotorFactory {
         return null;
         
  }
-    public static Motor createRotationMotor(int deviceID, int analogEncoderID) {
+    public static Motor createRotationMotor(int deviceID) {
         if (rotationMotorType == MotorType.TALON) {
             boolean isDevIDLegal = deviceID > 14;
             
            // SmartDashboard.putBoolean("isDevIDLegal", isDevIDLegal);
-            return new TalonFXFalcon(deviceID, NeutralMode.Brake, true, analogEncoderID);
+           // return new TalonFXFalcon(deviceID, NeutralMode.Brake, true, analogEncoderID);
+           return new TalonFXFalcon(deviceID, NeutralMode.Brake, true);
 
         } 
         // else if (tractionMotorType == MotorType.NEO) {

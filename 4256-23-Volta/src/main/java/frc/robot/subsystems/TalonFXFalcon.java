@@ -70,7 +70,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
 
 
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted) {
 
         super(deviceID);
 
@@ -80,25 +80,10 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         this.isInverted = isInverted;
 
-        encoderMaxVoltage = Constants.angleEncoderMaxVoltage[analogEncoderID];
-
-        encoderMinVoltage = Constants.angleEncoderMinVoltage[analogEncoderID];
-
-        encoderTareVoltage = Constants.angleEncoderTareVoltage[analogEncoderID];
-
-        encoderPort = new AnalogInput(analogEncoderID);
-
-        angleEncoder = new AnalogEncoder(encoderPort);
-
-        angleEncoder.setDistancePerRotation(360);
-
         SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, .25);
         
         configSupplyCurrentLimit(limit);
-        // enableVoltageCompensation(true);
-
-        // configVoltageCompSaturation(40);
-
+ 
     }
 
     /**
@@ -194,8 +179,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         
     }
 
-
-
     // Set Angle
     public void setAngle(double targetAngle) {
         double targetPoint = Math.toDegrees(targetAngle);
@@ -229,8 +212,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         lastSetpoint = percentSpeed; 
 
     }
-
-
 
     public double getPIDError() {
         return anglePIDController.getPositionError();
