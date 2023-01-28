@@ -55,11 +55,11 @@ public final class SwerveModule {
         
 		/* Angle Motor Config */
         angleMotor = new TalonFX(angleMotorId);
-        configAngleMotor();
+        //configAngleMotor();
 
         /* Drive Motor Config */
         driveMotor = new TalonFX(driveMotorID);
-        configDriveMotor();
+        //configDriveMotor();
 
         lastAngle = getState().angle;
 		
@@ -92,6 +92,8 @@ public final class SwerveModule {
         driveMotor.setInverted(true);
         driveMotor.setNeutralMode(NeutralMode.Brake);
         driveMotor.setSelectedSensorPosition(0);
+
+
     }
 
 
@@ -141,11 +143,13 @@ public final class SwerveModule {
 
 	public void setAngleDegrees(double angle) {
 		angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle, Constants.STEERING_GEAR_RATIO));
+		
 	}
 	
 	private void setSpeed(SwerveModuleState desiredState){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND;
             driveMotor.set(ControlMode.PercentOutput, percentOutput);
+			SmartDashboard.putNumber("Desired speed", percentOutput);
     }
 
 	public void stopTraction() {

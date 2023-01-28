@@ -46,6 +46,9 @@ public class Constants {
   public static final int DRIVE_PEAK_CURRENT_LIMIT = 60; 
   public static final double DRIVE_PEAK_CURRENT_DURATION = 0.1; 
   public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true; 
+  
+  public static final double OPEN_LOOP_RAMP = 0.25;
+  public static final double CLOSED_LOOP_RAMP = 0.0;
 
    /* Drive Motor PID Values */
    public static final double DRIVE_KP = 0.05; //TODO: This must be tuned to specific robot
@@ -53,7 +56,7 @@ public class Constants {
    public static final double DRIVE_KD = 0.0;
    public static final double DRIVE_KF = 0.0;
 
-   public static final double ANGLE_KP = 0.05; //TODO: This must be tuned to specific robot
+   public static final double ANGLE_KP = 1.0; //TODO: This must be tuned to specific robot
    public static final double ANGLE_KI = 0.0;
    public static final double ANGLE_KD = 0.0;
    public static final double ANGLE_KF = 0.0;
