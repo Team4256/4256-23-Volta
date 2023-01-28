@@ -137,19 +137,17 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void formX() {
-     moduleA.swivelTo(45.0);
-     moduleB.swivelTo(-45.0); 
-     moduleC.swivelTo(-45.0); 
-     moduleD.swivelTo(45.0);
+
+     moduleA.setAngleDegrees(45.0);
+     moduleB.setAngleDegrees(45.0);
+     moduleC.setAngleDegrees(45.0);
+     moduleD.setAngleDegrees(45.0);
      
      moduleA.stopTraction();
      moduleB.stopTraction();
      moduleC.stopTraction();
      moduleD.stopTraction();
-    // moduleA.swivelTo(0);
-    //  moduleB.swivelTo(0); 
-    //  moduleC.swivelTo(0); 
-    //  moduleD.swivelTo(0);
+
   }
 
 
@@ -212,44 +210,11 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putString("moduleAOdometerFeed", moduleA.getState().toString());
     SmartDashboard.putString("Odometer", odometer.getPoseMeters().toString());
 
-    SmartDashboard.putNumber("moduleAPosition", moduleA.getAngle());
-    SmartDashboard.putNumber("moduleBPosition", moduleB.getAngle());
-    SmartDashboard.putNumber("moduleCPosition", moduleC.getAngle());
-    SmartDashboard.putNumber("moduleDPosition", moduleD.getAngle());
+    SmartDashboard.putNumber("moduleAPosition", moduleA.getCANCoderAngle());
+    SmartDashboard.putNumber("moduleBPosition", moduleB.getCANCoderAngle());
+    SmartDashboard.putNumber("moduleCPosition", moduleC.getCANCoderAngle());
+    SmartDashboard.putNumber("moduleDPosition", moduleD.getCANCoderAngle());
 
-    double modA = moduleA.getTurningMotor().getEncoderVoltage();
-    double modB = moduleB.getTurningMotor().getEncoderVoltage();
-    double modC = moduleC.getTurningMotor().getEncoderVoltage();
-    double modD = moduleD.getTurningMotor().getEncoderVoltage();
-
-    modAMax = Math.max(modAMax, modA);
-    modBMax = Math.max(modBMax, modB);
-    modCMax = Math.max(modCMax, modC);
-    modDMax = Math.max(modDMax, modD);
-    modAMin = Math.min(modAMin, modA);
-    modBMin = Math.min(modBMin, modB);
-    modCMin = Math.min(modCMin, modC);
-    modDMin = Math.min(modDMin, modD);
-
-    table.getEntry("ModuleA Angle").setNumber(moduleA.getTurningMotor().getCurrentAngle());//angle
-    table.getEntry("ModuleB Angle").setNumber(moduleB.getTurningMotor().getCurrentAngle());
-    table.getEntry("ModuleC Angle").setNumber(moduleC.getTurningMotor().getCurrentAngle());
-    table.getEntry("ModuleD Angle").setNumber(moduleD.getTurningMotor().getCurrentAngle());
-
-    table.getEntry("ModuleA Tare").setNumber(modA);//voltage
-    table.getEntry("ModuleB Tare").setNumber(modB);
-    table.getEntry("ModuleC Tare").setNumber(modC);
-    table.getEntry("ModuleD Tare").setNumber(modD);
-
-    table.getEntry("ModuleA Max").setNumber(modAMax);//voltage
-    table.getEntry("ModuleB Max").setNumber(modBMax);
-    table.getEntry("ModuleC Max").setNumber(modCMax);
-    table.getEntry("ModuleD Max").setNumber(modDMax);
-
-    table.getEntry("ModuleA Min").setNumber(modAMin);//voltage
-    table.getEntry("ModuleB Min").setNumber(modBMin);
-    table.getEntry("ModuleC Min").setNumber(modCMin);
-    table.getEntry("ModuleD Min").setNumber(modDMin);
   }
 
   public void stopModules() {
@@ -259,12 +224,6 @@ public class SwerveSubsystem extends SubsystemBase {
     moduleD.stop();
   }
 
-  public void driveModules() {
-    moduleA.driveToDirection(0);
-    moduleB.driveToDirection(0);
-    moduleC.driveToDirection(0);
-    moduleD.driveToDirection(0);
-  }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds( 

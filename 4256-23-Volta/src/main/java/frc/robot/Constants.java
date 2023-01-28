@@ -24,9 +24,9 @@ public class Constants {
 
   // Swerve
   // Distance between right and left wheels
-  public static final double TRACK_WIDTH = Units.inchesToMeters(22.5);//done 2022
+  public static final double TRACK_WIDTH = Units.inchesToMeters(20.5);//done 2022
   // Distance between front and back wheels
-  public static final double WHEEL_BASE = Units.inchesToMeters(23.25); //done 2022
+  public static final double WHEEL_BASE = Units.inchesToMeters(25.25); //done 2022
   public static final double WHEEL_DIAMETER = Units.inchesToMeters(4); // inches
   public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
     new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
@@ -34,6 +34,30 @@ public class Constants {
     new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
     new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
   );
+  public static final double WHEEL_CIRCUMFERENCE = .159; //meters
+  public static final double TRACTION_GEAR_RATIO = 6.752; 
+
+  public static final int ANGLE_CONTINUOUS_CURRENT_LIMIT = 25; 
+  public static final int ANGLE_PEAK_CURRENT_LIMIT = 40; 
+  public static final double ANGLE_PEAK_CURRENT_DURATION = 0.1; 
+  public static final boolean ANGLE_ENABLE_CURRENT_LIMIT = true; 
+
+  public static final int DRIVE_CONTINUOUS_CURRENT_LIMIT = 35; 
+  public static final int DRIVE_PEAK_CURRENT_LIMIT = 60; 
+  public static final double DRIVE_PEAK_CURRENT_DURATION = 0.1; 
+  public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true; 
+
+   /* Drive Motor PID Values */
+   public static final double DRIVE_KP = 0.05; //TODO: This must be tuned to specific robot
+   public static final double DRIVE_KI = 0.0;
+   public static final double DRIVE_KD = 0.0;
+   public static final double DRIVE_KF = 0.0;
+
+   public static final double ANGLE_KP = 0.05; //TODO: This must be tuned to specific robot
+   public static final double ANGLE_KI = 0.0;
+   public static final double ANGLE_KD = 0.0;
+   public static final double ANGLE_KF = 0.0;
+
 
   /**
    * Swerve #1 = 
@@ -47,10 +71,10 @@ public class Constants {
    * Swerve #9 = 1.00
    */
 
-   public static final int MODULE_A_CANCODER_ID = 1; //TODO get real ID's
-   public static final int MODULE_B_CANCODER_ID = 1; //TODO get real ID's
-   public static final int MODULE_C_CANCODER_ID = 1; //TODO get real ID's
-   public static final int MODULE_D_CANCODER_ID = 1; //TODO get real ID's
+   public static final int MODULE_A_CANCODER_ID = 31; //TODO get real ID's
+   public static final int MODULE_B_CANCODER_ID = 32; //TODO get real ID's
+   public static final int MODULE_C_CANCODER_ID = 33; //TODO get real ID's
+   public static final int MODULE_D_CANCODER_ID = 34; //TODO get real ID's
   
    public static final double STEERING_GEAR_RATIO = 12.8;
 
