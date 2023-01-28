@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -108,6 +109,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         //anglePIDController.enableContinuousInput(-180.0, 180.0);
     }
 
+
+    
     /**
      * @return Counts of the motor
      */
@@ -177,6 +180,14 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         updated = true;
         logger.log(Level.FINE, Double.toString(adjustedPercentageSpeed));
         
+    }
+
+    public void set(double speed, ControlMode controlMode) {
+        super.set(controlMode, speed);
+    }
+
+    public void setEncoderPosition(double position) {
+        super.setSelectedSensorPosition(position);
     }
 
     // Set Angle

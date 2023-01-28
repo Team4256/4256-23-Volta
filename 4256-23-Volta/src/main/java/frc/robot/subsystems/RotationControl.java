@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -60,5 +62,16 @@ public class RotationControl{
    public double getAbsoluteEncoder() {
        return rotationMotor.getPosition();
    }
+
+    public void set(ControlMode position, double speed) {
+        rotationMotor.set(speed, position);
+    }
+
+    public void setEncoderPosition(double position) {
+        rotationMotor.setEncoderPosition(position);
+    }
+
+
+
 
 }

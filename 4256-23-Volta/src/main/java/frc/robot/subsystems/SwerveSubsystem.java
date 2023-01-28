@@ -45,25 +45,34 @@ public class SwerveSubsystem extends SubsystemBase {
     Constants.TRACTION_MOTOR_A_ID,
     Constants.ROTATION_MOTOR_A_ID,
     Constants.ROTATION_ENCODER_A_ID,
-    "A"
+    "A",
+    Constants.MODULE_A_CANCODER_ID,
+    Constants.MODULE_A_ANGLE_OFFSET
+    
   );
   private final SwerveModule moduleB = new SwerveModule(
     Constants.TRACTION_MOTOR_B_ID,
     Constants.ROTATION_MOTOR_B_ID,
     Constants.ROTATION_ENCODER_B_ID,
-    "B"
+    "B",
+    Constants.MODULE_B_CANCODER_ID,
+    Constants.MODULE_B_ANGLE_OFFSET
   );
   private final SwerveModule moduleC = new SwerveModule(
     Constants.TRACTION_MOTOR_C_ID,
     Constants.ROTATION_MOTOR_C_ID,
     Constants.ROTATION_ENCODER_C_ID,
-    "C"
+    "C",
+    Constants.MODULE_C_CANCODER_ID,
+    Constants.MODULE_C_ANGLE_OFFSET
   );
   private final SwerveModule moduleD = new SwerveModule(
     Constants.TRACTION_MOTOR_D_ID,
     Constants.ROTATION_MOTOR_D_ID,
     Constants.ROTATION_ENCODER_D_ID,
-    "D"
+    "D",
+    Constants.MODULE_D_CANCODER_ID,
+    Constants.MODULE_D_ANGLE_OFFSET
   );
 
   private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(
@@ -183,7 +192,13 @@ public class SwerveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  
+  public void resetModulesToAbsolute(){
+    moduleA.resetToAbsolute();
+    moduleB.resetToAbsolute();
+    moduleC.resetToAbsolute();
+    moduleD.resetToAbsolute();
+}
+
   @Override
   public void periodic() {
 

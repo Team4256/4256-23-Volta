@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -45,6 +46,20 @@ public class Constants {
    * Swerve #8 = 
    * Swerve #9 = 1.00
    */
+
+   public static final int MODULE_A_CANCODER_ID = 1; //TODO get real ID's
+   public static final int MODULE_B_CANCODER_ID = 1; //TODO get real ID's
+   public static final int MODULE_C_CANCODER_ID = 1; //TODO get real ID's
+   public static final int MODULE_D_CANCODER_ID = 1; //TODO get real ID's
+  
+   public static final double STEERING_GEAR_RATIO = 12.8;
+
+
+   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+   public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
   public static final int ROTATION_MOTOR_C_ID = 13; // AFT Left

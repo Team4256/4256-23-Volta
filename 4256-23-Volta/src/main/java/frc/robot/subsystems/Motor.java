@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 public interface Motor{
 
 public double getPosition();
@@ -25,5 +27,11 @@ public void completeLoopUpdate();
 public void resetEncoder();
 
 public double getPositionFromIntegratedSensor();
+
+public void set(double speed, ControlMode controlMode);
+
+public void setEncoderPosition(double position);
+
+
 
 }
