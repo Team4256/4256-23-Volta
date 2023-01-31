@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -53,19 +54,18 @@ public final class SwerveModule {
 		turningPidController2 = new PIDController(3, 0, 0);
         turningPidController.enableContinuousInput(-180, 180);
         
+        angleEncoder = new CANCoder(cancoderID);
+        configAngleEncoder();
+
 		/* Angle Motor Config */
         angleMotor = new TalonFX(angleMotorId);
-        //configAngleMotor();
+        configAngleMotor();
 
         /* Drive Motor Config */
         driveMotor = new TalonFX(driveMotorID);
-        //configDriveMotor();
-
+        configDriveMotor();
         lastAngle = getState().angle;
-		
-		angleEncoder = new CANCoder(cancoderID);
-        configAngleEncoder();
-
+	
     }
 
 	private void configAngleEncoder(){        
@@ -78,24 +78,89 @@ public final class SwerveModule {
 		
     }
 
+
+     /**
+     * @param scopeReference Current Angle
+     * @param newAngle Target Angle
+     * @return Closest angle within scope
+     */
+    private static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+        double lowerBound;
+        double upperBound;
+        double lowerOffset = scopeReference % 360;
+        if (lowerOffset >= 0) {
+            lowerBound = scopeReference - lowerOffset;
+            upperBound = scopeReference + (360 - lowerOffset);
+        } else {
+            upperBound = scopeReference - lowerOffset;
+            lowerBound = scopeReference - (360 + lowerOffset);
+        }
+        while (newAngle < lowerBound) {
+            newAngle += 360;
+        }
+        while (newAngle > upperBound) {
+            newAngle -= 360;
+        }
+        if (newAngle - scopeReference > 180) {
+            newAngle -= 360;
+        } else if (newAngle - scopeReference < -180) {
+            newAngle += 360;
+        }
+        return newAngle;
+    }
+
+     /**
+   * Minimize the change in heading the desired swerve module state would require by potentially
+   * reversing the direction the wheel spins. Customized from WPILib's version to include placing
+   * in appropriate scope for CTRE onboard control.
+   *
+   * @param desiredState The desired state.
+   * @param currentAngle The current module angle.
+   */
+  public static SwerveModuleState optimize(SwerveModuleState desiredState, Rotation2d currentAngle) {
+    double targetAngle = placeInAppropriate0To360Scope(currentAngle.getDegrees(), desiredState.angle.getDegrees());
+    double targetSpeed = desiredState.speedMetersPerSecond;
+    double delta = targetAngle - currentAngle.getDegrees();
+    if (Math.abs(delta) > 90){
+        targetSpeed = -targetSpeed;
+        targetAngle = delta > 90 ? (targetAngle -= 180) : (targetAngle += 180);
+    }        
+    return new SwerveModuleState(targetSpeed, Rotation2d.fromDegrees(targetAngle));
+  }
+
 	private void configAngleMotor(){
         angleMotor.configFactoryDefault();
-        angleMotor.configAllSettings(CTREConfigs.swerveAngleFXConfig);
-        angleMotor.setInverted(true);
+        
+        angleMotor.config_kP(0, Constants.ANGLE_KP);
+        angleMotor.config_kI(0, Constants.ANGLE_KI);
+        angleMotor.config_kD(0, Constants.ANGLE_KD);
+        angleMotor.config_kF(0, Constants.ANGLE_KF);
+        angleMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
+            Constants.ANGLE_ENABLE_CURRENT_LIMIT, 
+            Constants.ANGLE_CONTINUOUS_CURRENT_LIMIT, 
+            Constants.ANGLE_PEAK_CURRENT_LIMIT, 
+            Constants.ANGLE_PEAK_CURRENT_DURATION));
+        angleMotor.setInverted(false);
         angleMotor.setNeutralMode(NeutralMode.Brake);
         resetToAbsolute();
     }
 
     private void configDriveMotor(){        
         driveMotor.configFactoryDefault();
-        driveMotor.configAllSettings(CTREConfigs.swerveDriveFXConfig);
-        driveMotor.setInverted(true);
+        driveMotor.config_kP(0, Constants.DRIVE_KP);
+        driveMotor.config_kI(0, Constants.DRIVE_KI);
+        driveMotor.config_kD(0, Constants.DRIVE_KD);
+        driveMotor.config_kF(0, Constants.DRIVE_KF);
+        driveMotor.configSupplyCurrentLimit( new SupplyCurrentLimitConfiguration(
+            Constants.DRIVE_ENABLE_CURRENT_LIMIT, 
+            Constants.DRIVE_CONTINUOUS_CURRENT_LIMIT, 
+            Constants.DRIVE_PEAK_CURRENT_LIMIT, 
+            Constants.DRIVE_PEAK_CURRENT_DURATION));
+        driveMotor.setInverted(true
+        );
         driveMotor.setNeutralMode(NeutralMode.Brake);
         driveMotor.setSelectedSensorPosition(0);
-
-
     }
-
 
 	  public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
@@ -119,19 +184,38 @@ public final class SwerveModule {
         ); 
     }
 
-    public void setDesiredState(SwerveModuleState state) {
-        if (Math.abs(state.speedMetersPerSecond) < .5
+    // public void setDesiredState(SwerveModuleState state) {
+    //     if (Math.abs(state.speedMetersPerSecond) < .5
+	// 	) {
+    //         stop();
+    //         return;
+    //     }
+    //     state = SwerveModuleState.optimize(state, getState().angle);
+		
+    //     setSpeed(state);
+    //     setAngle(state);
+	// 	SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
+	// 	SmartDashboard.putString("Swerve[" + moduleName + "] state", state.toString());
+    //     SmartDashboard.putString("Swerve[" + moduleName + "] state angle", state.angle.toString());
+		
+    // }
+
+    public void setDesiredState(SwerveModuleState desiredState){
+
+        if (Math.abs(desiredState.speedMetersPerSecond) < .5
 		) {
             stop();
             return;
         }
-        state = SwerveModuleState.optimize(state, getState().angle);
-		
-        setSpeed(state);
-        setAngle(state);
-		SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
-		SmartDashboard.putString("Swerve[" + moduleName + "] state", state.toString());
-		
+
+        /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
+        desiredState = optimize(desiredState, getState().angle); 
+        setAngle(desiredState);
+        setSpeed(desiredState);
+
+        SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
+		SmartDashboard.putString("Swerve[" + moduleName + "] state", desiredState.toString());
+        SmartDashboard.putString("Swerve[" + moduleName + "] state angle", desiredState.angle.toString());
     }
 
 	public void setAngle(SwerveModuleState desiredState) {
@@ -158,8 +242,8 @@ public final class SwerveModule {
 
     public void stop() {
         driveMotor.set(ControlMode.PercentOutput,0);
-		setAngleDegrees(0);
-		angleMotor.set(ControlMode.Position, ROTATOR_GEAR_RATIO);
+		//setAngleDegrees(0);
+		//angleMotor.set(ControlMode.Position, ROTATOR_GEAR_RATIO);
     }
 
 	public Rotation2d getCanCoder(){

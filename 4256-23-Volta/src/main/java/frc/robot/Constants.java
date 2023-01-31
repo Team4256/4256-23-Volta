@@ -56,11 +56,10 @@ public class Constants {
    public static final double DRIVE_KD = 0.0;
    public static final double DRIVE_KF = 0.0;
 
-   public static final double ANGLE_KP = 1.0; //TODO: This must be tuned to specific robot
+   public static final double ANGLE_KP = 0.1; //TODO: This must be tuned to specific robot
    public static final double ANGLE_KI = 0.0;
    public static final double ANGLE_KD = 0.0;
    public static final double ANGLE_KF = 0.0;
-
 
   /**
    * Swerve #1 = 
@@ -82,10 +81,10 @@ public class Constants {
    public static final double STEERING_GEAR_RATIO = 12.8;
 
 
-   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
-   public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
-   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
-   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(278.48);
+   public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(54.40);
+   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(3.77);
+   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(95.62);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
