@@ -21,6 +21,7 @@ public final class SwerveModule {
 	public static final double TRACTION_WHEEL_CIRCUMFERENCE = 4.0 * Math.PI;// inches
 	private TalonFX angleMotor;
     private TalonFX driveMotor;
+    
 	public String moduleName;
 	private CANCoder angleEncoder;
 	private Rotation2d lastAngle;
@@ -110,7 +111,6 @@ public final class SwerveModule {
 
 	private void configAngleMotor(){
         angleMotor.configFactoryDefault();
-
         angleMotor.config_kP(0, Constants.ANGLE_KP);
         angleMotor.config_kI(0, Constants.ANGLE_KI);
         angleMotor.config_kD(0, Constants.ANGLE_KD);
