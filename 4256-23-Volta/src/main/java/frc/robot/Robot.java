@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +24,7 @@ public class Robot extends TimedRobot {
 
   private Limelight limelight = new Limelight();
   private Gyro gyro = Gyro.getInstance();
+  private DutyCycleEncoder elevatorEncoder = new DutyCycleEncoder(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -53,6 +55,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
+    SmartDashboard.putNumber("Absolute Elevator Encoder Counts", elevatorEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("Elevator Encoder Counts", elevatorEncoder.get());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
