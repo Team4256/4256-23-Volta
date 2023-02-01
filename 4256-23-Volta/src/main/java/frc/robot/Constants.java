@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -10,17 +9,15 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   // Controller
-  public static final double CONTROLLER_DEADBAND = 0;//.25
+  public static final double CONTROLLER_DEADBAND = 0.05;//.25
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
   
-
   // Gyro
   public static final byte GYRO_UPDATE_HZ = 50;
   public static final double GYRO_OFFSET = 0;
   public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
   public static final double BEAM_BALANACED_DRIVE_KP = .001;
-
 
   // Swerve
   // Distance between right and left wheels
@@ -81,10 +78,10 @@ public class Constants {
    public static final double STEERING_GEAR_RATIO = 12.8;
 
 
-   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(278.48);
-   public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(54.40);
-   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(3.77);
-   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(95.62);
+   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(55.63);
+   public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.61);
+   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(1.49);
+   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(97.64);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right

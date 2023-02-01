@@ -8,12 +8,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,16 +16,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private Gyro gyro = Gyro.getInstance();
   private static SwerveSubsystem instance = null;
-  private static NetworkTableInstance nt;
-  private static NetworkTable table;
-  private double modAMax = 0;
-  private double modBMax = 0;
-  private double modCMax = 0;
-  private double modDMax = 0;
-  private double modAMin = 10;
-  private double modBMin = 10;
-  private double modCMin = 10;
-  private double modDMin = 10;
   private final SlewRateLimiter xLimiter, yLimiter, angularLimiter;
 
   public static synchronized SwerveSubsystem getInstance() {
@@ -44,16 +28,13 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule moduleA = new SwerveModule(
     Constants.TRACTION_MOTOR_A_ID,
     Constants.ROTATION_MOTOR_A_ID,
-    Constants.ROTATION_ENCODER_A_ID,
     "A",
     Constants.MODULE_A_CANCODER_ID,
     Constants.MODULE_A_ANGLE_OFFSET
-    
   );
   private final SwerveModule moduleB = new SwerveModule(
     Constants.TRACTION_MOTOR_B_ID,
     Constants.ROTATION_MOTOR_B_ID,
-    Constants.ROTATION_ENCODER_B_ID,
     "B",
     Constants.MODULE_B_CANCODER_ID,
     Constants.MODULE_B_ANGLE_OFFSET
@@ -61,7 +42,6 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule moduleC = new SwerveModule(
     Constants.TRACTION_MOTOR_C_ID,
     Constants.ROTATION_MOTOR_C_ID,
-    Constants.ROTATION_ENCODER_C_ID,
     "C",
     Constants.MODULE_C_CANCODER_ID,
     Constants.MODULE_C_ANGLE_OFFSET
@@ -69,7 +49,6 @@ public class SwerveSubsystem extends SubsystemBase {
   private final SwerveModule moduleD = new SwerveModule(
     Constants.TRACTION_MOTOR_D_ID,
     Constants.ROTATION_MOTOR_D_ID,
-    Constants.ROTATION_ENCODER_D_ID,
     "D",
     Constants.MODULE_D_CANCODER_ID,
     Constants.MODULE_D_ANGLE_OFFSET
@@ -88,8 +67,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public SwerveSubsystem() {
     zeroHeading();
-    nt = NetworkTableInstance.getDefault();
-    table = nt.getTable("table");
     this.xLimiter = new SlewRateLimiter(Constants.MAX_ACCELERATION);
     this.yLimiter = new SlewRateLimiter(Constants.MAX_ACCELERATION);
     this.angularLimiter = new SlewRateLimiter(Constants.TELEOP_MAX_ANGULAR_ACCELERATION);
@@ -121,8 +98,10 @@ public class SwerveSubsystem extends SubsystemBase {
     // and if the commands are field relative or not
     
     var swerveModuleStates = Constants.DRIVE_KINEMATICS.toSwerveModuleStates(
-        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, angularSpeed, getRotation2d())
-            : new ChassisSpeeds(xSpeed, ySpeed, angularSpeed));
+        ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, angularSpeed, getRotation2d()));
+
+
+
 
     setModuleStates(swerveModuleStates);
   }

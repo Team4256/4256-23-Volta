@@ -22,8 +22,6 @@ public class AutoBalance extends CommandBase {
   private PIDController balancePID = new PIDController(-0.01, 0, -0.00); //Values must be negative
   private double xSpeed;
   
-  
-
   public AutoBalance(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
@@ -32,7 +30,6 @@ public class AutoBalance extends CommandBase {
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
   
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}

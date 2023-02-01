@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -10,16 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Ian Woodard
  */
 public class Limelight {
-
-    private static final double ANGLE_THRESHOLD = 10.0;
+    
     private static Limelight instance = null;
     private double commandedDirection = 0.0;
     private double commandedSpeed = 0.0;
     private double commandedSpin = 0.0;
     private NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("limelight");
-
-    private double previousDirection = 0.0;//updateVisionTrackingSticky
-    private boolean hasPreviousDirection = false;//updateVisionTrackingSticky
 
     private boolean hasDirection = false;//updateVisionTrackingStickier
 

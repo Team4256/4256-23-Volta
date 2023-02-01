@@ -27,13 +27,14 @@ public class ControllerDrive extends CommandBase {
   @Override
   public void initialize() {}
 
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
     //swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), -controller.getRightX(), fieldOrient);
 
-    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), -controller.getRightX(), fieldOrient);
+    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), controller.getRightX(), fieldOrient);
       SmartDashboard.putBoolean("Controller Drive", true);
       SmartDashboard.putNumber("Controller Y Value", controller.getLeftX());
 
