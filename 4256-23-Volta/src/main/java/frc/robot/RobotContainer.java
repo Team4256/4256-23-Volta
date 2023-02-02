@@ -13,11 +13,16 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.TwoConeAutoTop;
+import frc.robot.commands.Clamp.ClampBottom;
+import frc.robot.commands.Clamp.ClampHigh;
+import frc.robot.commands.Clamp.ClampMid;
+import frc.robot.commands.Clamp.ControllerClamp;
 import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
 import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -44,6 +49,7 @@ public class RobotContainer {
   XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = new Elevator();
+  private final Clamp clamp = new Clamp();
   private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
 
@@ -52,6 +58,11 @@ public class RobotContainer {
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
+
+  private final Command clampHigh = new ClampHigh(clamp);
+  private final Command clampMid = new ClampMid(clamp);
+  private final Command clampBottom = new ClampBottom(clamp);
+  private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
 
 
 
@@ -102,6 +113,11 @@ public class RobotContainer {
     new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
     new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
     new JoystickButton(gunnerController, Button.kStart.value).whileTrue(controllerElevator);
+
+    new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
+    new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
+    new JoystickButton(gunnerController, Button.kRightStick.value).whileTrue(clampBottom);
+    new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerClamp);
     
   }
 

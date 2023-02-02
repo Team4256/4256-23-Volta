@@ -117,6 +117,24 @@ public class Constants {
   public final static double ELEVATOR_MOTOR_KD = 0;
   public final static double ELEVATOR_MOTOR_KF = 0;
 
+  
+
+  //CLAMP
+  public final static int CLAMP_MOTOR_ID = 0;
+  public final static int CLAMP_UPPER_LIMIT = 0;
+  public final static int CLAMP_LOWER_LIMIT = 0;
+  public final static int CLAMP_TOP_POSITION = 0;
+  public final static int CLAMP_MID_POSITION = 0;
+  public final static int CLAMP_LOW_POSITION = 0;
+  public final static int CLAMP_BOTTOM_POSITION = 0;
+  public final static double CLAMP_MOTOR_KP = 0;
+  public final static double CLAMP_MOTOR_KI = 0;
+  public final static double CLAMP_MOTOR_KD = 0;
+  public final static double CLAMP_MOTOR_KF = 0;
+
+
+
+
   public static final double angleEncoderMinVoltage[] = {
   0.018,
   0.062,

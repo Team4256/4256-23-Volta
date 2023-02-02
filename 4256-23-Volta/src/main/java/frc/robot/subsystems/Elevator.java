@@ -33,7 +33,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorHigh() {
-    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
       elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_HIGH);
     } else {
       stopElevator();
@@ -41,7 +41,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorMid() {
-    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
       elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_MID);
     } else {
       stopElevator();
@@ -49,7 +49,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorLow() {
-    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
       elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_LOW);
     } else {
       stopElevator();
@@ -57,7 +57,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorBottom() {
-    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
       elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_BOTTOM);
     } else {
       stopElevator();
@@ -65,7 +65,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorSpeed(double speed) {
-    if ((elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() < Constants.ELEVATOR_BOTTOM_LIMIT)) {
+    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
       elevatorMotor.set(ControlMode.PercentOutput, speed);
     } else {
       stopElevator();
