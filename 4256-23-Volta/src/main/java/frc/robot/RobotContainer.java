@@ -13,6 +13,12 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.TwoConeAutoTop;
+import frc.robot.commands.Elevator.ControllerElevator;
+import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorHigh;
+import frc.robot.commands.Elevator.ElevatorLow;
+import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -35,10 +41,20 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
-  XboxController operatorController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
+  private final Elevator elevator = new Elevator();
   private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
+
+  private final Command elevatorHigh = new ElevatorHigh(elevator);
+  private final Command elevatorMid = new ElevatorMid(elevator);
+  private final Command elevatorLow = new ElevatorLow(elevator);
+  private final Command elevatorBottom = new ElevatorBottom(elevator);
+  private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
+
+
+
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
@@ -79,7 +95,13 @@ public class RobotContainer {
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero); 
+    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
+
+    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
+    new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
+    new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
+    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
+    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(controllerElevator);
     
   }
 

@@ -58,25 +58,12 @@ public class Constants {
    public static final double ANGLE_KD = 0.0;
    public static final double ANGLE_KF = 0.0;
 
-  /**
-   * Swerve #1 = 
-   * Swerve #2 = 1.22
-   * Swerve #3 = 4.35
-   * Swerve #4 = 
-   * Swerve #5 = 2.89
-   * Swerve #6 = 
-   * Swerve #7 = 
-   * Swerve #8 = 
-   * Swerve #9 = 1.00
-   */
-
    public static final int MODULE_A_CANCODER_ID = 31; //TODO get real ID's
    public static final int MODULE_B_CANCODER_ID = 32; //TODO get real ID's
    public static final int MODULE_C_CANCODER_ID = 33; //TODO get real ID's
    public static final int MODULE_D_CANCODER_ID = 34; //TODO get real ID's
   
    public static final double STEERING_GEAR_RATIO = 12.8;
-
 
    public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(55.63);
    public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.61);
@@ -91,11 +78,7 @@ public class Constants {
   public static final int TRACTION_MOTOR_B_ID = 22; // Front Right
   public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
   public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
-  //ensure swerves are on analog 0-3
-  public static final int ROTATION_ENCODER_A_ID = 0; // Front Left
-  public static final int ROTATION_ENCODER_B_ID = 1; // Front Right
-  public static final int ROTATION_ENCODER_C_ID = 2; // Aft Left
-  public static final int ROTATION_ENCODER_D_ID = 3; // Aft Right
+
   public static final double ABSOLUTE_ENCODER_A_TARE = 1.22; // Front Left
   public static final double ABSOLUTE_ENCODER_B_TARE = 2.89; // Front Right
   public static final double ABSOLUTE_ENCODER_C_TARE = 4.29; // Aft Left
@@ -114,6 +97,7 @@ public class Constants {
   public static final double TELEOP_MAX_ANGULAR_ACCELERATION = 3;
   public static final double ENCODER_CONVERSION_TO_REVOLUTIONS_PER_SECONDS = 1 / 7.04; //gear ratio * encoder conversion *
   public static final double RPS_TO_METERS_PER_SECOND = ENCODER_CONVERSION_TO_REVOLUTIONS_PER_SECONDS * Math.PI * WHEEL_DIAMETER;
+  
   // Automomous
   public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints( //
     MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
@@ -123,76 +107,36 @@ public class Constants {
   // Elevator
   public final static int ELEVATOR_MOTOR_ID = 0;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
+  public final static int ELEVATOR_BOTTOM_LIMIT = 0;
   public final static int ELEVATOR_POSITION_HIGH = 0;
   public final static int ELEVATOR_POSITION_MID = 0;
   public final static int ELEVATOR_POSITION_LOW = 0;
+  public final static int ELEVATOR_POSITION_BOTTOM = 0;
   public final static double ELEVATOR_MOTOR_KP = 0;
   public final static double ELEVATOR_MOTOR_KI = 0;
   public final static double ELEVATOR_MOTOR_KD = 0;
   public final static double ELEVATOR_MOTOR_KF = 0;
-  
-
-  // Conveyor
-  public static final int INTAKE_MOTOR_ID = 16;
-  public static final int SHOOTER_MOTOR_ID = 26;
-  public static final int CONVEYOR_MOTOR_ID = 15;
-  public static final double INTAKE_MOTOR_SPEED = -0.5;//changed from 0.5
-  public static final double OUTTAKE_MOTOR_SPEED = 0.5;//changed from 0.5
-  public static final double CONVEYOR_MOTOR_SPEED = 0.5;//changed from 0.5
-  public static final double SHOOTER_MOTOR_SPEED = 1.0;//changed from 0.8
-  public static final int INTAKE_BALL_SENSOR_ID = 0;
-  public static final int CONVEYOR_BALL_SENSOR_ID = 1;
-  public static final int INTAKE_DOWN_CHANNEL = 4;
-  public static final int INTAKE_UP_CHANNEL = 5;
-
 
   public static final double angleEncoderMinVoltage[] = {
-  //   .008544921,
-  //   .020751951,
-  //   0.01220703,
-  //   0.026855466,
   0.018,
   0.062,
   0.018,
   0.020
    };
+
   public static final double angleEncoderMaxVoltage[] = {
-    // 4.921874496,
-    // 4.921874496,
-    // 4.913329475000001,
-    // 4.887694812,
     4.92,
     4.91,
     4.92,
     4.94
   };
-  // COMPETITION ROBOT
-  //ensure swerves are on analog 0-3
-  /**
-   * Swerve #1 = 
-   * Swerve #2 = 1.22
-   * Swerve #3 = 4.35
-   * Swerve #4 = 
-   * Swerve #5 = 2.89
-   * Swerve #6 = 
-   * Swerve #7 = 
-   * Swerve #8 = 
-   * Swerve #9 = 1.00
-   */
+  
   public static final double angleEncoderTareVoltage[] = {
    //2022 Competition Values
-    // 1.22,
-    // 2.89,
-    // 4.35,
-    // 1.00
     1.22,
     1.08,
     1.20,
     4.25
   };
 
-  // Aligner tolerances
-
-  public static final double POSITION_TOLERANCE = 5.00;
-  public static final double VELOCITY_TOLERANCE = 5.00;
 }

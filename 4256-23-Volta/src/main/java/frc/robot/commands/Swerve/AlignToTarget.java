@@ -17,7 +17,6 @@ public class AlignToTarget extends CommandBase {
   private final XboxController controller;
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
-  
 
   public AlignToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
@@ -26,7 +25,6 @@ public class AlignToTarget extends CommandBase {
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
   
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}

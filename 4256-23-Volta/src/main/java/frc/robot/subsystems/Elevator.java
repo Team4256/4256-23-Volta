@@ -41,19 +41,39 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorMid() {
-
+    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_MID);
+    } else {
+      stopElevator();
+    }
   }
 
   public void setElevatorLow() {
-
+    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_LOW);
+    } else {
+      stopElevator();
+    }
   }
 
   public void setElevatorBottom() {
+    if (elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) {
+      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_BOTTOM);
+    } else {
+      stopElevator();
+    }
+  }
 
+  public void setElevatorSpeed(double speed) {
+    if ((elevatorEncoder.get() < Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() < Constants.ELEVATOR_BOTTOM_LIMIT)) {
+      elevatorMotor.set(ControlMode.PercentOutput, speed);
+    } else {
+      stopElevator();
+    }
   }
 
   public void stopElevator() {
-
+    elevatorMotor.set(ControlMode.PercentOutput, 0);
   }
 
   private void configElevatorMotor() {
