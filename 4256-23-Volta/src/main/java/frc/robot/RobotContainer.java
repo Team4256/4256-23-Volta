@@ -44,28 +44,31 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  
+  //Subsystems
   XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
   XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = new Elevator();
   private final Clamp clamp = new Clamp();
-  private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
+  private final Gyro gyro = Gyro.getInstance();
 
+  //Elevator
   private final Command elevatorHigh = new ElevatorHigh(elevator);
   private final Command elevatorMid = new ElevatorMid(elevator);
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
+  //Clamp
   private final Command clampHigh = new ClampHigh(clamp);
   private final Command clampMid = new ClampMid(clamp);
   private final Command clampBottom = new ClampBottom(clamp);
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
 
-
-
+  //Swerve
+  private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
@@ -73,9 +76,12 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
-  private final Gyro gyro = Gyro.getInstance();
+  
+
+
   SendableChooser<Command> chooser = new SendableChooser<>();
   
+
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -88,7 +94,7 @@ public class RobotContainer {
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Competition").add(chooser);
 
-    robotDrive.setDefaultCommand(swerveDrive);
+    robotDrive.setDefaultCommand(controllerDrive);
   }
 
   /**
@@ -103,10 +109,13 @@ public class RobotContainer {
   private void configureBindings() {
    
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
+
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
+
+    
 
     new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
     new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
