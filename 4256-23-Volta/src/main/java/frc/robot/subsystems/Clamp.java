@@ -21,13 +21,22 @@ public class Clamp extends SubsystemBase {
   private DoubleSolenoid solenoid;
   private DutyCycleEncoder clampEncoder;
   private TalonFX clampMotor;
-
+  public static Clamp instance = null;
   /** Creates a new Clamp. */
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
     this.clampEncoder = new DutyCycleEncoder(1);
+    this.clampMotor = new TalonFX(Constants.CLAMP_MOTOR_ID);
     configClampMotor();
   }
+
+  public static synchronized Clamp getInstance() {
+		if (instance == null) {
+			instance = new Clamp();
+			
+		} 
+		return instance;
+	}
 
   public void clamp() {
     solenoid.set(Value.kForward);

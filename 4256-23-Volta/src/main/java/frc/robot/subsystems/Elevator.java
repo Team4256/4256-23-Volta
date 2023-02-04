@@ -8,7 +8,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,13 +19,24 @@ public class Elevator extends SubsystemBase {
   
   private DutyCycleEncoder elevatorEncoder;
   private TalonFX elevatorMotor;
+  private DoubleSolenoid elevatorSolenoid;
+  public static Elevator instance = null;
   
   /** Creates a new Elevator. */
   public Elevator() {
     this.elevatorEncoder = new DutyCycleEncoder(0);
     this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR_ID);
+    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
     configElevatorMotor();
   }
+
+  public static synchronized Elevator getInstance() {
+		if (instance == null) {
+			instance = new Elevator();
+			
+		} 
+		return instance;
+	}
 
   public double getElevatorEncoderPosition() {
     return elevatorEncoder.getAbsolutePosition();
@@ -74,6 +88,14 @@ public class Elevator extends SubsystemBase {
 
   public void stopElevator() {
     elevatorMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void tiltElevatorDown() {
+    elevatorSolenoid.set(Value.kForward);
+  }
+  
+  public void tiltElevatorUp() {
+    elevatorSolenoid.set(Value.kForward);
   }
 
   private void configElevatorMotor() {

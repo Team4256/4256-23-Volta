@@ -2,22 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Clamp;
+package frc.robot.commands.Intake;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Intake;
 
-public class ControllerClamp extends CommandBase {
+public class IntakeDown extends CommandBase {
 
-  private final XboxController controller;
-
-  private Clamp clamp;
-  /** Creates a new ControllerampHigh. */
-  public ControllerClamp(Clamp clamp, XboxController controller) {
-    this.clamp = clamp;
-    this.controller = controller;
-    addRequirements(clamp);
+  private Intake intake = Intake.getInstance();
+  /** Creates a new ElevatorHigh. */
+  public IntakeDown() {
+    this.intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -28,7 +25,8 @@ public class ControllerClamp extends CommandBase {
   @Override
   public void execute() {
 
-    clamp.setClampSpeed(-controller.getRightY());
+    intake.intakeDown();
+    
 
   }
 

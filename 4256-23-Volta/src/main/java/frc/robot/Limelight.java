@@ -49,21 +49,6 @@ public class Limelight {
         double distance = networkTable.getEntry("tx").getDouble(0.0);
         return distance;
     }
-    /**
-     * A periodically run function that uses vison to compute direction, speed, and spin for swerve in order to score autonomously.
-     */
-    public synchronized void updateVisionTracking2() {
-
-        double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0.0);
-         
-        if (tv < 1.0) {
-            commandedSpeed = 0.0;
-            return;
-        }
-
-        double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
-
-    }
 
     public synchronized boolean hasTarget() {
         SmartDashboard.putBoolean("Has Target", hasDirection);

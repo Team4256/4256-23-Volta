@@ -110,6 +110,8 @@ public class RobotContainer {
    
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
 
+    new JoystickButton(driverController, driverController.getPOV(0)).whileTrue(autoBalance);
+
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
