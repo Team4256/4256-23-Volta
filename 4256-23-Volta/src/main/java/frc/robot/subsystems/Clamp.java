@@ -24,8 +24,8 @@ public class Clamp extends SubsystemBase {
   public static Clamp instance = null;
   /** Creates a new Clamp. */
   public Clamp() {
-    this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
-    this.clampEncoder = new DutyCycleEncoder(1);
+    this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL, Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
+    this.clampEncoder = new DutyCycleEncoder(6);
     this.clampMotor = new TalonFX(Constants.CLAMP_MOTOR_ID);
     configClampMotor();
   }

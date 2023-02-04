@@ -107,7 +107,7 @@ public class Constants {
   // Elevator
   public final static int ELEVATOR_MOTOR_ID = 0;
   public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 0;
-  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 0;
+  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 1;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
   public final static int ELEVATOR_BOTTOM_LIMIT = 0;
   public final static int ELEVATOR_POSITION_HIGH = 0;
@@ -121,6 +121,8 @@ public class Constants {
 
   //CLAMP
   public final static int CLAMP_MOTOR_ID = 0;
+  public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 2;
+  public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 3;
   public final static int CLAMP_UPPER_LIMIT = 0;
   public final static int CLAMP_LOWER_LIMIT = 0;
   public final static int CLAMP_TOP_POSITION = 0;
@@ -134,8 +136,8 @@ public class Constants {
 
   //INTAKE
   public final static int INTAKE_MOTOR_ID = 0;
-  public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 0;
-  public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 0;
+  public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 4;
+  public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 5;
   public final static int INTAKE_MOTOR_SPEED = 0;
 
 

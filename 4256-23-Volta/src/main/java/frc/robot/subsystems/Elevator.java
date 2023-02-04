@@ -24,7 +24,7 @@ public class Elevator extends SubsystemBase {
   
   /** Creates a new Elevator. */
   public Elevator() {
-    this.elevatorEncoder = new DutyCycleEncoder(0);
+    this.elevatorEncoder = new DutyCycleEncoder(5);
     this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR_ID);
     this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
     configElevatorMotor();

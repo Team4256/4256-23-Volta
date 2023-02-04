@@ -138,7 +138,7 @@ public final class SwerveModule {
             Constants.DRIVE_PEAK_CURRENT_DURATION));
         driveMotor.setInverted(true
         );
-        driveMotor.setNeutralMode(NeutralMode.Brake);
+        driveMotor.setNeutralMode(NeutralMode.Coast);
         driveMotor.setSelectedSensorPosition(0);
     }
 
@@ -208,6 +208,10 @@ public final class SwerveModule {
         driveMotor.set(ControlMode.PercentOutput,0);
 		//setAngleDegrees(0);
 		//angleMotor.set(ControlMode.Position, ROTATOR_GEAR_RATIO);
+    }
+
+    public void setSpeed (double speed) {
+        driveMotor.set(ControlMode.PercentOutput, speed);
     }
 
 	public Rotation2d getCanCoder(){

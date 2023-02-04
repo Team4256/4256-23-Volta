@@ -129,6 +129,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
   }
 
+  public void driveStraight() {
+     moduleA.setAngleDegrees(0);
+     moduleB.setAngleDegrees(0);
+     moduleC.setAngleDegrees(0);
+     moduleD.setAngleDegrees(0);
+
+     moduleA.setSpeed(.1);
+     moduleB.setSpeed(.1);
+     moduleC.setSpeed(.1);
+     moduleD.setSpeed(.1);
+  }
+
 
 
   public double getHeading() {

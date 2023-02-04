@@ -12,6 +12,7 @@ import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Auto.DirectBalance;
+import frc.robot.commands.Auto.DriveStraight;
 import frc.robot.commands.Auto.TwoConeAutoTop;
 import frc.robot.commands.Clamp.ClampBottom;
 import frc.robot.commands.Clamp.ClampHigh;
@@ -49,8 +50,8 @@ public class RobotContainer {
   XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
   XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
-  private final Elevator elevator = new Elevator();
-  private final Clamp clamp = new Clamp();
+  private final Elevator elevator = Elevator.getInstance();
+  private final Clamp clamp = Clamp.getInstance();
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
 
@@ -76,6 +77,7 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
+  private final Command driveStraight = new DriveStraight();
   
 
 
@@ -88,8 +90,9 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    chooser.setDefaultOption("Two Cone Auto Top", twoConeAutoTop);
+    chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Direct Balance", directBalance);
+    chooser.addOption("Drive Straight", driveStraight);
     
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Competition").add(chooser);
@@ -110,14 +113,14 @@ public class RobotContainer {
    
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
 
-    new JoystickButton(driverController, driverController.getPOV(0)).whileTrue(autoBalance);
+   // new JoystickButton(driverController, driverController.getPOV(1)).whileTrue(alignToTarget);
+
+    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
 
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
-
-    
 
     new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
     new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
