@@ -9,7 +9,7 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   // Controller
-  public static final double CONTROLLER_DEADBAND = 0.05;//.25
+  public static final double CONTROLLER_DEADBAND = 0.1;//.25
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
   
@@ -31,6 +31,7 @@ public class Constants {
     new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
     new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
   );
+
   public static final double WHEEL_CIRCUMFERENCE = .159; //meters
   public static final double TRACTION_GEAR_RATIO = 6.752; 
 
