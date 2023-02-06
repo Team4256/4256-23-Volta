@@ -43,7 +43,7 @@ public class DirectBalance extends SequentialCommandGroup {
   /** Creates a new ThreeBallAutoBottom. */
   public DirectBalance() { 
     addCommands(
-      new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
+      //new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
       //new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
       command,
       new InstantCommand(() -> swerve.stopModules())

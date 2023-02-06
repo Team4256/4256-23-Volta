@@ -166,7 +166,7 @@ public final class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState){
 
-        if (Math.abs(desiredState.speedMetersPerSecond) < .5
+        if (Math.abs(desiredState.speedMetersPerSecond) < .05
 		) {
             stop();
             return;
@@ -179,6 +179,7 @@ public final class SwerveModule {
 
         SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
 		SmartDashboard.putString("Swerve[" + moduleName + "] state", desiredState.toString());
+        SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
         SmartDashboard.putString("Swerve[" + moduleName + "] state angle", desiredState.angle.toString());
     }
 
@@ -205,7 +206,9 @@ public final class SwerveModule {
 	}
 
     public void stop() {
+        //return;
         driveMotor.set(ControlMode.PercentOutput,0);
+        //SmartDashboard.putBoolean("is stopped", true);
 		//setAngleDegrees(0);
 		//angleMotor.set(ControlMode.Position, ROTATOR_GEAR_RATIO);
     }

@@ -36,7 +36,6 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
     
   PathPlannerTrajectory autoPath = PathPlanner.loadPath("Two Cone Auto Top", 1, 1);
 
-  
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
     autoPath,
@@ -52,9 +51,9 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
 
   /** Creates a new ThreeBallAutoBottom. */
   public TwoConeAutoTop() { 
-    HashMap<String, Command> eventMap = new HashMap<>();
-  eventMap.put("Intake", new RunIntake());
-  eventMap.put("Clamp", new IntakeDown());
+  //   HashMap<String, Command> eventMap = new HashMap<>();
+  // eventMap.put("Intake", new RunIntake());
+  // eventMap.put("Clamp", new IntakeDown());
     addCommands(
       new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
       new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
@@ -69,8 +68,8 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
       new InstantCommand(() -> elevator.setElevatorHigh()),
       new InstantCommand(() -> clamp.unclamp()),
       new InstantCommand(() -> elevator.tiltElevatorUp()),
-      new InstantCommand(() -> elevator.setElevatorBottom()),
-      new InstantCommand(() -> swerve.stopModules())
+      new InstantCommand(() -> elevator.setElevatorBottom())
+      //new InstantCommand(() -> swerve.stopModules())
       
     );
   }

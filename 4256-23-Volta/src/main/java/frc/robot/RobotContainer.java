@@ -82,7 +82,8 @@ public class RobotContainer {
 
 
   SendableChooser<Command> chooser = new SendableChooser<>();
-  
+
+
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -92,7 +93,7 @@ public class RobotContainer {
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Direct Balance", directBalance);
-    chooser.addOption("Drive Straight", driveStraight);
+    chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
     
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Competition").add(chooser);
@@ -143,5 +144,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     
     return chooser.getSelected();
+    //return directBalance;
   }
 }
