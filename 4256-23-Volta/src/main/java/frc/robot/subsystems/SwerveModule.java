@@ -166,11 +166,18 @@ public final class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState){
 
-        if (Math.abs(desiredState.speedMetersPerSecond) < .05
-		) {
+        // if (Math.abs(desiredState.speedMetersPerSecond) <= 1) {
+        //     //setSpeed(0.51);
+        //     setSpeed(1.1);
+        //     return;
+        // }
+        SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
+        if (Math.abs(desiredState.speedMetersPerSecond) <= .2) {
+            //setSpeed(0.51);
             stop();
             return;
         }
+        
 
         /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
         desiredState = optimize(desiredState, getState().angle); 
@@ -179,7 +186,6 @@ public final class SwerveModule {
 
         SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
 		SmartDashboard.putString("Swerve[" + moduleName + "] state", desiredState.toString());
-        SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
         SmartDashboard.putString("Swerve[" + moduleName + "] state angle", desiredState.angle.toString());
     }
 
@@ -202,15 +208,13 @@ public final class SwerveModule {
     }
 
 	public void stopTraction() {
-		driveMotor.set(ControlMode.PercentOutput, 0);
+		//driveMotor.set(ControlMode.PercentOutput, 0);
 	}
 
     public void stop() {
-        //return;
+        
         driveMotor.set(ControlMode.PercentOutput,0);
-        //SmartDashboard.putBoolean("is stopped", true);
-		//setAngleDegrees(0);
-		//angleMotor.set(ControlMode.Position, ROTATOR_GEAR_RATIO);
+
     }
 
     public void setSpeed (double speed) {

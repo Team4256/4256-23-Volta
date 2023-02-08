@@ -98,7 +98,7 @@ public class RobotContainer {
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Competition").add(chooser);
 
-    robotDrive.setDefaultCommand(controllerDrive);
+    //robotDrive.setDefaultCommand(controllerDrive);
   }
 
   /**
@@ -119,7 +119,6 @@ public class RobotContainer {
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
 
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
-    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
 
@@ -143,7 +142,7 @@ public class RobotContainer {
 //    */
   public Command getAutonomousCommand() {
     
-    return chooser.getSelected();
-    //return directBalance;
+    //return chooser.getSelected();
+    return directBalance;
   }
 }

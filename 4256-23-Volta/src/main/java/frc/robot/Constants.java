@@ -9,7 +9,7 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   // Controller
-  public static final double CONTROLLER_DEADBAND = 0.1;//.25
+  public static final double CONTROLLER_DEADBAND = 0.0;//.25
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
   

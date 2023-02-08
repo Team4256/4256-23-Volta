@@ -20,13 +20,14 @@ import frc.robot.subsystems.*;
 
 public class DirectBalance extends SequentialCommandGroup {
 
-  SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  //SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+  SwerveSubsystem swerve = new SwerveSubsystem();
   Gyro gyro = Gyro.getInstance();
-    PIDController xController = new PIDController(0, 0, 0);
-    PIDController yController = new PIDController(0, 0, 0);
-    PIDController thetaController = new PIDController(0, 0, 0);
+    PIDController xController = new PIDController(.1, 0, 0);
+    PIDController yController = new PIDController(.1, 0, 0);
+    PIDController thetaController = new PIDController(.1, 0, 0);
     
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 2, 1);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 1, .5);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
     autoPath,
@@ -36,7 +37,7 @@ public class DirectBalance extends SequentialCommandGroup {
     yController,
     thetaController,
     swerve::setModuleStates,
-    true,
+    false,
     swerve
   );
 
