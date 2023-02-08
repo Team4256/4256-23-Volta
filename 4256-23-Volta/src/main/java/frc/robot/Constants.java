@@ -27,6 +27,11 @@ public class Constants {
   // Distance between front and back wheels
   public static final double WHEEL_BASE = Units.inchesToMeters(23.25); //done 2022
   public static final double WHEEL_DIAMETER = Units.inchesToMeters(4); // inches
+  
+  public static final int MOTOR_ID_PLACEHOLDER = 1;
+  public static final int PNEUMATIC_ID_PLACEHOLDER = 2;
+  public static final double EXTENSION_MOTOR_SPEED = 1;
+    //elevator 
   public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
     new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
     new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
