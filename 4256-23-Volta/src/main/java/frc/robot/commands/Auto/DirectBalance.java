@@ -23,8 +23,8 @@ public class DirectBalance extends SequentialCommandGroup {
   //SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   SwerveSubsystem swerve = new SwerveSubsystem();
   Gyro gyro = Gyro.getInstance();
-    PIDController xController = new PIDController(1, 0, 0);
-    PIDController yController = new PIDController(1, 0, 0);
+    PIDController xController = new PIDController(3, 0, 0);
+    PIDController yController = new PIDController(3, 0, 0);
     PIDController thetaController = new PIDController(-1, 0, 0.0);
     
   PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 1, .1);
@@ -44,6 +44,7 @@ public class DirectBalance extends SequentialCommandGroup {
   /** Creates a new ThreeBallAutoBottom. */
   public DirectBalance() { 
     addCommands(
+      new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
       new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
       command,

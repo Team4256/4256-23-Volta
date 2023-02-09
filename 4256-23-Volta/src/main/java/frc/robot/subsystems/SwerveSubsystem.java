@@ -164,6 +164,16 @@ public class SwerveSubsystem extends SubsystemBase {
         moduleC.getPosition(),
         moduleD.getPosition()
     }, newPose);
+  }
+
+    public void resetOdometerToZero() {
+      Pose2d newPose = new Pose2d();
+      odometer.resetPosition(getRotation2d(), new SwerveModulePosition[] {
+          moduleA.getPosition(),
+          moduleB.getPosition(),
+          moduleC.getPosition(),
+          moduleD.getPosition()
+      }, newPose);
 
   }
 

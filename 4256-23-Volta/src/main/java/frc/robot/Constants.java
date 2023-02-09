@@ -32,7 +32,7 @@ public class Constants {
     new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
   );
 
-  public static final double WHEEL_CIRCUMFERENCE = .159; //meters
+  public static final double WHEEL_CIRCUMFERENCE = .318; //meters 
   public static final double TRACTION_GEAR_RATIO = 6.752; 
 
   public static final int ANGLE_CONTINUOUS_CURRENT_LIMIT = 25; 

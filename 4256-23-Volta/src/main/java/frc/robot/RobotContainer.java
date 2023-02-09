@@ -139,6 +139,7 @@ public class RobotContainer {
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
+    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(new InstantCommand(() -> robotDrive.resetOdometerToZero()));
 
     new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
     new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
