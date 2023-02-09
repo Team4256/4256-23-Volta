@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -19,7 +17,6 @@ public class Elevator {
     private static DoubleSolenoid tiltSolenoid;
     private final VictorSPX baseMotor1;
     private final VictorSPX baseMotor2;
-    
     
     public Elevator(){
         baseMotor1 = new VictorSPX(Constants.MOTOR_ID_PLACEHOLDER);
@@ -42,12 +39,4 @@ public class Elevator {
     public void retractElevatorBottom() {
         baseMotor1.set(ControlMode.PercentOutput, Constants.RETRACTION_MOTOR_SPEED);
     }
-
-    public void setElevator(int encoderCounts) {
-
-    }
-
-
-
-    
 }
