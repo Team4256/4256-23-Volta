@@ -27,7 +27,7 @@ public class DirectBalance extends SequentialCommandGroup {
     PIDController yController = new PIDController(3, 0, 0);
     PIDController thetaController = new PIDController(-1, 0, 0.0);
     
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 1, .1);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Square", 1, .1);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
     autoPath,
