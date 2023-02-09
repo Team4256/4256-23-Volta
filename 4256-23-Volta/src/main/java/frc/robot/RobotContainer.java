@@ -8,6 +8,7 @@ package frc.robot;
 import frc.robot.commands.Swerve.AlignToTarget;
 import frc.robot.commands.Swerve.AlignToZero;
 import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.BlankCommand;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
@@ -27,6 +28,7 @@ import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -78,6 +80,9 @@ public class RobotContainer {
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
   private final Command driveStraight = new DriveStraight();
+  private final Command blankCommand = new BlankCommand(robotDrive);
+
+  
   
 
 
@@ -88,6 +93,9 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    //robotDrive.setDefaultCommand(controllerDrive);
+
     // Configure the trigger bindings
     configureBindings();
 
@@ -99,6 +107,17 @@ public class RobotContainer {
     Shuffleboard.getTab("Competition").add(chooser);
 
     //robotDrive.setDefaultCommand(controllerDrive);
+
+    
+  }
+
+
+  public void setTeleopSwerveDefaultCommand() {
+    robotDrive.setDefaultCommand(controllerDrive);
+  }
+
+  public void setAutoSwerveDefaultCommand() {
+    robotDrive.setDefaultCommand(blankCommand);
   }
 
   /**
@@ -111,9 +130,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-   
+    
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
-
    // new JoystickButton(driverController, driverController.getPOV(1)).whileTrue(alignToTarget);
 
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
