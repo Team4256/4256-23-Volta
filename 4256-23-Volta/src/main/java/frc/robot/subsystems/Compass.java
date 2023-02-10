@@ -63,7 +63,7 @@ public class Compass {
 	 * @see #legalize(angle)
 	 * @see #borderPath(angle)
 	 */
-	public static double legalPath(final double start, final double end) {
+	public double legalPath(final double start, final double end) {
 		final double start_legal = legalize(start);
 		final double path_escape = 0;
 		double path_main = path(start_legal, legalize(end));

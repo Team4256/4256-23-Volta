@@ -8,16 +8,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Limelight;
-import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoBalance extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
   private final XboxController controller;
-  private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
   private PIDController balancePID = new PIDController(-0.01, 0, -0.00); //Values must be negative
   private double xSpeed;
