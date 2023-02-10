@@ -42,9 +42,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
     double maxAngle = 0;
     double minAngle = 360;
     public static final int kTimeoutMS = 10;
-   
-    
-    
 
     /**
      * Offers a simple way of initializing and using NEO Brushless motors with a
@@ -68,9 +65,8 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-
-
-    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted, int analogEncoderID) {
+    public TalonFXFalcon(final int deviceID, final NeutralMode neutralMode, final boolean isInverted,
+            int analogEncoderID) {
 
         super(deviceID);
 
@@ -93,7 +89,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         angleEncoder.setDistancePerRotation(360);
 
         SupplyCurrentLimitConfiguration limit = new SupplyCurrentLimitConfiguration(true, 30, 45, .25);
-        
+
         configSupplyCurrentLimit(limit);
         // enableVoltageCompensation(true);
 
@@ -111,7 +107,6 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
      * @param deviceID   CAN ID of the SparkMax
      * @param isInverted Indication of whether the SparkMax's motor is inverted
      */
-    
 
     /**
      * Performs necessary initialization
@@ -120,7 +115,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         setInverted(isInverted);
         set(0.0);
-        //anglePIDController.enableContinuousInput(-180.0, 180.0);
+        // anglePIDController.enableContinuousInput(-180.0, 180.0);
     }
 
     /**
@@ -129,47 +124,48 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     @Override
     public void resetEncoder() {
-       getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
+        getSensorCollection().setIntegratedSensorPosition(0.0, kTimeoutMS);
 
     }
 
     /*
-    returns the rotations of the motor from the integrated sensor
-    */
-    public double getPositionFromIntegratedSensor(){
-       return getSensorCollection().getIntegratedSensorPosition();
+     * returns the rotations of the motor from the integrated sensor
+     */
+    public double getPositionFromIntegratedSensor() {
+        return getSensorCollection().getIntegratedSensorPosition();
     }
 
-
     /**
-     * @return Rotations of the motor in encoder 
+     * @return Rotations of the motor in encoder
      */
     public double getPosition() {
         return angleEncoder.get();
     }
 
     /**
-     * @Conversion the numbers multiplied are the encoder conversions times 10 to return 
+     * @Conversion the numbers multiplied are the encoder conversions times 10 to
+     *             return
      * @return Revolutions per minute of the motor
      */
     public double getRPM() {
         return getRPS() * 60;
     }
 
-    
     /**
      * 
-     * @Conversion the numbers multiplied are the encoder conversions times 10 to return 
+     * @Conversion the numbers multiplied are the encoder conversions times 10 to
+     *             return
      * @return Revolutions per second of the motor
      */
     public double getRPS() {
-        return getSensorCollection().getIntegratedSensorVelocity() / 2048 * 10; 
+        return getSensorCollection().getIntegratedSensorVelocity() / 2048 * 10;
     }
 
     // get angle
     public double getCurrentAngle() {
 
-        return Math.toRadians(360 - (encoderPort.getVoltage() - encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360);
+        return Math.toRadians(
+                360 - (encoderPort.getVoltage() - encoderTareVoltage) / (encoderMaxVoltage - encoderMinVoltage) * 360);
 
     }
 
@@ -179,22 +175,18 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
     }
 
-
-
     // Set Speed
     @Override
     public void setSpeed(final double inputPercentageSpeed) {
 
         double adjustedPercentageSpeed = inputPercentageSpeed;
-        
+
         super.set(adjustedPercentageSpeed);
         lastSetpoint = adjustedPercentageSpeed;
         updated = true;
         logger.log(Level.FINE, Double.toString(adjustedPercentageSpeed));
-        
+
     }
-
-
 
     // Set Angle
     public void setAngle(double targetAngle) {
@@ -203,7 +195,7 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
         double encoderPosition = getCurrentAngle();
         while (targetPoint <= -180) {
             targetPoint += 360;
-        } 
+        }
 
         while (targetPoint > 180) {
             targetPoint -= 360;
@@ -226,21 +218,20 @@ public class TalonFXFalcon extends WPI_TalonFX implements Motor {
 
         super.set(percentSpeed);
         updated = true;
-        lastSetpoint = percentSpeed; 
+        lastSetpoint = percentSpeed;
 
     }
-
-
 
     public double getPIDError() {
         return anglePIDController.getPositionError();
     }
+
     public double getCurrentAngleDegrees() {
-            return 360 - (encoderPort.getVoltage() - encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360;
-        }
-    
+        return 360 - (encoderPort.getVoltage() - encoderTareVoltage) / (encoderMaxVoltage - encoderMinVoltage) * 360;
+    }
+
     public double getTareAngle(double module) {
-            return 360 - (encoderTareVoltage)/(encoderMaxVoltage - encoderMinVoltage) * 360;
+        return 360 - (encoderTareVoltage) / (encoderMaxVoltage - encoderMinVoltage) * 360;
     }
 
     public double pathTo(double target) {// ANGLE

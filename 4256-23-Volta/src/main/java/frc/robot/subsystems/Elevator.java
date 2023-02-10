@@ -44,6 +44,7 @@ public class Elevator extends SubsystemBase {
       tiltSolenoid.set(Value.kForward);
     }
   }
+
   public void activateClamp() {
     if (clampSolenoid.get() == Value.kForward) {
       clampSolenoid.set(Value.kReverse);
@@ -51,6 +52,7 @@ public class Elevator extends SubsystemBase {
       clampSolenoid.set(Value.kForward);
     }
   }
+
   public void extendElevatorTop() {
     baseMotor1.set(ControlMode.PercentOutput, Constants.EXTENSION_MOTOR_SPEED);
   }

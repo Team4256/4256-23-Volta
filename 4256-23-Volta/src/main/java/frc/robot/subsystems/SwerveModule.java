@@ -25,7 +25,6 @@ public final class SwerveModule {
 	public final PIDController turningPidController;
 	public final PIDController turningPidController2;
 	public String moduleName;
-	
 
 	// This constructor is intended for use with the module which has an encoder on
 	// the traction motor.
@@ -33,20 +32,20 @@ public final class SwerveModule {
 	public SwerveModule(int driveMotorId, int turningMotorId, int absoluteEncoderId, String name) {
 
 		moduleName = name;
-        driveMotor = new TractionControl(driveMotorId);
-        turningMotor = new RotationControl(turningMotorId, absoluteEncoderId);
+		driveMotor = new TractionControl(driveMotorId);
+		turningMotor = new RotationControl(turningMotorId, absoluteEncoderId);
 		turningPidController = new PIDController(2, 0, 0);
 		turningPidController2 = new PIDController(3, 0, 0);
-        turningPidController.enableContinuousInput(-180, 180);
+		turningPidController.enableContinuousInput(-180, 180);
 
-        driveMotor.resetEncoder();
+		driveMotor.resetEncoder();
 		turningMotor.resetEncoder();
-    }
+	}
 
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(
-			driveMotor.getPositionFromIntegratedSensor(), new Rotation2d(turningMotor.getAbsoluteEncoder()));
-	  }
+				driveMotor.getPositionFromIntegratedSensor(), new Rotation2d(turningMotor.getAbsoluteEncoder()));
+	}
 
 	public double getMPS() {
 		return driveMotor.getRPS() * Constants.RPS_TO_METERS_PER_SECOND;
@@ -65,24 +64,23 @@ public final class SwerveModule {
 	}
 
 	public SwerveModuleState getState() {
-        return new SwerveModuleState(getMPS(), new Rotation2d(getAngle()));
-    }
+		return new SwerveModuleState(getMPS(), new Rotation2d(getAngle()));
+	}
 
-    public void setDesiredState(SwerveModuleState state) {
-        if (Math.abs(state.speedMetersPerSecond) < .5
-		) {
-            stop();
-            return;
-        }
-        state = SwerveModuleState.optimize(state, getState().angle);
-		
-        driveMotor.set(state.speedMetersPerSecond / 3.83);
-        turningMotor.SetAngle(turningPidController.calculate(getAngle(), state.angle.getRadians()));
+	public void setDesiredState(SwerveModuleState state) {
+		if (Math.abs(state.speedMetersPerSecond) < .5) {
+			stop();
+			return;
+		}
+		state = SwerveModuleState.optimize(state, getState().angle);
+
+		driveMotor.set(state.speedMetersPerSecond / 3.83);
+		turningMotor.SetAngle(turningPidController.calculate(getAngle(), state.angle.getRadians()));
 		SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getAngle());
 		SmartDashboard.putString("Swerve[" + moduleName + "] state", state.toString());
-		
-    }
-	
+
+	}
+
 	public void driveToDirection(double direction) {
 		driveMotor.set(.5);
 		turningMotor.SetAngle(direction);
@@ -96,9 +94,9 @@ public final class SwerveModule {
 		driveMotor.set(0);
 	}
 
-    public void stop() {
-        driveMotor.set(0);
+	public void stop() {
+		driveMotor.set(0);
 		turningMotor.SetAngle(0);
-    }
-   
+	}
+
 }

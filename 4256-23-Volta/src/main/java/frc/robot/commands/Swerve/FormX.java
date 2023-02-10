@@ -16,30 +16,29 @@ public class FormX extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
-  
+  private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); // Values must be negative
 
   public FormX(SwerveSubsystem swerve) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
-  
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-      swerveDrive.formX();
+    swerveDrive.formX();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)  {
+  public void end(boolean interrupted) {
     swerveDrive.stopModules();
   }
 

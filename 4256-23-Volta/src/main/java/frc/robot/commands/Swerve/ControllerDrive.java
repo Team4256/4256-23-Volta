@@ -14,28 +14,28 @@ public class ControllerDrive extends CommandBase {
   private final XboxController controller;
   private boolean fieldOrient = true;
 
-
-
   public ControllerDrive(SwerveSubsystem swerve, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     this.controller = controller; // Set the private member to the input controller
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
-                                   // use this as the default
+                                  // use this as the default
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    //swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), -controller.getRightX(), fieldOrient);
+    // swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(),
+    // -controller.getRightX(), fieldOrient);
 
     swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), -controller.getRightX(), fieldOrient);
-      SmartDashboard.putBoolean("Controller Drive", true);
-      SmartDashboard.putNumber("Controller Y Value", controller.getLeftX());
+    SmartDashboard.putBoolean("Controller Drive", true);
+    SmartDashboard.putNumber("Controller Y Value", controller.getLeftX());
 
   }
 

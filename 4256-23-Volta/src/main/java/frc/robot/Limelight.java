@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Cyborg Cats' 2019 Limelight Vision Code.
+ * 
  * @author Ian Woodard
  */
 public class Limelight {
@@ -18,12 +19,10 @@ public class Limelight {
     private double commandedSpin = 0.0;
     private NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-    private double previousDirection = 0.0;//updateVisionTrackingSticky
-    private boolean hasPreviousDirection = false;//updateVisionTrackingSticky
+    private double previousDirection = 0.0;// updateVisionTrackingSticky
+    private boolean hasPreviousDirection = false;// updateVisionTrackingSticky
 
-    private boolean hasDirection = false;//updateVisionTrackingStickier
-
-    
+    private boolean hasDirection = false;// updateVisionTrackingStickier
 
     Limelight() {
     }
@@ -36,17 +35,13 @@ public class Limelight {
         return instance;
     }
 
-
-
     public void trackLimelight() {
-        
 
     }
 
-
     // returns the horizontal offset in degrees of the robot to the limelight
     public double getXOffset() {
-       double xOffset = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
+        double xOffset = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
         return xOffset;
     }
 
@@ -54,13 +49,15 @@ public class Limelight {
         double distance = networkTable.getEntry("tx").getDouble(0.0);
         return distance;
     }
+
     /**
-     * A periodically run function that uses vison to compute direction, speed, and spin for swerve in order to score autonomously.
+     * A periodically run function that uses vison to compute direction, speed, and
+     * spin for swerve in order to score autonomously.
      */
     public synchronized void updateVisionTracking2() {
 
         double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0.0);
-         
+
         if (tv < 1.0) {
             commandedSpeed = 0.0;
             return;
@@ -84,8 +81,8 @@ public class Limelight {
         double a1 = 12;
         double h1 = 22;
         double h2 = 98.25;
-        double angle =  Math.toRadians(a1+a2);
-        double d = (h2-h1) / Math.tan(angle);
+        double angle = Math.toRadians(a1 + a2);
+        double d = (h2 - h1) / Math.tan(angle);
         return d;
 
     }
@@ -113,6 +110,7 @@ public class Limelight {
 
     /**
      * Changes the LED mode.
+     * 
      * @param ledMode the desired ledMode [0, 3].
      */
     private synchronized void setLEDMode(LedMode ledMode) {
@@ -123,9 +121,9 @@ public class Limelight {
      * Forces the LED off.
      */
     public synchronized void turnLEDOff() {
-        //setLEDMode(LedMode.FORCE_OFF);
+        // setLEDMode(LedMode.FORCE_OFF);
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-        
+
     }
 
     /**
@@ -149,10 +147,9 @@ public class Limelight {
         setLEDMode(LedMode.PIPELINE);
     }
 
-
-
     /**
      * Changes the pipeline of the vision.
+     * 
      * @param pipeline desired pipeline [0, 9].
      */
     public synchronized void setPipeline(int pipeline) {
@@ -163,8 +160,6 @@ public class Limelight {
     public synchronized int getPipeline() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getNumber(0).intValue();
     }
-    
-
 
     public static enum CamMode {
         VISION(0),
@@ -183,6 +178,7 @@ public class Limelight {
 
     /**
      * Changes the camMode.
+     * 
      * @param camMode desired camMode [0, 1].
      */
     public synchronized void setCamMode(CamMode camMode) {
@@ -205,13 +201,13 @@ public class Limelight {
 
     /**
      * @return
-     * <b>True<b> if the current camMode is zero and the NetworkTable is able to be accessed.
+     *         <b>True<b> if the current camMode is zero and the NetworkTable is
+     *         able to be accessed.
      */
     public synchronized boolean isVisionEnabled() {
-        return (NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getNumber(-1).intValue() == CamMode.VISION.getValue());
+        return (NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getNumber(-1)
+                .intValue() == CamMode.VISION.getValue());
     }
-
-
 
     public static enum StreamMode {
         STANDARD(0),
@@ -241,23 +237,25 @@ public class Limelight {
     }
 
     /**
-     * Sets the stream to display the vision camera as the main camera and the other camera to be in the right corner.
+     * Sets the stream to display the vision camera as the main camera and the other
+     * camera to be in the right corner.
      */
     public synchronized void setVisionView() {
         setStreamView(StreamMode.PIP_MAIN);
     }
 
     /**
-     * Sets the stream to display the other camera as the main camera and the vision camera to be in the right corner.
+     * Sets the stream to display the other camera as the main camera and the vision
+     * camera to be in the right corner.
      */
     public synchronized void setOtherCameraView() {
         setStreamView(StreamMode.PIP_SECONDARY);
     }
 
     public synchronized boolean isSplitView() {
-        return (NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").getNumber(-1).intValue() == StreamMode.STANDARD.getValue());
+        return (NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").getNumber(-1)
+                .intValue() == StreamMode.STANDARD.getValue());
     }
-
 
     public static enum SnapshotMode {
         STOP(0),
@@ -274,24 +272,25 @@ public class Limelight {
         }
     }
 
-
-
     /**
-     * @return the <code>commandedDirection</code> for swerve computed in {@link #updateVisionTracking()}.
+     * @return the <code>commandedDirection</code> for swerve computed in
+     *         {@link #updateVisionTracking()}.
      */
     public synchronized double getCommandedDirection() {
         return commandedDirection;
     }
 
     /**
-     * @return the <code>commandedSpeed</code> for swerve computed in {@link #updateVisionTracking()}.
+     * @return the <code>commandedSpeed</code> for swerve computed in
+     *         {@link #updateVisionTracking()}.
      */
     public synchronized double getCommandedSpeed() {
         return commandedSpeed;
     }
 
     /**
-     * @return the <code>commandedSpin</code> for swerve computed in {@link #updateVisionTracking()}.
+     * @return the <code>commandedSpin</code> for swerve computed in
+     *         {@link #updateVisionTracking()}.
      */
     public synchronized double getCommandedSpin() {
         return commandedSpin;

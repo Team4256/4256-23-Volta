@@ -16,8 +16,7 @@ public class AlignToTarget extends CommandBase {
   private final Limelight limelight;
   private final XboxController controller;
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
-  
+  private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); // Values must be negative
 
   public AlignToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private memberParameters to the input drivetrain
@@ -25,30 +24,29 @@ public class AlignToTarget extends CommandBase {
     this.controller = controller;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
-  
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    double angularSpeed = -orientationPID.calculate(limelight.getXOffset(),0);
+    double angularSpeed = -orientationPID.calculate(limelight.getXOffset(), 0);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
     swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), spinSpeed, fieldOrient);
 
-      
-      SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
-      SmartDashboard.putNumber("Alignment Speed", spinSpeed);
-      SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
+    SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
+    SmartDashboard.putNumber("Alignment Speed", spinSpeed);
+    SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)  {
+  public void end(boolean interrupted) {
 
     SmartDashboard.putBoolean("DrivingByLimelight", true);
 

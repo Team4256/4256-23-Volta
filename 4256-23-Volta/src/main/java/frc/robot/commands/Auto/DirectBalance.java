@@ -22,32 +22,31 @@ public class DirectBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
-    PIDController xController = new PIDController(1, 0, 0);
-    PIDController yController = new PIDController(1, 0, 0);
-    PIDController thetaController = new PIDController(5, 0, 0);
-    
+  PIDController xController = new PIDController(1, 0, 0);
+  PIDController yController = new PIDController(1, 0, 0);
+  PIDController thetaController = new PIDController(5, 0, 0);
+
   PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 1, 1);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
-    autoPath,
-    swerve::getPose,
-    Constants.DRIVE_KINEMATICS,
-    xController,
-    yController,
-    thetaController,
-    swerve::setModuleStates,
-    true,
-    swerve
-  );
+      autoPath,
+      swerve::getPose,
+      Constants.DRIVE_KINEMATICS,
+      xController,
+      yController,
+      thetaController,
+      swerve::setModuleStates,
+      true,
+      swerve);
 
   /** Creates a new ThreeBallAutoBottom. */
-  public DirectBalance() { 
+  public DirectBalance() {
     addCommands(
-      new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
-      new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-      command,
-      new InstantCommand(() -> swerve.stopModules())
-      
+        new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
+        new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
+        command,
+        new InstantCommand(() -> swerve.stopModules())
+
     );
   }
 }

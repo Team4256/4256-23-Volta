@@ -19,10 +19,8 @@ public class AutoBalance extends CommandBase {
   private final XboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController balancePID = new PIDController(-0.01, 0, -0.00); //Values must be negative
+  private PIDController balancePID = new PIDController(-0.01, 0, -0.00); // Values must be negative
   private double xSpeed;
-  
-  
 
   public AutoBalance(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
@@ -31,22 +29,23 @@ public class AutoBalance extends CommandBase {
     balancePID.setTolerance(0.5);
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
-  
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-   // Uncomment the line below this to simulate the gyroscope axis with a controller joystick
+    // Uncomment the line below this to simulate the gyroscope axis with a
+    // controller joystick
     double currentAngle = -controller.getLeftX() * 45;
-    
-    //xSpeed = -Math.min(balancePID.calculate(gyro.getRoll(), 0), 1);
 
-    //Uncomment to test with Controller instead of live Gyro data
+    // xSpeed = -Math.min(balancePID.calculate(gyro.getRoll(), 0), 1);
+
+    // Uncomment to test with Controller instead of live Gyro data
     xSpeed = -Math.min(balancePID.calculate(currentAngle, 0), 1);
 
     // Limit the max power
@@ -55,7 +54,7 @@ public class AutoBalance extends CommandBase {
     }
 
     swerveDrive.drive(xSpeed, 0, 0, fieldOrient);
-    
+
     // Debugging Print Statments
     SmartDashboard.putNumber("Current Roll", currentAngle);
     SmartDashboard.putNumber("Balance Speed", xSpeed);
@@ -63,7 +62,7 @@ public class AutoBalance extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)  {
+  public void end(boolean interrupted) {
 
   }
 
