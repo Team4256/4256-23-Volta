@@ -32,7 +32,6 @@ public class Constants {
   public static final int TILT_FORWARD_PNEUMATIC_ID = 2;
   public static final int TILT_REVERSE_PNEUMATIC_ID = 2;
   public static final int CLAMP_FORWARD_PNEUMATIC_ID = 3;
-  public static final int CLAMP_REVERSE_PNEUMATIC_ID = 3;
   public static final double EXTENSION_MOTOR_SPEED = 1;
   public static final double RETRACTION_MOTOR_SPEED = -1;
     //elevator 

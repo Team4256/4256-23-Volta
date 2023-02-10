@@ -12,8 +12,6 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.TwoConeAutoTop;
-import frc.robot.commands.Elevator.ActivateClamp;
-import frc.robot.commands.Elevator.TiltElevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Elevator;
@@ -53,8 +51,6 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
-  private final Command tiltElevator = new TiltElevator(robotPlacingMechanism, gunnerController);
-  private final Command activateClamp = new ActivateClamp(robotPlacingMechanism, gunnerController);
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
@@ -96,8 +92,6 @@ public class RobotContainer {
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
     new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(alignToTarget);
 
-    new JoystickButton(gunnerController, Button.kA.value).whileTrue(activateClamp);
-    new JoystickButton(gunnerController, Button.kX.value).whileTrue(tiltElevator);
 
   }
 
