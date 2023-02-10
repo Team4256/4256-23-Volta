@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -21,12 +23,18 @@ public class Elevator extends SubsystemBase {
   private TalonFX elevatorMotor;
   private DoubleSolenoid elevatorSolenoid;
   public static Elevator instance = null;
+  public double targetAngle = 0;
+  private final TrapezoidProfile.Constraints pidConstraints =
+    new TrapezoidProfile.Constraints(1.75, 0.75);
+  private final ProfiledPIDController pidController =
+    new ProfiledPIDController(1.3, 0.0, 0.7, pidConstraints, 0.02);
   
   /** Creates a new Elevator. */
   public Elevator() {
     this.elevatorEncoder = new DutyCycleEncoder(5);
     this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR_ID);
     this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
+    
     configElevatorMotor();
   }
 
@@ -44,19 +52,22 @@ public class Elevator extends SubsystemBase {
 
   public void resetElevatorEncoder() {
     elevatorEncoder.reset();
+    
   }
 
   public void setElevatorHigh() {
+
     if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_HIGH);
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_HIGH);
     } else {
       stopElevator();
     }
+
   }
 
   public void setElevatorMid() {
     if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_MID);
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_MID);
     } else {
       stopElevator();
     }
@@ -64,7 +75,7 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorLow() {
     if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_LOW);
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_LOW);
     } else {
       stopElevator();
     }
@@ -78,9 +89,19 @@ public class Elevator extends SubsystemBase {
     }
   }
 
-  public void setElevatorSpeed(double speed) {
+  public void incrementElevator() {
+    targetAngle = elevatorEncoder.get() + 5;
     if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-      elevatorMotor.set(ControlMode.PercentOutput, speed);
+      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
+    } else {
+      stopElevator();
+    }
+  }
+
+  public void decrementElevator() {
+    targetAngle = elevatorEncoder.get() - 5;
+    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
+      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
     } else {
       stopElevator();
     }

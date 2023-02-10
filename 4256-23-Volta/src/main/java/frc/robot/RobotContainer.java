@@ -19,7 +19,7 @@ import frc.robot.commands.Clamp.ClampBottom;
 import frc.robot.commands.Clamp.ClampHigh;
 import frc.robot.commands.Clamp.ClampMid;
 import frc.robot.commands.Clamp.ControllerClamp;
-import frc.robot.commands.Elevator.ControllerElevator;
+import frc.robot.commands.Elevator.IncrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
@@ -62,7 +62,7 @@ public class RobotContainer {
   private final Command elevatorMid = new ElevatorMid(elevator);
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
-  private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
+  private final Command incrementElevator = new IncrementElevator(elevator);
 
   //Clamp
   private final Command clampHigh = new ClampHigh(clamp);
@@ -145,7 +145,7 @@ public class RobotContainer {
     new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
     new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
     new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
-    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(controllerElevator);
+    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(incrementElevator);
 
     new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
     new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
