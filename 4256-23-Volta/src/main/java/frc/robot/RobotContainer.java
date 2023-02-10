@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import frc.robot.commands.Swerve.AlignToTarget;
 import frc.robot.commands.Swerve.AlignToZero;
 import frc.robot.commands.Swerve.AutoBalance;
@@ -13,8 +12,11 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.TwoConeAutoTop;
+import frc.robot.commands.Elevator.ActivateClamp;
+import frc.robot.commands.Elevator.TiltElevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Elevator;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -27,18 +29,23 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
-  XboxController operatorController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
+  private final Elevator robotPlacingMechanism = new Elevator();
   private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
+  private final Gyro gyro = Gyro.getInstance();
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
@@ -46,18 +53,20 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
-  private final Gyro gyro = Gyro.getInstance();
+  private final Command tiltElevator = new TiltElevator(robotPlacingMechanism, gunnerController);
+  private final Command activateClamp = new ActivateClamp(robotPlacingMechanism, gunnerController);
   SendableChooser<Command> chooser = new SendableChooser<>();
-  
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
     chooser.setDefaultOption("Two Cone Auto Top", twoConeAutoTop);
     chooser.addOption("Direct Balance", directBalance);
-    
+
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Competition").add(chooser);
 
@@ -65,31 +74,40 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
-   
+
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero); 
-    
+    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
+    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(alignToTarget);
+
+    new JoystickButton(gunnerController, Button.kA.value).whileTrue(activateClamp);
+    new JoystickButton(gunnerController, Button.kX.value).whileTrue(tiltElevator);
+
   }
 
-//   /**
-//    * Use this to pass the autonomous command to the main {@link Robot} class.
-//    *
-//    * @return the command to run in autonomous
-//    */
+  // /**
+  // * Use this to pass the autonomous command to the main {@link Robot} class.
+  // *
+  // * @return the command to run in autonomous
+  // */
   public Command getAutonomousCommand() {
-    
+
     return chooser.getSelected();
   }
 }

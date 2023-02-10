@@ -123,10 +123,6 @@ public class SwerveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  public void setXFormation() {
-    
-  }
-
   public void formX() {
      moduleA.swivelTo(45.0);
      moduleB.swivelTo(-45.0); 

@@ -20,7 +20,7 @@ public class AlignToTarget extends CommandBase {
   
 
   public AlignToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
-    swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
+    swerveDrive = swerve; // Set the private memberParameters to the input drivetrain
     limelight = camera;
     this.controller = controller;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
