@@ -208,7 +208,7 @@ public final class SwerveModule {
     }
 
 	public void stopTraction() {
-		//driveMotor.set(ControlMode.PercentOutput, 0);
+		driveMotor.set(ControlMode.PercentOutput, 0);
 	}
 
     public void stop() {

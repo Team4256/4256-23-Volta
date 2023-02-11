@@ -74,7 +74,7 @@ public class RobotContainer {
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
-  private final Command autoBalance = new AutoBalance(robotDrive, camera, driverController);
+  private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
@@ -121,16 +121,36 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    //Driver Button Bindings
+/**
+ * A: Auto Balance
+ * B: Reset Gyro
+ * Y: Move To Target
+ * X: Form X
+ * Left Bumper: Align To Zero
+ * Right Bumper: Reset Odometer
+ */
     new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
-
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
-
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
     new JoystickButton(driverController, Button.kRightBumper.value)
-        .whileTrue(new InstantCommand(() -> robotDrive.resetOdometerToZero()));
+        .onTrue(new InstantCommand(() -> robotDrive.resetOdometerToZero()));
 
+        //Gunner Button Bindings
+/*
+ * Y: Elevator High
+ * X: Elevator Mid
+ * B: Elevator Low
+ * A: Elevator Bottom
+ * Start: Increment Elevator
+ * Back: Controller Clamp
+ * Left Bumper: Clamp High
+ * Right Bumper: Clamp Mid
+ * Right Stick: Clamp Bottom
+ * 
+ */
     new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
     new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
     new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);

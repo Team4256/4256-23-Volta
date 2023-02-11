@@ -107,8 +107,8 @@ public class SwerveSubsystem extends SubsystemBase {
   public void formX() {
 
     moduleA.setAngleDegrees(45.0);
-    moduleB.setAngleDegrees(45.0);
-    moduleC.setAngleDegrees(45.0);
+    moduleB.setAngleDegrees(-45.0);
+    moduleC.setAngleDegrees(-45.0);
     moduleD.setAngleDegrees(45.0);
 
     moduleA.stopTraction();

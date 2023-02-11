@@ -11,17 +11,19 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.*;
+import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.FormX;
 import frc.robot.subsystems.*;
 
 public class DirectBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = new SwerveSubsystem();
   Gyro gyro = Gyro.getInstance();
-  PIDController xController = new PIDController(3, 0, 0);
-  PIDController yController = new PIDController(3, 0, 0);
-  PIDController thetaController = new PIDController(-1, 0, 0.0);
+  PIDController xController = new PIDController(2, 0, 0);
+  PIDController yController = new PIDController(2, 0, 0);
+  PIDController thetaController = new PIDController(-2, 0, 0.0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 1, .1);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Over and Back", 1, 1);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
       autoPath,
@@ -38,10 +40,10 @@ public class DirectBalance extends SequentialCommandGroup {
   public DirectBalance() {
     addCommands(
         new InstantCommand(() -> gyro.reset()),
-        new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
+        new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
         command,
-        new InstantCommand(() -> swerve.stopModules())
+        new AutoBalance(swerve)
 
     );
   }
