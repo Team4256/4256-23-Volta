@@ -18,7 +18,7 @@ public class MoveToTarget extends CommandBase {
   private final XboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.004, 0, -0); //Values must be negative
+  private PIDController orientationPID = new PIDController(-0.001, 0, -0.00); //Values must be negative
   private PIDController positionPID = new PIDController(-0.038, 0, -0.0); //Values must be negative (.02)
 
   public MoveToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
