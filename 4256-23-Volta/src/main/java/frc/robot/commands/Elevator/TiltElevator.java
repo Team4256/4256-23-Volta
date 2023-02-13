@@ -5,18 +5,15 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Elevator;
 
 public class TiltElevator extends CommandBase {
   /** Creates a new TiltElevator. */
   private final Elevator tiltyBoi;
-  private final XboxController controller;
 
-  public TiltElevator(Elevator tilt, XboxController controller) {
+  public TiltElevator(Elevator tilt) {
     tiltyBoi = tilt;
-    this.controller = controller;
     addRequirements(tiltyBoi);
   }
 

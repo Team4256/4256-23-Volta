@@ -12,11 +12,9 @@ import frc.robot.subsystems.Elevator;
 public class ActivateClamp extends CommandBase {
   /** Creates a new ActivateClamp. */
   private final Elevator tiltyBoi;
-  private final XboxController controller;
 
-  public ActivateClamp(Elevator tilt, XboxController controller) {
+  public ActivateClamp(Elevator tilt) {
     tiltyBoi = tilt;
-    this.controller = controller;
     addRequirements(tiltyBoi);
   }
 

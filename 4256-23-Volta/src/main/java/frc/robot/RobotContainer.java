@@ -43,9 +43,9 @@ public class RobotContainer {
   XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator robotPlacingMechanism = new Elevator();
-  private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
+  private final ControllerDrive swerveDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
@@ -53,8 +53,8 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
-  private final Command tiltElevator = new TiltElevator(robotPlacingMechanism, gunnerController);
-  private final Command activateClamp = new ActivateClamp(robotPlacingMechanism, gunnerController);
+  private final Command tiltElevator = new TiltElevator(robotPlacingMechanism);
+  private final Command activateClamp = new ActivateClamp(robotPlacingMechanism);
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
