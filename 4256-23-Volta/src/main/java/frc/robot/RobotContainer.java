@@ -134,11 +134,12 @@ public class RobotContainer {
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(alignToZero);
-    new JoystickButton(driverController, Button.kRightBumper.value)
-        .onTrue(new InstantCommand(() -> robotDrive.resetOdometerToZero()));
-
-        //Gunner Button Bindings
+    //Sets AprilTag Pipeline
+    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
+    //Sets Reflective Tape Pipeline
+    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
+        
+    //Gunner Button Bindings
 /*
  * Y: Elevator High
  * X: Elevator Mid
