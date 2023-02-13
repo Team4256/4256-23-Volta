@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
 
+    SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
