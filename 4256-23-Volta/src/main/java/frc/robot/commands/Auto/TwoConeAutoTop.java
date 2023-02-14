@@ -8,27 +8,24 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
-import frc.robot.commands.Swerve.*;
 import frc.robot.subsystems.*;
 
 public class TwoConeAutoTop extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
+  Clamp clamp = Clamp.getInstance();
+  Elevator elevator = Elevator.getInstance();
   PIDController xController = new PIDController(1, 0, 0);
   PIDController yController = new PIDController(1, 0, 0);
   PIDController thetaController = new PIDController(5, 0, 0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Two Cone Auto Top", 1, 1);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 5, 6);
 
-  PPSwerveControllerCommand command = new PPSwerveControllerCommand(
+  PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,
       swerve::getPose,
       Constants.DRIVE_KINEMATICS,
@@ -39,14 +36,24 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
       true,
       swerve);
 
-  /** Creates a new ThreeBallAutoBottom. */
+  /** Creates a new TwoConeAutoTop Command. */
   public TwoConeAutoTop() {
     addCommands(
         new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-        command,
+        new InstantCommand(() -> clamp.clamp()),
+        new InstantCommand(() -> elevator.tiltElevatorDown()),
+        new InstantCommand(() -> elevator.setElevatorHigh()),
+        new InstantCommand(() -> clamp.unclamp()),
+        new InstantCommand(() -> elevator.tiltElevatorUp()),
+        new InstantCommand(() -> elevator.setElevatorBottom()),
+        pathCommand,
+        new InstantCommand(() -> elevator.tiltElevatorDown()),
+        new InstantCommand(() -> elevator.setElevatorHigh()),
+        new InstantCommand(() -> clamp.unclamp()),
+        new InstantCommand(() -> elevator.tiltElevatorUp()),
+        new InstantCommand(() -> elevator.setElevatorBottom()),
         new InstantCommand(() -> swerve.stopModules())
-
     );
   }
 }

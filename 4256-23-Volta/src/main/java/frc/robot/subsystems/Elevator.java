@@ -4,61 +4,129 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 public class Elevator extends SubsystemBase {
-  /** Creates a new Elevator2. */
-  private static Elevator instance = null;
-  private final VictorSPX baseMotor1;
-  private final VictorSPX baseMotor2;
-  private final DoubleSolenoid tiltSolenoid;
-  private final DoubleSolenoid clampSolenoid;
+  
+  private DutyCycleEncoder elevatorEncoder;
+  private TalonFX elevatorMotor;
+  private DoubleSolenoid elevatorSolenoid;
+  public static Elevator instance = null;
+  public double targetAngle = 0;
+  private final TrapezoidProfile.Constraints pidConstraints =
+    new TrapezoidProfile.Constraints(1.75, 0.75);
+  private final ProfiledPIDController pidController =
+    new ProfiledPIDController(1.3, 0.0, 0.7, pidConstraints, 0.02);
+  
+  /** Creates a new Elevator. */
+  public Elevator() {
+    this.elevatorEncoder = new DutyCycleEncoder(5);
+    this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR_ID);
+    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
+    
+    configElevatorMotor();
+  }
 
   public static synchronized Elevator getInstance() {
-    if (instance == null) {
-      instance = new Elevator();
-    }
-    return instance;
+		if (instance == null) {
+			instance = new Elevator();
+			
+		} 
+		return instance;
+	}
+
+  public double getElevatorEncoderPosition() {
+    return elevatorEncoder.getAbsolutePosition();
   }
 
-  public Elevator() {
-    baseMotor1 = new VictorSPX(Constants.MOTOR_ID_PLACEHOLDER);
-    baseMotor2 = new VictorSPX(Constants.MOTOR_ID_PLACEHOLDER);
-    tiltSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.TILT_FORWARD_PNEUMATIC_ID,
-        Constants.TILT_REVERSE_PNEUMATIC_ID);
-    clampSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_FORWARD_PNEUMATIC_ID,
-        Constants.CLAMP_REVERSE_PNEUMATIC_ID);
+  public void resetElevatorEncoder() {
+    elevatorEncoder.reset();
+    
   }
 
-  public void tiltElevator() {
-    if (tiltSolenoid.get() == Value.kForward) {
-      tiltSolenoid.set(Value.kReverse);
+  public void setElevatorHigh() {
+
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_HIGH);
     } else {
-      tiltSolenoid.set(Value.kForward);
+      stopElevator();
     }
+
   }
 
-  public void activateClamp() {
-    if (clampSolenoid.get() == Value.kForward) {
-      clampSolenoid.set(Value.kReverse);
+  public void setElevatorMid() {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_MID);
     } else {
-      clampSolenoid.set(Value.kForward);
+      stopElevator();
     }
   }
 
-  public void extendElevatorTop() {
-    baseMotor1.set(ControlMode.PercentOutput, Constants.EXTENSION_MOTOR_SPEED);
+  public void setElevatorLow() {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
+      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_LOW);
+    } else {
+      stopElevator();
+    }
   }
 
-  public void retractElevatorBottom() {
-    baseMotor1.set(ControlMode.PercentOutput, Constants.RETRACTION_MOTOR_SPEED);
+  public void setElevatorBottom() {
+    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
+      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_BOTTOM);
+    } else {
+      stopElevator();
+    }
+  }
+
+  public void incrementElevator() {
+    targetAngle = elevatorEncoder.get() + 5;
+    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
+      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
+    } else {
+      stopElevator();
+    }
+  }
+
+  public void decrementElevator() {
+    targetAngle = elevatorEncoder.get() - 5;
+    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
+      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
+    } else {
+      stopElevator();
+    }
+  }
+
+  public void stopElevator() {
+    elevatorMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void tiltElevatorDown() {
+    elevatorSolenoid.set(Value.kForward);
+  }
+  
+  public void tiltElevatorUp() {
+    elevatorSolenoid.set(Value.kForward);
+  }
+
+  private void configElevatorMotor() {
+    elevatorMotor.configFactoryDefault();
+        elevatorMotor.config_kP(0, Constants.ELEVATOR_MOTOR_KP);
+        elevatorMotor.config_kI(0, Constants.ELEVATOR_MOTOR_KI);
+        elevatorMotor.config_kD(0, Constants.ELEVATOR_MOTOR_KD);
+        elevatorMotor.config_kF(0, Constants.ELEVATOR_MOTOR_KF);
+        elevatorMotor.setInverted(false);
+        elevatorMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override

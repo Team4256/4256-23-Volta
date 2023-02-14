@@ -18,8 +18,8 @@ public class MoveToTarget extends CommandBase {
   private final XboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.02, 0, -0.007); // Values must be negative
-  private PIDController positionPID = new PIDController(-0.02, 0, -0.007); // Values must be negative (.02)
+  private PIDController orientationPID = new PIDController(-0.01, 0, -0.00); //Values must be negative
+  private PIDController positionPID = new PIDController(-0.038, 0, -0.0); //Values must be negative (.02)
 
   public MoveToTarget(SwerveSubsystem swerve, Limelight camera, XboxController controller) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
@@ -39,15 +39,17 @@ public class MoveToTarget extends CommandBase {
 
     double xSpeed = -positionPID.calculate(limelight.getXOffset(), 0);
     double strafeSpeed = Math.max(-.4, Math.min(xSpeed, .4));
-    double angularSpeed = -orientationPID.calculate(gyro.getCurrentAngle(), 180);
+    double angularSpeed = -orientationPID.calculate(gyro.getAngle(),0);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
 
-    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, spinSpeed, fieldOrient);
 
-    SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
-    SmartDashboard.putNumber("Alignment Speed", spinSpeed);
-    SmartDashboard.putNumber("Auto Strafe Speed", strafeSpeed);
-    SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
+    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, angularSpeed, fieldOrient);
+
+      
+      SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
+      SmartDashboard.putNumber("Alignment Speed", spinSpeed);
+      SmartDashboard.putNumber("Auto Strafe Speed", strafeSpeed);
+      SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
 

@@ -4,34 +4,29 @@
 
 package frc.robot.commands.Swerve;
 
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class FormX extends CommandBase {
+public class BlankCommand extends CommandBase {
   private final SwerveSubsystem swerveDrive;
-
-  public FormX(SwerveSubsystem swerve) {
+  public BlankCommand(SwerveSubsystem swerve) {
     swerveDrive = swerve; 
-    addRequirements(swerveDrive); 
+    addRequirements(swerveDrive);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    swerveDrive.formX();
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // swerveDrive.stopModules();
+  public void end(boolean interrupted)  {
+    //swerveDrive.stopModules();
   }
 
   // Returns true when the command should end.

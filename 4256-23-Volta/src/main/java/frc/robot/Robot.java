@@ -64,6 +64,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
     SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
+
+    SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -81,8 +84,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.setAutoSwerveDefaultCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -100,6 +104,10 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+
+    m_robotContainer.setTeleopSwerveDefaultCommand();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
