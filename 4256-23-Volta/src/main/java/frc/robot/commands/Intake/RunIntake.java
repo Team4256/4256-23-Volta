@@ -5,14 +5,13 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
 
-  private Intake intake = Intake.getInstance();
+  private Intake intake;
   /** Creates a new ElevatorHigh. */
-  public RunIntake() {
+  public RunIntake(Intake intake) {
     this.intake = intake;
     addRequirements(intake);
   }

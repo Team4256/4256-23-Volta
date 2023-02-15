@@ -22,9 +22,12 @@ import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
 import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Intake.IntakeDown;
+import frc.robot.commands.Intake.RunIntake;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -55,6 +58,7 @@ public class RobotContainer {
   private final Clamp clamp = Clamp.getInstance();
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
+  private final Intake intake = Intake.getInstance();
 
   // Elevator
   private final Command elevatorHigh = new ElevatorHigh(elevator);
@@ -79,6 +83,10 @@ public class RobotContainer {
   private final Command twoConeAutoTop = new TwoConeAutoTop();
   private final Command directBalance = new DirectBalance();
   private final Command blankCommand = new BlankCommand(robotDrive);
+
+  // Intake
+  private final Command intakeDown = new IntakeDown(intake);
+  private final Command runIntake = new RunIntake(intake);
 
   SendableChooser<Command> chooser = new SendableChooser<>();
 

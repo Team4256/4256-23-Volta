@@ -10,8 +10,6 @@ public class Gyro extends AHRS {
 	public static Gyro instance = null;
 
 	private Gyro(final byte updateHz) {
-		// super(I2C.Port.kOnboard, updateHz);
-
 		super(SPI.Port.kMXP, Constants.GYRO_UPDATE_HZ);
 
 		compass = new Compass();
@@ -24,19 +22,6 @@ public class Gyro extends AHRS {
 		}
 		return instance;
 	}
-
-	/**
-	 * Tares the gyro's compass
-	 * 
-	 * @param tareAngle         the new tare angle; can be positive or negative
-	 * @param relativeReference if true, tares relative to the current tare rather
-	 *                          than 0
-	 * @see Compass#setTareAngle(double)
-	 */
-	// public void setTareAngle(double tareAngle, final boolean relativeReference) {
-	// if (relativeReference) {tareAngle += compass.getTareAngle();}
-	// compass.setTareAngle(tareAngle);
-	// }
 
 	/**
 	 * Cleans up and returns gyro input, accounting for the tare angle
@@ -63,10 +48,6 @@ public class Gyro extends AHRS {
 		reset();
 	}
 
-	// pretty much wrong because getCurrentAngle includes the offset
-	// public double getAngleWithOffset() {
-	// return getCurrentAngle() + getOffset();
-	// }
 	/**
 	 * Uses <code>compass.legalPath(start, end)</code> to find the most efficient
 	 * arc from <code>getCurrentAngle()</code> to target

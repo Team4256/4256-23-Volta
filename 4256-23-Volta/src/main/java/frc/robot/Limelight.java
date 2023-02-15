@@ -24,7 +24,7 @@ public class Limelight {
     Limelight() {
     }
 
-    public synchronized static Limelight getInstance() {
+    public static synchronized Limelight getInstance() {
         if (instance == null) {
             instance = new Limelight();
         }

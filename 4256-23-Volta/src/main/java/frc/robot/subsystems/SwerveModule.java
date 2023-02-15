@@ -21,9 +21,9 @@ public final class SwerveModule {
 	public static final double TRACTION_WHEEL_CIRCUMFERENCE = 4.0 * Math.PI;// inches
 	private TalonFX angleMotor;
     private TalonFX driveMotor;
-    
 	public String moduleName;
-	private CANCoder angleEncoder;
+	
+    private CANCoder angleEncoder;
 	private Rotation2d lastAngle;
 	private Rotation2d angleOffset;
 	
@@ -165,15 +165,8 @@ public final class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState desiredState){
-
-        // if (Math.abs(desiredState.speedMetersPerSecond) <= 1) {
-        //     //setSpeed(0.51);
-        //     setSpeed(1.1);
-        //     return;
-        // }
         SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
         if (Math.abs(desiredState.speedMetersPerSecond) <= .2) {
-            //setSpeed(0.51);
             stop();
             return;
         }

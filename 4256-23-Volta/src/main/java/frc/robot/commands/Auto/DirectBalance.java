@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.*;
 import frc.robot.commands.Swerve.AutoBalance;
-import frc.robot.commands.Swerve.FormX;
 import frc.robot.subsystems.*;
 
 public class DirectBalance extends SequentialCommandGroup {
