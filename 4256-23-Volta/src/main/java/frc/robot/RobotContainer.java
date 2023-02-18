@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -94,7 +95,8 @@ public class RobotContainer {
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
 
     // Put the chooser on the dashboard
-    Shuffleboard.getTab("Competition").add(chooser);
+    //Shuffleboard.getTab("Competition").add(chooser);
+    SmartDashboard.putData(chooser);
   }
 
   public void setTeleopSwerveDefaultCommand() {

@@ -45,7 +45,6 @@ public class MoveToTarget extends CommandBase {
 
     swerveDrive.drive(-controller.getLeftY(), strafeSpeed, angularSpeed, fieldOrient);
 
-      
       SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
       SmartDashboard.putNumber("Alignment Speed", spinSpeed);
       SmartDashboard.putNumber("Auto Strafe Speed", strafeSpeed);
