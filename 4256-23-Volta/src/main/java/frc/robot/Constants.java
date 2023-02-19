@@ -23,7 +23,7 @@ public class Constants {
   // Distance between right and left wheels
   public static final double TRACK_WIDTH = Units.inchesToMeters(20.5);//done 2022
   // Distance between front and back wheels
-  public static final double WHEEL_BASE = Units.inchesToMeters(25.25); //done 2022
+  public static final double WHEEL_BASE = Units.inchesToMeters(26.5); //done 2022
   public static final double WHEEL_DIAMETER = Units.inchesToMeters(4); // inches
   public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
     new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
@@ -106,9 +106,10 @@ public class Constants {
   );
 
   // Elevator
-  public final static int ELEVATOR_MOTOR_ID = 0;
-  public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 0;
-  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 1;
+  public final static int ELEVATOR_LEFT_MOTOR_ID = 16;
+  public final static int ELEVATOR_RIGHT_MOTOR_ID = 17;
+  public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 5;
+  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 4;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
   public final static int ELEVATOR_BOTTOM_LIMIT = 0;
   public final static int ELEVATOR_POSITION_HIGH = 0;
@@ -121,9 +122,9 @@ public class Constants {
   public final static double ELEVATOR_MOTOR_KF = 0;
 
   //CLAMP
-  public final static int CLAMP_MOTOR_ID = 0;
-  public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 2;
-  public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 3;
+  public final static int CLAMP_MOTOR_ID = 18;
+  public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
+  public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
   public final static int CLAMP_UPPER_LIMIT = 0;
   public final static int CLAMP_LOWER_LIMIT = 0;
   public final static int CLAMP_TOP_POSITION = 0;
@@ -136,10 +137,10 @@ public class Constants {
   public final static double CLAMP_MOTOR_KF = 0;
 
   //INTAKE
-  public final static int INTAKE_MOTOR_ID = 0;
-  public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 4;
-  public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 5;
-  public final static int INTAKE_MOTOR_SPEED = 0;
+  public final static int INTAKE_MOTOR_ID = 15;
+  public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 2;
+  public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 3;
+  public final static double INTAKE_MOTOR_SPEED = .6;
 
 
 

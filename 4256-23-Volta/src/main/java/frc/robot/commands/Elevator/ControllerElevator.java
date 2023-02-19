@@ -2,19 +2,21 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Intake;
+package frc.robot.commands.Elevator;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Clamp;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Elevator;
 
-public class RunIntake extends CommandBase {
+public class ControllerElevator extends CommandBase {
 
-  private Intake intake = Intake.getInstance();
+  private Elevator elevator;
+  private XboxController controller;
   /** Creates a new ElevatorHigh. */
-  public RunIntake() {
-    this.intake = intake;
-    addRequirements(intake);
+  public ControllerElevator(Elevator elevator, XboxController controller) {
+    this.elevator = elevator;
+    this.controller = controller; 
+    addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -25,15 +27,14 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
 
-    intake.suck();
-    
+    elevator.setElevatorMotor(controller.getLeftY());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.stop();
+    elevator.stopElevator();
   }
 
   // Returns true when the command should end.

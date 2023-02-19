@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Intake;
 
-public class RunIntake extends CommandBase {
+public class RunIntakeReverse extends CommandBase {
 
   private Intake intake = Intake.getInstance();
   /** Creates a new ElevatorHigh. */
-  public RunIntake() {
+  public RunIntakeReverse() {
     this.intake = intake;
     addRequirements(intake);
   }
@@ -24,10 +24,7 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    intake.suck();
-    
-
+    intake.spit();
   }
 
   // Called once the command ends or is interrupted.

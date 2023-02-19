@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Intake;
 
-public class RunIntake extends CommandBase {
+public class IntakeUp extends CommandBase {
 
   private Intake intake = Intake.getInstance();
   /** Creates a new ElevatorHigh. */
-  public RunIntake() {
+  public IntakeUp() {
     this.intake = intake;
     addRequirements(intake);
   }
@@ -25,16 +25,14 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
 
-    intake.suck();
+    intake.intakeUp();
     
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    intake.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

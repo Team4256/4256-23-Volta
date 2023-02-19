@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 
 /**
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private Limelight limelight = new Limelight();
+  private Elevator elevator = Elevator.getInstance();
   private Gyro gyro = Gyro.getInstance();
 
   /**
@@ -55,6 +57,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
 
     SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
+    SmartDashboard.putNumber("Elevator Encoder Counts", elevator.getElevatorEncoderPosition());
 
   }
 

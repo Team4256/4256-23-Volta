@@ -7,7 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -18,12 +19,12 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private DoubleSolenoid solenoid;
-  private TalonFX intakeMotor;
+  private VictorSPX intakeMotor;
   public static Intake instance = null;
   /** Creates a new Clamp. */
   public Intake() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_SOLENOID_FORWARD_CHANNEL , Constants.INTAKE_SOLENOID_REVERSE_CHANNEL);
-    this.intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_ID);
+    this.intakeMotor = new VictorSPX(Constants.INTAKE_MOTOR_ID);
     configIntakeMotor();
   }
 
@@ -40,7 +41,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void spit() {
-    solenoid.set(Value.kReverse);
+    intakeMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_MOTOR_SPEED);
   }
 
   public void intakeUp() {

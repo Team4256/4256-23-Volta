@@ -16,8 +16,15 @@ import frc.robot.commands.Auto.TwoConeAutoTop;
 import frc.robot.commands.Clamp.ClampBottom;
 import frc.robot.commands.Clamp.ClampHigh;
 import frc.robot.commands.Clamp.ClampMid;
+import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.ControllerClamp;
+import frc.robot.commands.Clamp.OpenClamp;
 import frc.robot.commands.Elevator.IncrementElevator;
+import frc.robot.commands.Intake.IntakeDown;
+import frc.robot.commands.Intake.IntakeUp;
+import frc.robot.commands.Intake.RunIntake;
+import frc.robot.commands.Intake.RunIntakeReverse;
+import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
@@ -25,7 +32,9 @@ import frc.robot.commands.Elevator.ElevatorMid;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -54,8 +63,17 @@ public class RobotContainer {
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = Elevator.getInstance();
   private final Clamp clamp = Clamp.getInstance();
+  private final Intake intake = Intake.getInstance();
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
+
+
+  //Intake
+  private final Command intakeDown = new IntakeDown();
+  private final Command intakeUp = new IntakeUp();
+  private final Command runIntake = new RunIntake();
+  private final Command runIntakeReverse = new RunIntakeReverse();
+
 
   // Elevator
   private final Command elevatorHigh = new ElevatorHigh(elevator);
@@ -63,12 +81,15 @@ public class RobotContainer {
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command incrementElevator = new IncrementElevator(elevator);
+  private final Command controllerElevator = new ControllerElevator(elevator, driverController);
 
   // Clamp
   private final Command clampHigh = new ClampHigh(clamp);
   private final Command clampMid = new ClampMid(clamp);
   private final Command clampBottom = new ClampBottom(clamp);
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
+  private final Command openClamp = new OpenClamp();
+  private final Command closeClamp = new CloseClamp();
 
   // Swerve
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
@@ -91,8 +112,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    elevator.setDefaultCommand(controllerElevator);
+
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
+    
 
     // Put the chooser on the dashboard
     //Shuffleboard.getTab("Competition").add(chooser);
@@ -132,14 +156,14 @@ public class RobotContainer {
  * Left Bumper: Align To Zero
  * Right Bumper: Reset Odometer
  */
-    new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
+    new JoystickButton(driverController, Button.kY.value).whileTrue(intakeUp);
+    new JoystickButton(driverController, Button.kA.value).whileTrue(intakeDown);
+    new JoystickButton(driverController, Button.kStart.value).whileTrue(openClamp);
+    new JoystickButton(driverController, Button.kBack.value).whileTrue(closeClamp);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
-    new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    //Sets AprilTag Pipeline
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
-    //Sets Reflective Tape Pipeline
-    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
+    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(runIntake);
+    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(runIntakeReverse);
         
     //Gunner Button Bindings
 /*
