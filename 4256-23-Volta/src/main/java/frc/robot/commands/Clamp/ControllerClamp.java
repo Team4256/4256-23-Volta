@@ -7,16 +7,17 @@ package frc.robot.commands.Clamp;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Xbox;
 
 public class ControllerClamp extends CommandBase {
 
-  private final XboxController controller;
+  private final Xbox controller;
 
   private Clamp clamp;
   /** Creates a new ControllerampHigh. */
-  public ControllerClamp(Clamp clamp, XboxController controller) {
+  public ControllerClamp(Clamp clamp, Xbox gunnerController) {
     this.clamp = clamp;
-    this.controller = controller;
+    this.controller = gunnerController;
     addRequirements(clamp);
   }
 
@@ -28,7 +29,7 @@ public class ControllerClamp extends CommandBase {
   @Override
   public void execute() {
 
-    clamp.setClampSpeed(-controller.getRightY());
+    clamp.setClampSpeed(-controller.rightStickY);
 
   }
 

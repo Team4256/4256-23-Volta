@@ -55,7 +55,6 @@ public class Elevator extends SubsystemBase {
 
   public void resetElevatorEncoder() {
     elevatorEncoder.reset();
-    
   }
 
   public void setElevatorHigh() {

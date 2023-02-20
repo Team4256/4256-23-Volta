@@ -25,6 +25,7 @@ import frc.robot.commands.Intake.IntakeUp;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
+import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
@@ -34,6 +35,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -58,8 +60,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Subsystems
-  XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
-  XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  Xbox driverController = new Xbox(Constants.DRIVER_CONTROLLER_ID);
+  Xbox gunnerController = new Xbox(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = Elevator.getInstance();
   private final Clamp clamp = Clamp.getInstance();
@@ -148,46 +150,27 @@ public class RobotContainer {
   private void configureBindings() {
 
     //Driver Button Bindings
-/**
- * A: Auto Balance
- * B: Reset Gyro
- * Y: Move To Target
- * X: Form X
- * Left Bumper: Align To Zero
- * Right Bumper: Reset Odometer
- */
-    new JoystickButton(driverController, Button.kY.value).whileTrue(intakeUp);
-    new JoystickButton(driverController, Button.kA.value).whileTrue(intakeDown);
-    new JoystickButton(driverController, Button.kStart.value).whileTrue(openClamp);
-    new JoystickButton(driverController, Button.kBack.value).whileTrue(closeClamp);
-    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
-    new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(runIntake);
-    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(runIntakeReverse);
+    driverController.y.onTrue(intakeUp);
+    driverController.a.onTrue(intakeDown);
+    driverController.b.onTrue(new InstantCommand(() -> gyro.reset()));
+    driverController.x.onTrue(formX);
+    driverController.start.onTrue(openClamp);
+    driverController.back.onTrue(closeClamp);
+    driverController.leftBumper.onTrue(runIntake);
+    driverController.rightBumper.onTrue(runIntakeReverse);
+
         
     //Gunner Button Bindings
-/*
- * Y: Elevator High
- * X: Elevator Mid
- * B: Elevator Low
- * A: Elevator Bottom
- * Start: Increment Elevator
- * Back: Controller Clamp
- * Left Bumper: Clamp High
- * Right Bumper: Clamp Mid
- * Right Stick: Clamp Bottom
- * 
- */
-    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
-    new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
-    new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
-    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
-    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(incrementElevator);
 
-    new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
-    new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
-    new JoystickButton(gunnerController, Button.kRightStick.value).whileTrue(clampBottom);
-    new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerClamp);
+    gunnerController.y.onTrue(elevatorHigh);
+    gunnerController.a.onTrue(elevatorBottom);
+    gunnerController.b.onTrue(elevatorLow);
+    gunnerController.x.onTrue(elevatorMid);
+    gunnerController.start.onTrue(incrementElevator);
+    gunnerController.back.onTrue(controllerClamp);
+    gunnerController.leftBumper.onTrue(clampHigh);
+    gunnerController.rightBumper.onTrue(clampMid);
+    gunnerController.rightStickButton.onTrue(clampBottom);
 
   }
 

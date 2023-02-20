@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Xbox;
 
 public class ControllerDrive extends CommandBase {
   private final SwerveSubsystem swerveDrive;
-  private final XboxController controller;
+  private final Xbox controller;
   private boolean fieldOrient = true;
 
-  public ControllerDrive(SwerveSubsystem swerve, XboxController controller) {
+  public ControllerDrive(SwerveSubsystem swerve, Xbox driverController) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
-    this.controller = controller; // Set the private member to the input controller
+    this.controller = driverController; // Set the private member to the input controller
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
                                    // use this as the default
   }
@@ -29,9 +30,7 @@ public class ControllerDrive extends CommandBase {
   @Override
   public void execute() {
 
-    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), controller.getRightX(), fieldOrient);
-      SmartDashboard.putBoolean("Controller Drive", true);
-      SmartDashboard.putNumber("Controller Y Value", controller.getLeftX());
+    swerveDrive.drive(-controller.leftStickY, -controller.leftStickX, controller.rightStickX, fieldOrient);
 
   }
 
