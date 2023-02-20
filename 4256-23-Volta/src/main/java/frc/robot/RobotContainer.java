@@ -126,11 +126,11 @@ public class RobotContainer {
     SmartDashboard.putData(chooser);
   }
 
-  public void setTeleopSwerveDefaultCommand() {
+  public void setTeleopDefaultCommands() {
     robotDrive.setDefaultCommand(controllerDrive);
   }
 
-  public void setAutoSwerveDefaultCommand() {
+  public void setAutoDefaultCommands() {
     robotDrive.setDefaultCommand(blankCommand);
   }
 
@@ -155,21 +155,21 @@ public class RobotContainer {
     driverController.a.onTrue(intakeDown);
     driverController.b.onTrue(new InstantCommand(() -> gyro.reset()));
     driverController.x.onTrue(formX);
-    driverController.start.onTrue(moveToTarget);
+    driverController.start.whileTrue(moveToTarget);
     driverController.back.onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     driverController.leftBumper.onTrue(runIntake);
     driverController.rightBumper.onTrue(runIntakeReverse);
   
     //Gunner Button Bindings
-    gunnerController.y.onTrue(elevatorHigh);
-    gunnerController.a.onTrue(elevatorBottom);
-    gunnerController.b.onTrue(elevatorLow);
-    gunnerController.x.onTrue(elevatorMid);
+    gunnerController.y.whileTrue(elevatorHigh);
+    gunnerController.a.whileTrue(elevatorBottom);
+    gunnerController.b.whileTrue(elevatorLow);
+    gunnerController.x.whileTrue(elevatorMid);
     gunnerController.start.onTrue(openClamp);
     gunnerController.back.onTrue(closeClamp);
-    gunnerController.leftBumper.onTrue(clampHigh);
-    gunnerController.rightBumper.onTrue(clampMid);
-    gunnerController.rightStickButton.onTrue(clampBottom);
+    gunnerController.leftBumper.whileTrue(clampHigh);
+    gunnerController.rightBumper.whileTrue(clampMid);
+    gunnerController.rightStickButton.whileTrue(clampBottom);
 
   }
 

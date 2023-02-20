@@ -12,34 +12,55 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class Xbox extends SubsystemBase {
 
   CommandXboxController controller;
-  public Trigger y = controller.y();
-  public Trigger a = controller.a();
-  public Trigger x = controller.x();
-  public Trigger b = controller.b();
-  public Trigger start = controller.start();
-  public Trigger back = controller.back();
-  public Trigger rightBumper = controller.rightBumper();
-  public Trigger leftBumper = controller.leftBumper();
-  public double rightTrigger = controller.getRightTriggerAxis();
-  public double leftTrigger = controller.getLeftTriggerAxis();
-  public Trigger rightStickButton = controller.rightStick();
-  public Trigger leftStickButton = controller.leftStick();
-  public double leftStickX = controller.getLeftX();
-  public double leftStickY = controller.getLeftY();
-  public double rightStickX = controller.getRightX();
-  public double rightStickY = controller.getRightY();
-  public Trigger dPadUp = controller.povUp();
-  public Trigger dPadLeft = controller.povLeft();
-  public Trigger dPadRight = controller.povRight();
-  public Trigger dPadDown = controller.povDown();
+  public Trigger y ;
+  public Trigger a;
+  public Trigger x ;
+  public Trigger b ;
+  public Trigger start ;
+  public Trigger back;
+  public Trigger rightBumper ;
+  public Trigger leftBumper ;
+  public double rightTrigger ;
+  public double leftTrigger;
+  public Trigger rightStickButton;
+  public Trigger leftStickButton ;
+  public double leftStickX;
+  public double leftStickY;
+  public double rightStickX ;
+  public double rightStickY ;
+  public Trigger dPadUp ;
+  public Trigger dPadLeft ;
+  public Trigger dPadRight ;
+  public Trigger dPadDown ;
 
   /** Creates a new Xbox. */
   public Xbox(int port) {
-    this.controller = new CommandXboxController(port);
+    controller = new CommandXboxController(port);
     
+ y = controller.y();
+a = controller.a();
+x = controller.x();
+b = controller.b();
+  start = controller.start();
+ back = controller.back();
+rightBumper = controller.rightBumper();
+leftBumper = controller.leftBumper();
+ rightTrigger = controller.getRightTriggerAxis();
+leftTrigger = controller.getLeftTriggerAxis();
+rightStickButton = controller.rightStick();
+leftStickButton = controller.leftStick();
+ leftStickX = controller.getLeftX();
+ leftStickY = controller.getLeftY();
+ rightStickX = controller.getRightX();
+ rightStickY = controller.getRightY();
+ dPadUp = controller.povUp();
+ dPadLeft = controller.povLeft();
+ dPadRight = controller.povRight();
+ dPadDown = controller.povDown();
+
   }
   
-
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

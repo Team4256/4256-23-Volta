@@ -6,6 +6,7 @@ package frc.robot.commands.Clamp;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Elevator;
 
 
 public class ClampMid extends CommandBase {
@@ -31,7 +32,9 @@ public class ClampMid extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    clamp.stop();
+  }
 
   // Returns true when the command should end.
   @Override
