@@ -115,6 +115,7 @@ public class RobotContainer {
     configureBindings();
 
     elevator.setDefaultCommand(controllerElevator);
+    clamp.setDefaultCommand(controllerClamp);
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
@@ -154,20 +155,18 @@ public class RobotContainer {
     driverController.a.onTrue(intakeDown);
     driverController.b.onTrue(new InstantCommand(() -> gyro.reset()));
     driverController.x.onTrue(formX);
-    driverController.start.onTrue(openClamp);
-    driverController.back.onTrue(closeClamp);
+    driverController.start.onTrue(moveToTarget);
+    driverController.back.onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     driverController.leftBumper.onTrue(runIntake);
     driverController.rightBumper.onTrue(runIntakeReverse);
-
-        
+  
     //Gunner Button Bindings
-
     gunnerController.y.onTrue(elevatorHigh);
     gunnerController.a.onTrue(elevatorBottom);
     gunnerController.b.onTrue(elevatorLow);
     gunnerController.x.onTrue(elevatorMid);
-    gunnerController.start.onTrue(incrementElevator);
-    gunnerController.back.onTrue(controllerClamp);
+    gunnerController.start.onTrue(openClamp);
+    gunnerController.back.onTrue(closeClamp);
     gunnerController.leftBumper.onTrue(clampHigh);
     gunnerController.rightBumper.onTrue(clampMid);
     gunnerController.rightStickButton.onTrue(clampBottom);
