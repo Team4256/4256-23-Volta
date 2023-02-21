@@ -69,13 +69,11 @@ public class RobotContainer {
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
 
-
-  //Intake
+  // Intake
   private final Command intakeDown = new IntakeDown();
   private final Command intakeUp = new IntakeUp();
   private final Command runIntake = new RunIntake();
   private final Command runIntakeReverse = new RunIntakeReverse();
-
 
   // Elevator
   private final Command elevatorHigh = new ElevatorHigh(elevator);
@@ -119,10 +117,9 @@ public class RobotContainer {
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
-    
 
     // Put the chooser on the dashboard
-    //Shuffleboard.getTab("Competition").add(chooser);
+    // Shuffleboard.getTab("Competition").add(chooser);
     SmartDashboard.putData(chooser);
   }
 
@@ -150,7 +147,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    //Driver Button Bindings
+    // Driver Button Bindings
     driverController.y().onTrue(intakeUp);
     driverController.a().onTrue(intakeDown);
     driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
@@ -160,9 +157,7 @@ public class RobotContainer {
     driverController.leftBumper().onTrue(runIntake);
     driverController.rightBumper().onTrue(runIntakeReverse);
 
-    
-  
-    //Gunner Button Bindings
+    // Gunner Button Bindings
     gunnerController.y().whileTrue(elevatorHigh);
     gunnerController.a().whileTrue(elevatorBottom);
     gunnerController.b().whileTrue(elevatorLow);
