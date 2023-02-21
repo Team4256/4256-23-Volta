@@ -6,6 +6,7 @@ package frc.robot.commands.Clamp;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Elevator;
 
 
 public class ClampMid extends CommandBase {

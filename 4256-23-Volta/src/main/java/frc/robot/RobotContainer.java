@@ -25,6 +25,7 @@ import frc.robot.commands.Intake.IntakeUp;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
+import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -60,8 +62,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Subsystems
-  XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
-  XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER_ID);
+  CommandXboxController gunnerController = new CommandXboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = Elevator.getInstance();
   private final Clamp clamp = Clamp.getInstance();
@@ -69,13 +71,11 @@ public class RobotContainer {
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
 
-
-  //Intake
+  // Intake
   private final Command intakeDown = new IntakeDown();
   private final Command intakeUp = new IntakeUp();
   private final Command runIntake = new RunIntake();
   private final Command runIntakeReverse = new RunIntakeReverse();
-
 
   // Elevator
   private final Command elevatorHigh = new ElevatorHigh(elevator);
@@ -121,18 +121,17 @@ public class RobotContainer {
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
-    
 
     // Put the chooser on the dashboard
-    //Shuffleboard.getTab("Competition").add(chooser);
+    // Shuffleboard.getTab("Competition").add(chooser);
     SmartDashboard.putData(chooser);
   }
 
-  public void setTeleopSwerveDefaultCommand() {
+  public void setTeleopDefaultCommands() {
     robotDrive.setDefaultCommand(controllerDrive);
   }
 
-  public void setAutoSwerveDefaultCommand() {
+  public void setAutoDefaultCommands() {
     robotDrive.setDefaultCommand(blankCommand);
   }
 
@@ -151,45 +150,27 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+  
+    // Driver Button Bindings
+    driverController.y().onTrue(intakeUp);
+    driverController.a().onTrue(intakeDown);
+    driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
+    driverController.x().onTrue(formX);
+    driverController.start().whileTrue(moveToTarget);
+    driverController.back().onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
+    driverController.leftBumper().onTrue(runIntake);
+    driverController.rightBumper().onTrue(runIntakeReverse);
 
-    //Driver Button Bindings
-/**
- * A: Intake Down
- * B: Reset Gyro
- * Y: Intake Up
- * X: Form X
- * Left Bumper: Run Intake
- * Right Bumper: Reverse Intake
- */
-    new JoystickButton(driverController, Button.kY.value).whileTrue(intakeUp);
-    new JoystickButton(driverController, Button.kA.value).whileTrue(intakeDown);
-    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
-    new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    new JoystickButton(driverController, Button.kStart.value).whileTrue(autoBalance);
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(runIntake);
-    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(runIntakeReverse);
-        
-    //Gunner Button Bindings
-/*
- * Y: Elevator High
- * X: Elevator Mid
- * B: Elevator Low
- * A: Elevator Bottom
- * Start: Increment Elevator
- * Back: Controller Clamp
- * Left Bumper: Clamp High
- * Right Bumper: Clamp Mid
- * Right Stick: Clamp Bottom
- * 
- */
-    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorUp);
-    new JoystickButton(gunnerController, Button.kX.value).whileTrue(openClamp);
-    new JoystickButton(gunnerController, Button.kB.value).whileTrue(closeClamp);
-    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorDown);
-    new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
-    new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
-    new JoystickButton(gunnerController, Button.kRightStick.value).whileTrue(clampBottom);
-    //new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerElevator);
+    // Gunner Button Bindings
+    gunnerController.y().whileTrue(elevatorHigh);
+    gunnerController.a().whileTrue(elevatorBottom);
+    gunnerController.b().whileTrue(elevatorLow);
+    gunnerController.x().whileTrue(elevatorMid);
+    gunnerController.start().onTrue(openClamp);
+    gunnerController.back().onTrue(closeClamp);
+    gunnerController.leftBumper().whileTrue(clampHigh);
+    gunnerController.rightBumper().whileTrue(clampMid);
+    gunnerController.rightStick().whileTrue(clampBottom);
 
   }
 

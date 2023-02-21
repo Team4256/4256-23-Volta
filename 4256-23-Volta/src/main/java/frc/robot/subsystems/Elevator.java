@@ -33,6 +33,7 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
+
     this.leftElevatorMotor = new TalonSRX(Constants.ELEVATOR_LEFT_MOTOR_ID);
     this.rightElevatorMotor = new TalonSRX(Constants.ELEVATOR_RIGHT_MOTOR_ID);
     this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
@@ -129,6 +130,7 @@ public class Elevator extends SubsystemBase {
 
     if (Math.abs(speed) > .4) {
       speed = .4;
+
     }
 
     // if ((speed >= .1) && !elevatorBottomLimitSwitch.get()) {
@@ -156,8 +158,6 @@ public class Elevator extends SubsystemBase {
         leftElevatorMotor.set(ControlMode.PercentOutput, speed);
         rightElevatorMotor.set(ControlMode.PercentOutput, -speed);
       
-        
-
       SmartDashboard.putNumber("elevator speed", speed);
     
   }
@@ -198,5 +198,6 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Elevator Position", getElevatorEncoderPosition());
     SmartDashboard.putBoolean("Elevator Limit Switch", elevatorBottomLimitSwitch.get());
+
   }
 }

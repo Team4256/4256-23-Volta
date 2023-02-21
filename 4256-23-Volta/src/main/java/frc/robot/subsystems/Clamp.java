@@ -23,6 +23,7 @@ public class Clamp extends SubsystemBase {
   private DoubleSolenoid solenoid;
   private DutyCycleEncoder clampEncoder;
   private VictorSPX clampMotor;
+
   private final TrapezoidProfile.Constraints pidConstraints = new TrapezoidProfile.Constraints(0.0, 0.0);
   private final ProfiledPIDController pidController = new ProfiledPIDController(0.0, 0.0, 0.0, pidConstraints, 0.02);
   public static Clamp instance = null;
@@ -93,6 +94,7 @@ public class Clamp extends SubsystemBase {
   //   stop();
   // }
   clampMotor.set(ControlMode.PercentOutput, speed);
+
   }
 
   public void stop() {
