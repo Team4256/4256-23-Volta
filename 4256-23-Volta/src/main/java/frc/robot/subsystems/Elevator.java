@@ -60,6 +60,16 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setSelectedSensorPosition(0);
   }
 
+  public boolean getElevatorLimitSwitch() {
+
+    if (elevatorBottomLimitSwitch.get()) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
+
   public void setElevatorHigh() {
 
     if (getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT) {
@@ -180,6 +190,6 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator Position", getElevatorEncoderPosition());
+    //SmartDashboard.putNumber("Elevator Position", getElevatorEncoderPosition());
   }
 }

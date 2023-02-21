@@ -44,9 +44,9 @@ public class AlignToZero extends CommandBase {
     swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), spinSpeed, fieldOrient);
 
       
-      SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
-      SmartDashboard.putNumber("Alignment Speed", spinSpeed);
-      SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
+      // SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
+      // SmartDashboard.putNumber("Alignment Speed", spinSpeed);
+      // SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
 
@@ -54,7 +54,7 @@ public class AlignToZero extends CommandBase {
   @Override
   public void end(boolean interrupted)  {
 
-    SmartDashboard.putBoolean("DrivingByLimelight", true);
+    //SmartDashboard.putBoolean("DrivingByLimelight", true);
 
   }
 

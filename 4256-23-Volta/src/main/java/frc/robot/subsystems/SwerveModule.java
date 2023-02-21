@@ -173,7 +173,7 @@ public final class SwerveModule {
         //     setSpeed(1.1);
         //     return;
         // }
-        SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
+        //SmartDashboard.putNumber("Swerve[" + moduleName + "] desired speed", desiredState.speedMetersPerSecond);
         if (Math.abs(desiredState.speedMetersPerSecond) <= .2) {
             //setSpeed(0.51);
             stop();
@@ -186,9 +186,9 @@ public final class SwerveModule {
         setAngle(desiredState);
         setSpeed(desiredState);
 
-        SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
-		SmartDashboard.putString("Swerve[" + moduleName + "] state", desiredState.toString());
-        SmartDashboard.putString("Swerve[" + moduleName + "] state angle", desiredState.angle.toString());
+        //SmartDashboard.putNumber("Swerve[" + moduleName + "] angle", getCANCoderAngle());
+		//SmartDashboard.putString("Swerve[" + moduleName + "] state", desiredState.toString());
+        //SmartDashboard.putString("Swerve[" + moduleName + "] state angle", desiredState.angle.toString());
     }
 
 	public void setAngle(SwerveModuleState desiredState) {
@@ -206,7 +206,7 @@ public final class SwerveModule {
 	private void setSpeed(SwerveModuleState desiredState){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND;
             driveMotor.set(ControlMode.PercentOutput, percentOutput);
-			SmartDashboard.putNumber("Desired speed", percentOutput);
+			//SmartDashboard.putNumber("Desired speed", percentOutput);
     }
 
 	public void stopTraction() {

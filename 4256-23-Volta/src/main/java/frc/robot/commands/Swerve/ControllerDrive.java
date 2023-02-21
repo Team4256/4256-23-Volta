@@ -39,7 +39,7 @@ public class ControllerDrive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    SmartDashboard.putBoolean("DrivingByController", false);
+    //SmartDashboard.putBoolean("DrivingByController", false);
 
   }
 

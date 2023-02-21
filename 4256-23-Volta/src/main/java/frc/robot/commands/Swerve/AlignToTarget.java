@@ -39,18 +39,12 @@ public class AlignToTarget extends CommandBase {
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
     swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), spinSpeed, fieldOrient);
 
-      
-      SmartDashboard.putNumber("Limeight Error", limelight.getXOffset());
-      SmartDashboard.putNumber("Alignment Speed", spinSpeed);
-      SmartDashboard.putBoolean("Has Target", limelight.hasTarget());
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted)  {
-
-    SmartDashboard.putBoolean("DrivingByLimelight", true);
 
   }
 

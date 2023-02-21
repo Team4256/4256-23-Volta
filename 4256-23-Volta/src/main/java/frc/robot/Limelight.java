@@ -51,7 +51,7 @@ public class Limelight {
     }
 
     public synchronized boolean hasTarget() {
-        SmartDashboard.putBoolean("Has Target", hasDirection);
+        //SmartDashboard.putBoolean("Has Target", hasDirection);
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getNumber(0.0).intValue() == 1;
     }
 
