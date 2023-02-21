@@ -60,8 +60,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Subsystems
-  Xbox driverController = new Xbox(Constants.DRIVER_CONTROLLER_ID);
-  Xbox gunnerController = new Xbox(Constants.GUNNER_CONTROLLER_ID);
+  CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER_ID);
+  CommandXboxController gunnerController = new CommandXboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = Elevator.getInstance();
   private final Clamp clamp = Clamp.getInstance();
@@ -151,25 +151,27 @@ public class RobotContainer {
   private void configureBindings() {
 
     //Driver Button Bindings
-    driverController.y.onTrue(intakeUp);
-    driverController.a.onTrue(intakeDown);
-    driverController.b.onTrue(new InstantCommand(() -> gyro.reset()));
-    driverController.x.onTrue(formX);
-    driverController.start.whileTrue(moveToTarget);
-    driverController.back.onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
-    driverController.leftBumper.onTrue(runIntake);
-    driverController.rightBumper.onTrue(runIntakeReverse);
+    driverController.y().onTrue(intakeUp);
+    driverController.a().onTrue(intakeDown);
+    driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
+    driverController.x().onTrue(formX);
+    driverController.start().whileTrue(moveToTarget);
+    driverController.back().onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
+    driverController.leftBumper().onTrue(runIntake);
+    driverController.rightBumper().onTrue(runIntakeReverse);
+
+    
   
     //Gunner Button Bindings
-    gunnerController.y.whileTrue(elevatorHigh);
-    gunnerController.a.whileTrue(elevatorBottom);
-    gunnerController.b.whileTrue(elevatorLow);
-    gunnerController.x.whileTrue(elevatorMid);
-    gunnerController.start.onTrue(openClamp);
-    gunnerController.back.onTrue(closeClamp);
-    gunnerController.leftBumper.whileTrue(clampHigh);
-    gunnerController.rightBumper.whileTrue(clampMid);
-    gunnerController.rightStickButton.whileTrue(clampBottom);
+    gunnerController.y().whileTrue(elevatorHigh);
+    gunnerController.a().whileTrue(elevatorBottom);
+    gunnerController.b().whileTrue(elevatorLow);
+    gunnerController.x().whileTrue(elevatorMid);
+    gunnerController.start().onTrue(openClamp);
+    gunnerController.back().onTrue(closeClamp);
+    gunnerController.leftBumper().whileTrue(clampHigh);
+    gunnerController.rightBumper().whileTrue(clampMid);
+    gunnerController.rightStick().whileTrue(clampBottom);
 
   }
 

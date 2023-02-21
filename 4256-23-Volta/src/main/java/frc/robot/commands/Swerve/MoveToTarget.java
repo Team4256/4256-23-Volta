@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -16,13 +17,13 @@ import frc.robot.subsystems.Xbox;
 public class MoveToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
-  private final Xbox controller;
+  private final CommandXboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.01, 0, -0.00); //Values must be negative
   private PIDController positionPID = new PIDController(-0.038, 0, -0.0); //Values must be negative (.02)
 
-  public MoveToTarget(SwerveSubsystem swerve, Limelight camera, Xbox driverController) {
+  public MoveToTarget(SwerveSubsystem swerve, Limelight camera, CommandXboxController driverController) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
     this.controller = driverController;
@@ -44,7 +45,7 @@ public class MoveToTarget extends CommandBase {
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
 
 
-    swerveDrive.drive(-controller.leftStickY, strafeSpeed, angularSpeed, fieldOrient);
+    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, angularSpeed, fieldOrient);
 
       SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
       SmartDashboard.putNumber("Alignment Speed", spinSpeed);

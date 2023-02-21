@@ -13,9 +13,9 @@ import frc.robot.subsystems.Xbox;
 public class ControllerElevator extends CommandBase {
 
   private Elevator elevator;
-  private Xbox controller;
+  private CommandXboxController controller;
   /** Creates a new ElevatorHigh. */
-  public ControllerElevator(Elevator elevator, Xbox driverController) {
+  public ControllerElevator(Elevator elevator, CommandXboxController driverController) {
     this.elevator = elevator;
     this.controller = driverController; 
     addRequirements(elevator);
@@ -29,7 +29,7 @@ public class ControllerElevator extends CommandBase {
   @Override
   public void execute() {
 
-    elevator.setElevatorMotor(controller.leftStickY);
+    elevator.setElevatorMotor(controller.getLeftY());
 
   }
 
