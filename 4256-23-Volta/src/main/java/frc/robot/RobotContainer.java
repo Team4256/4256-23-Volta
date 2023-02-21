@@ -26,9 +26,11 @@ import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
 import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.ElevatorUp;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
@@ -81,7 +83,9 @@ public class RobotContainer {
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command incrementElevator = new IncrementElevator(elevator);
-  private final Command controllerElevator = new ControllerElevator(elevator, driverController);
+  private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
+  private final Command elevatorUp = new ElevatorUp(elevator);
+  private final Command elevatorDown = new ElevatorDown(elevator);
 
   // Clamp
   private final Command clampHigh = new ClampHigh(clamp);
@@ -113,6 +117,7 @@ public class RobotContainer {
     configureBindings();
 
     elevator.setDefaultCommand(controllerElevator);
+    clamp.setDefaultCommand(controllerClamp);
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
@@ -149,19 +154,18 @@ public class RobotContainer {
 
     //Driver Button Bindings
 /**
- * A: Auto Balance
+ * A: Intake Down
  * B: Reset Gyro
- * Y: Move To Target
+ * Y: Intake Up
  * X: Form X
- * Left Bumper: Align To Zero
- * Right Bumper: Reset Odometer
+ * Left Bumper: Run Intake
+ * Right Bumper: Reverse Intake
  */
     new JoystickButton(driverController, Button.kY.value).whileTrue(intakeUp);
     new JoystickButton(driverController, Button.kA.value).whileTrue(intakeDown);
-    new JoystickButton(driverController, Button.kStart.value).whileTrue(openClamp);
-    new JoystickButton(driverController, Button.kBack.value).whileTrue(closeClamp);
     new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
     new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
+    new JoystickButton(driverController, Button.kStart.value).whileTrue(autoBalance);
     new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(runIntake);
     new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(runIntakeReverse);
         
@@ -178,16 +182,14 @@ public class RobotContainer {
  * Right Stick: Clamp Bottom
  * 
  */
-    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
-    new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
-    new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
-    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
-    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(incrementElevator);
-
+    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorUp);
+    new JoystickButton(gunnerController, Button.kX.value).whileTrue(openClamp);
+    new JoystickButton(gunnerController, Button.kB.value).whileTrue(closeClamp);
+    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorDown);
     new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
     new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
     new JoystickButton(gunnerController, Button.kRightStick.value).whileTrue(clampBottom);
-    new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerClamp);
+    //new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerElevator);
 
   }
 

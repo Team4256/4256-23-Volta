@@ -7,8 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -20,13 +22,15 @@ public class Clamp extends SubsystemBase {
 
   private DoubleSolenoid solenoid;
   private DutyCycleEncoder clampEncoder;
-  private TalonFX clampMotor;
+  private VictorSPX clampMotor;
+  private final TrapezoidProfile.Constraints pidConstraints = new TrapezoidProfile.Constraints(0.0, 0.0);
+  private final ProfiledPIDController pidController = new ProfiledPIDController(0.0, 0.0, 0.0, pidConstraints, 0.02);
   public static Clamp instance = null;
   /** Creates a new Clamp. */
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL, Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampEncoder = new DutyCycleEncoder(6);
-    this.clampMotor = new TalonFX(Constants.CLAMP_MOTOR_ID);
+    this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
     configClampMotor();
   }
 
@@ -48,8 +52,9 @@ public class Clamp extends SubsystemBase {
 
   public void clampBottom() {
 
-    if (clampEncoder.get() <= Constants.CLAMP_LOWER_LIMIT) {
-      clampMotor.set(ControlMode.Position, Constants.CLAMP_BOTTOM_POSITION);
+    if (clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) {
+      double speed = pidController.calculate(clampEncoder.get(), Constants.CLAMP_BOTTOM_POSITION);
+      clampMotor.set(ControlMode.PercentOutput, speed);
     } else {
       stop();
     }
@@ -58,8 +63,9 @@ public class Clamp extends SubsystemBase {
 
   public void clampMid() {
 
-    if ((clampEncoder.get() <= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
-      clampMotor.set(ControlMode.Position, Constants.CLAMP_MID_POSITION);
+    if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
+      double speed = pidController.calculate(clampEncoder.get(), Constants.CLAMP_MID_POSITION);
+      clampMotor.set(ControlMode.PercentOutput, speed);
     } else {
       stop();
     }
@@ -67,19 +73,26 @@ public class Clamp extends SubsystemBase {
   }
 
   public void clampTop() {
-    if ((clampEncoder.get() <= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
-      clampMotor.set(ControlMode.Position, Constants.CLAMP_TOP_POSITION);
+    if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
+      double speed = pidController.calculate(clampEncoder.get(), Constants.CLAMP_TOP_POSITION);
+      clampMotor.set(ControlMode.PercentOutput, speed);
     } else {
       stop();
     }
   }
 
   public void setClampSpeed(double speed) {
-    if ((clampEncoder.get() <= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
-      clampMotor.set(ControlMode.PercentOutput, speed);
-    } else {
-      stop();
-    }
+
+  //   if (speed >= .1) {
+  //   if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
+  //     clampMotor.set(ControlMode.PercentOutput, speed);
+  //   } else {
+  //     stop();
+  //   }
+  // } else {
+  //   stop();
+  // }
+  clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void stop() {
@@ -95,8 +108,6 @@ public class Clamp extends SubsystemBase {
         clampMotor.setInverted(false);
         clampMotor.setNeutralMode(NeutralMode.Brake);
   }
-
-
 
   @Override
   public void periodic() {

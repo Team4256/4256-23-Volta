@@ -66,10 +66,10 @@ public class Constants {
   
    public static final double STEERING_GEAR_RATIO = 12.8;
 
-   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(55.63);
+   public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(54.66);
    public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.61);
-   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(1.49);
-   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(97.64);
+   public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.70);
+   public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(95.09);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -108,8 +108,10 @@ public class Constants {
   // Elevator
   public final static int ELEVATOR_LEFT_MOTOR_ID = 16;
   public final static int ELEVATOR_RIGHT_MOTOR_ID = 17;
-  public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 5;
-  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 4;
+  public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 4;
+  public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 5;
+  public final static int ELEVATOR_ENCODER_ID = 1;
+  public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 0;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
   public final static int ELEVATOR_BOTTOM_LIMIT = 0;
   public final static int ELEVATOR_POSITION_HIGH = 0;
