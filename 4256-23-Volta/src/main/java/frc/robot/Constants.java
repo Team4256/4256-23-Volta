@@ -144,29 +144,4 @@ public class Constants {
   public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 3;
   public final static double INTAKE_MOTOR_SPEED = .6;
 
-
-
-
-  public static final double angleEncoderMinVoltage[] = {
-  0.018,
-  0.062,
-  0.018,
-  0.020
-   };
-
-  public static final double angleEncoderMaxVoltage[] = {
-    4.92,
-    4.91,
-    4.92,
-    4.94
-  };
-  
-  public static final double angleEncoderTareVoltage[] = {
-   //2022 Competition Values
-    1.22,
-    1.08,
-    1.20,
-    4.25
-  };
-
 }

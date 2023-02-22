@@ -60,6 +60,7 @@ public class Clamp extends SubsystemBase {
 
   }
 
+  
   public void clampMid() {
 
     if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
@@ -82,15 +83,17 @@ public class Clamp extends SubsystemBase {
 
   public void setClampSpeed(double speed) {
 
-    if (speed >= .1) {
-    if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
-      clampMotor.set(ControlMode.PercentOutput, speed);
-    } else {
-      stop();
-    }
-  } else {
-    stop();
-  }
+  //   if (speed >= .1) {
+  //   if ((clampEncoder.get() >= Constants.CLAMP_LOWER_LIMIT) && (clampEncoder.get() <= Constants.CLAMP_UPPER_LIMIT)) {
+  //     clampMotor.set(ControlMode.PercentOutput, speed);
+  //   } else {
+  //     stop();
+  //   }
+  // } else {
+  //   stop();
+  // }
+
+  clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void stop() {

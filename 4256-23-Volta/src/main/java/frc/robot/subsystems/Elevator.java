@@ -37,7 +37,7 @@ public class Elevator extends SubsystemBase {
     this.elevatorEncoder = new CANCoder(Constants.ELEVATOR_ENCODER_ID);
     this.leftElevatorMotor = new TalonSRX(Constants.ELEVATOR_LEFT_MOTOR_ID);
     this.rightElevatorMotor = new TalonSRX(Constants.ELEVATOR_RIGHT_MOTOR_ID);
-    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
         Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
     this.elevatorBottomLimitSwitch = new DigitalInput(Constants.ELEVATOR_BOTTOM_LIMIT_SWITCH_ID);
 
