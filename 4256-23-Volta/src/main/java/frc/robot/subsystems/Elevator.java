@@ -6,41 +6,32 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
-  private CANCoder elevatorEncoder;
   private DigitalInput elevatorBottomLimitSwitch;
   private TalonSRX leftElevatorMotor;
   private TalonSRX rightElevatorMotor;
   private DoubleSolenoid elevatorSolenoid;
+  private double targetHeight;
   public static Elevator instance = null;
-  public double targetHeight = 0;
-  private final TrapezoidProfile.Constraints pidConstraints = new TrapezoidProfile.Constraints(0.0, 0.0);
-  private final ProfiledPIDController pidController = new ProfiledPIDController(0.0, 0.0, 0.0, pidConstraints, 0.02);
 
-  /** Creates a new Elevator. */
   public Elevator() {
-    this.elevatorEncoder = new CANCoder(Constants.ELEVATOR_ENCODER_ID);
     this.leftElevatorMotor = new TalonSRX(Constants.ELEVATOR_LEFT_MOTOR_ID);
     this.rightElevatorMotor = new TalonSRX(Constants.ELEVATOR_RIGHT_MOTOR_ID);
     this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
         Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
     this.elevatorBottomLimitSwitch = new DigitalInput(Constants.ELEVATOR_BOTTOM_LIMIT_SWITCH_ID);
-
     configElevatorMotor();
   }
 
@@ -53,7 +44,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public double getElevatorEncoderPosition() {
-    return elevatorEncoder.getAbsolutePosition();
+    return leftElevatorMotor.getSelectedSensorPosition();
   }
 
   public void resetElevatorEncoder() {
@@ -72,11 +63,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorHigh() {
 
-    if (getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      
-      double speed = pidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_POSITION_HIGH);
-      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-      leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, Constants.ELEVATOR_POSITION_HIGH);
     } else {
       stopElevator();
     }
@@ -84,30 +72,24 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorMid() {
-    if (getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      double speed = pidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_POSITION_MID);
-      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-      leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, Constants.ELEVATOR_POSITION_MID);
     } else {
       stopElevator();
     }
   }
 
   public void setElevatorLow() {
-    if (getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      double speed = pidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_POSITION_LOW);
-      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-      leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, Constants.ELEVATOR_POSITION_LOW);
     } else {
       stopElevator();
     }
   }
 
   public void setElevatorBottom() {
-    if (getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      double speed = pidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_POSITION_BOTTOM);
-      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-      leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, Constants.ELEVATOR_POSITION_BOTTOM);
     } else {
       stopElevator();
     }
@@ -115,11 +97,8 @@ public class Elevator extends SubsystemBase {
 
   public void incrementElevator() {
     targetHeight = getElevatorEncoderPosition() + 5;
-    if ((getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT)
-        && (getElevatorEncoderPosition() >= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-          double speed = pidController.calculate(getElevatorEncoderPosition(), targetHeight);
-          leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-          leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, targetHeight);
     } else {
       stopElevator();
     }
@@ -127,33 +106,15 @@ public class Elevator extends SubsystemBase {
 
   public void decrementElevator() {
     targetHeight = getElevatorEncoderPosition() - 5;
-    if ((getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT)
-        && (getElevatorEncoderPosition() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-          double speed = pidController.calculate(getElevatorEncoderPosition(), targetHeight);
-          leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-          leftElevatorMotor.set(ControlMode.PercentOutput, -speed);
+    if (!elevatorBottomLimitSwitch.get() && !elevatorBottomLimitSwitch.get()) {
+      leftElevatorMotor.set(TalonSRXControlMode.Position, targetHeight);
     } else {
       stopElevator();
     }
   }
 
   public void setElevatorMotor(double speed) {
-
-    if (Math.abs(speed) > .4) {
-      speed = .4;
-    }
-
-    if ((speed >= .1) && !elevatorBottomLimitSwitch.get()) {
-      if ((getElevatorEncoderPosition() <= Constants.ELEVATOR_UPPER_LIMIT)
-          && (getElevatorEncoderPosition() >= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-        leftElevatorMotor.set(ControlMode.PercentOutput, speed);
-        rightElevatorMotor.set(ControlMode.PercentOutput, -speed);
-      } else {
-        stopElevator();
-      }
-    } else {
-      stopElevator();
-    }
+   leftElevatorMotor.set(TalonSRXControlMode.PercentOutput, speed);
   }
 
   public void stopElevator() {
@@ -179,11 +140,8 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setNeutralMode(NeutralMode.Brake);
 
     rightElevatorMotor.configFactoryDefault();
-    rightElevatorMotor.config_kP(0, Constants.ELEVATOR_MOTOR_KP);
-    rightElevatorMotor.config_kI(0, Constants.ELEVATOR_MOTOR_KI);
-    rightElevatorMotor.config_kD(0, Constants.ELEVATOR_MOTOR_KD);
-    rightElevatorMotor.config_kF(0, Constants.ELEVATOR_MOTOR_KF);
-    rightElevatorMotor.setInverted(false);
+    rightElevatorMotor.follow(leftElevatorMotor);
+    rightElevatorMotor.setInverted(true);
     rightElevatorMotor.setNeutralMode(NeutralMode.Brake);
   }
 
