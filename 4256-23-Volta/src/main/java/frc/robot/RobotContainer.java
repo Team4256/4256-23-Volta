@@ -35,7 +35,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Xbox;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -94,7 +93,7 @@ public class RobotContainer {
   // Swerve
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
-  private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
+  private final Command alignToZero = new AlignToZero(robotDrive, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);

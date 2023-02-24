@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Xbox;
 
 public class MoveToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;

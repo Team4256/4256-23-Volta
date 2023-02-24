@@ -5,7 +5,6 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Intake;
 
 public class IntakeDown extends CommandBase {
@@ -26,8 +25,7 @@ public class IntakeDown extends CommandBase {
   public void execute() {
 
     intake.intakeDown();
-    
-
+  
   }
 
   // Called once the command ends or is interrupted.

@@ -4,11 +4,9 @@
 
 package frc.robot.commands.Elevator;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Xbox;
 
 public class ControllerElevator extends CommandBase {
 

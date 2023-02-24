@@ -23,7 +23,7 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
   PIDController yController = new PIDController(1, 0, 0);
   PIDController thetaController = new PIDController(5, 0, 0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Direct Balance", 5, 6);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Two Cone Auto Top", 5, 6);
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,

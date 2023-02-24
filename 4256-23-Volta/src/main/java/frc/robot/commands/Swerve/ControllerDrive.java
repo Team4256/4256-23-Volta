@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Xbox;
 
 public class ControllerDrive extends CommandBase {
   private final SwerveSubsystem swerveDrive;

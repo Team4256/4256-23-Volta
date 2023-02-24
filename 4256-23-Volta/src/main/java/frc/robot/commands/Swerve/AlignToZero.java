@@ -5,27 +5,21 @@
 package frc.robot.commands.Swerve;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.Xbox;
 
 public class AlignToZero extends CommandBase {
   private final SwerveSubsystem swerveDrive;
-  private final Limelight limelight;
   private final CommandXboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.025, 0, -0.007); //Values must be negative
   
 
-  public AlignToZero(SwerveSubsystem swerve, Limelight camera, CommandXboxController driverController) {
+  public AlignToZero(SwerveSubsystem swerve, CommandXboxController driverController) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
-    limelight = camera;
     this.controller = driverController;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }

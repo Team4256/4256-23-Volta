@@ -26,8 +26,7 @@ public class RunIntake extends CommandBase {
   public void execute() {
 
     intake.suck();
-    
-
+  
   }
 
   // Called once the command ends or is interrupted.

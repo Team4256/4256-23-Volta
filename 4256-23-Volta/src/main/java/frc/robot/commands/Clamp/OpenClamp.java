@@ -12,7 +12,7 @@ public class OpenClamp extends CommandBase {
   private Clamp clamp = Clamp.getInstance();
   /** Creates a new OpenIntake. */
   public OpenClamp() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(clamp);
   }
 
   // Called when the command is initially scheduled.

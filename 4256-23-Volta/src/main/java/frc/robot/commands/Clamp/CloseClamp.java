@@ -6,13 +6,13 @@ package frc.robot.commands.Clamp;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Clamp;
-import frc.robot.subsystems.Intake;
 
 public class CloseClamp extends CommandBase {
   private Clamp clamp = Clamp.getInstance();
   /** Creates a new OpenIntake. */
   public CloseClamp() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(clamp);
   }
 
   // Called when the command is initially scheduled.
