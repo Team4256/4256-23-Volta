@@ -65,10 +65,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(55.63);
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.61);
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(1.49);
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(97.64);
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(54.49);
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.52);
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.70);
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(95.71);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -79,14 +79,14 @@ public class Constants {
   public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
   public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
 
-  public static final double ABSOLUTE_ENCODER_A_TARE = 1.22; // Front Left
-  public static final double ABSOLUTE_ENCODER_B_TARE = 2.89; // Front Right
-  public static final double ABSOLUTE_ENCODER_C_TARE = 4.29; // Aft Left
-  public static final double ABSOLUTE_ENCODER_D_TARE = 1.01; // Aft Right
-  public static final double ANGLE_A_TARE = 9.074; // Front Left (angle) //new 2022, not implemented yet...
-  public static final double ANGLE_B_TARE = 6.264; // Front Right
-  public static final double ANGLE_C_TARE = 3.840; // Aft Left
-  public static final double ANGLE_D_TARE = 6.723; // Aft Right
+//   public static final double ABSOLUTE_ENCODER_A_TARE = 1.22; // Front Left
+//   public static final double ABSOLUTE_ENCODER_B_TARE = 2.89; // Front Right
+//   public static final double ABSOLUTE_ENCODER_C_TARE = 4.29; // Aft Left
+//   public static final double ABSOLUTE_ENCODER_D_TARE = 1.01; // Aft Right
+//   public static final double ANGLE_A_TARE = 9.074; // Front Left (angle) //new 2022, not implemented yet...
+//   public static final double ANGLE_B_TARE = 6.264; // Front Right
+//   public static final double ANGLE_C_TARE = 3.840; // Aft Left
+//   public static final double ANGLE_D_TARE = 6.723; // Aft Right
 
   public static final double MAX_METERS_PER_SECOND = 3.83; // Max Speed TODO
   public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * 2 * Math.PI;
@@ -111,7 +111,8 @@ public class Constants {
   public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 5;
   public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 4;
   public final static int ELEVATOR_ENCODER_ID = 1;
-  public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 0;
+  public final static int ELEVATOR_TOP_LIMIT_SWITCH_ID = 1;
+  public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
   public final static int ELEVATOR_BOTTOM_LIMIT = 0;
   public final static int ELEVATOR_POSITION_HIGH = 0;

@@ -8,17 +8,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
+  private DigitalInput elevatorTopLimitSwitch;
   private DigitalInput elevatorBottomLimitSwitch;
   private TalonSRX leftElevatorMotor;
   private TalonSRX rightElevatorMotor;
@@ -31,6 +31,7 @@ public class Elevator extends SubsystemBase {
     this.rightElevatorMotor = new TalonSRX(Constants.ELEVATOR_RIGHT_MOTOR_ID);
     this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
         Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
+    this.elevatorTopLimitSwitch = new DigitalInput(Constants.ELEVATOR_TOP_LIMIT_SWITCH_ID);
     this.elevatorBottomLimitSwitch = new DigitalInput(Constants.ELEVATOR_BOTTOM_LIMIT_SWITCH_ID);
     configElevatorMotor();
   }
@@ -51,9 +52,19 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.setSelectedSensorPosition(0);
   }
 
-  public boolean getElevatorLimitSwitch() {
+  public boolean getElevatorBottomLimitSwitch() {
 
     if (elevatorBottomLimitSwitch.get()) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
+
+  public boolean getElevatorTopLimitSwitch() {
+
+    if (elevatorTopLimitSwitch.get()) {
       return false;
     } else {
       return true;
@@ -113,13 +124,24 @@ public class Elevator extends SubsystemBase {
     }
   }
 
+  // public void setElevatorMotor(double speed) {
+  //  leftElevatorMotor.set(TalonSRXControlMode.PercentOutput, speed);
+  // }
+
   public void setElevatorMotor(double speed) {
-   leftElevatorMotor.set(TalonSRXControlMode.PercentOutput, speed);
-  }
+
+    if (getElevatorTopLimitSwitch() && speed > 0) {
+      stopElevator();
+    } else if (getElevatorBottomLimitSwitch() && speed < 0) {
+      stopElevator();
+    } else {
+      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+   }
 
   public void stopElevator() {
     leftElevatorMotor.set(ControlMode.PercentOutput, 0);
-    rightElevatorMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public void tiltElevatorDown() {
@@ -148,6 +170,9 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //SmartDashboard.putNumber("Elevator Position", getElevatorEncoderPosition());
+  
+    SmartDashboard.putNumber("Elevator Encoder Counts", getElevatorEncoderPosition());
+    SmartDashboard.putBoolean("Elevator Top Limit Switch", getElevatorTopLimitSwitch());
+    SmartDashboard.putBoolean("Elevator Bottom Limit Switch", getElevatorBottomLimitSwitch());
   }
 }

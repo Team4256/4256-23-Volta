@@ -23,14 +23,12 @@ public class Clamp extends SubsystemBase {
 
   private DoubleSolenoid solenoid;
   private VictorSPX clampMotor;
-  private DigitalInput clampLimitSwitch;
   public static Clamp instance = null;
 
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
         Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
-    this.clampLimitSwitch = new DigitalInput(Constants.CLAMP_LIMIT_SWITCH_ID);
     configClampMotor();
   }
 
@@ -52,30 +50,24 @@ public class Clamp extends SubsystemBase {
 
   public void clampBottom() {
 
-    if (!clampLimitSwitch.get()) {
+    
       clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_BOTTOM_POSITION);
-    } else {
-      stop();
-    }
+  
 
   }
 
   public void clampMid() {
 
-    if (!clampLimitSwitch.get()) {
+
       clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_MID_POSITION);
-    } else {
-      stop();
-    }
+  
 
   }
 
   public void clampTop() {
-    if (!clampLimitSwitch.get()) {
+  
       clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_TOP_POSITION);
-    } else {
-      stop();
-    }
+    
   }
 
   public void setClampSpeed(double speed) {

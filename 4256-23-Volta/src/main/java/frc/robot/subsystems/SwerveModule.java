@@ -137,7 +137,7 @@ public final class SwerveModule {
                 Constants.DRIVE_PEAK_CURRENT_LIMIT,
                 Constants.DRIVE_PEAK_CURRENT_DURATION));
         driveMotor.setInverted(true);
-        driveMotor.setNeutralMode(NeutralMode.Brake);
+        driveMotor.setNeutralMode(NeutralMode.Coast);
         driveMotor.setSelectedSensorPosition(0);
     }
 

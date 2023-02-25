@@ -80,7 +80,7 @@ public class RobotContainer {
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command incrementElevator = new IncrementElevator(elevator);
-  private final Command controllerElevator = new ControllerElevator(elevator, driverController);
+  private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
   // Clamp
   private final Command clampHigh = new ClampHigh(clamp);
@@ -153,16 +153,16 @@ public class RobotContainer {
     driverController.x().onTrue(formX);
     driverController.start().whileTrue(moveToTarget);
     driverController.back().onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
-    driverController.leftBumper().onTrue(runIntake);
-    driverController.rightBumper().onTrue(runIntakeReverse);
+    driverController.leftBumper().whileTrue(runIntake);
+    driverController.rightBumper().whileTrue(runIntakeReverse);
 
     // Gunner Button Bindings
     gunnerController.y().whileTrue(elevatorHigh);
     gunnerController.a().whileTrue(elevatorBottom);
     gunnerController.b().whileTrue(elevatorLow);
     gunnerController.x().whileTrue(elevatorMid);
-    gunnerController.start().onTrue(openClamp);
-    gunnerController.back().onTrue(closeClamp);
+    gunnerController.start().whileTrue(openClamp);
+    gunnerController.back().whileTrue(closeClamp);
     gunnerController.leftBumper().whileTrue(clampHigh);
     gunnerController.rightBumper().whileTrue(clampMid);
     gunnerController.rightStick().whileTrue(clampBottom);
