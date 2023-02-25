@@ -27,9 +27,11 @@ import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
 import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
@@ -75,6 +77,8 @@ public class RobotContainer {
   private final Command runIntakeReverse = new RunIntakeReverse();
 
   // Elevator
+  private final Command elevatorUp = new TiltElevatorUp(elevator);
+  private final Command elevatorDown = new TiltElevatorDown(elevator);
   private final Command elevatorHigh = new ElevatorHigh(elevator);
   private final Command elevatorMid = new ElevatorMid(elevator);
   private final Command elevatorLow = new ElevatorLow(elevator);
@@ -159,12 +163,12 @@ public class RobotContainer {
     // Gunner Button Bindings
     gunnerController.y().whileTrue(elevatorHigh);
     gunnerController.a().whileTrue(elevatorBottom);
-    gunnerController.b().whileTrue(elevatorLow);
+    //gunnerController.b().whileTrue(ele);
     gunnerController.x().whileTrue(elevatorMid);
     gunnerController.start().whileTrue(openClamp);
     gunnerController.back().whileTrue(closeClamp);
-    gunnerController.leftBumper().whileTrue(clampHigh);
-    gunnerController.rightBumper().whileTrue(clampMid);
+    gunnerController.leftBumper().onTrue(elevatorUp);
+    gunnerController.rightBumper().onTrue(elevatorDown);
     gunnerController.rightStick().whileTrue(clampBottom);
 
   }

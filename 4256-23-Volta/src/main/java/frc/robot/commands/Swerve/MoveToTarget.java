@@ -5,8 +5,6 @@
 package frc.robot.commands.Swerve;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Limelight;
@@ -43,8 +41,7 @@ public class MoveToTarget extends CommandBase {
     double angularSpeed = -orientationPID.calculate(gyro.getAngle(),0);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
 
-
-    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, angularSpeed, fieldOrient);
+    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, spinSpeed, fieldOrient);
 
       // SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
       // SmartDashboard.putNumber("Alignment Speed", spinSpeed);

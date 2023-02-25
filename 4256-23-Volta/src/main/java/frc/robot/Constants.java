@@ -115,11 +115,11 @@ public class Constants {
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
   public final static int ELEVATOR_UPPER_LIMIT = 0;
   public final static int ELEVATOR_BOTTOM_LIMIT = 0;
-  public final static int ELEVATOR_POSITION_HIGH = 0;
-  public final static int ELEVATOR_POSITION_MID = 0;
+  public final static int ELEVATOR_POSITION_HIGH = 25000;
+  public final static int ELEVATOR_POSITION_MID = 12000;
   public final static int ELEVATOR_POSITION_LOW = 0;
   public final static int ELEVATOR_POSITION_BOTTOM = 0;
-  public final static double ELEVATOR_MOTOR_KP = 0;
+  public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;
   public final static double ELEVATOR_MOTOR_KD = 0;
   public final static double ELEVATOR_MOTOR_KF = 0;
@@ -135,7 +135,7 @@ public class Constants {
   public final static int CLAMP_MID_POSITION = 0;
   public final static int CLAMP_LOW_POSITION = 0;
   public final static int CLAMP_BOTTOM_POSITION = 0;
-  public final static double CLAMP_MOTOR_KP = 0;
+  public final static double CLAMP_MOTOR_KP = 0.0001;
   public final static double CLAMP_MOTOR_KI = 0;
   public final static double CLAMP_MOTOR_KD = 0;
   public final static double CLAMP_MOTOR_KF = 0;

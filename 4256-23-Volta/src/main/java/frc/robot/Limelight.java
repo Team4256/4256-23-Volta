@@ -2,12 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The Cyborg Cats' 2019 Limelight Vision Code.
- * @author Ian Woodard
- */
+
 public class Limelight {
     
     private static Limelight instance = null;
@@ -15,10 +11,6 @@ public class Limelight {
     private double commandedSpeed = 0.0;
     private double commandedSpin = 0.0;
     private NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("limelight");
-
-    private boolean hasDirection = false;//updateVisionTrackingStickier
-
-    
 
     Limelight() {
     }
