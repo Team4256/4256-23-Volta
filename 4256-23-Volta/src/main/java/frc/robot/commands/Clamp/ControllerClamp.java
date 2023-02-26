@@ -27,7 +27,7 @@ public class ControllerClamp extends CommandBase {
   @Override
   public void execute() {
 
-    clamp.setClampSpeed(-controller.getRightY());
+    clamp.setClampSpeed(-controller.getRightY() * 0.5);
 
   }
 

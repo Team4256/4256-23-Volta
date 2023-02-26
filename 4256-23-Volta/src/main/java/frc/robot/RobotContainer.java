@@ -77,8 +77,8 @@ public class RobotContainer {
   private final Command runIntakeReverse = new RunIntakeReverse();
 
   // Elevator
-  private final Command elevatorUp = new TiltElevatorUp(elevator);
-  private final Command elevatorDown = new TiltElevatorDown(elevator);
+  private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
+  private final Command tiltElevatorDown = new TiltElevatorDown(elevator);
   private final Command elevatorHigh = new ElevatorHigh(elevator);
   private final Command elevatorMid = new ElevatorMid(elevator);
   private final Command elevatorLow = new ElevatorLow(elevator);
@@ -167,8 +167,8 @@ public class RobotContainer {
     gunnerController.x().whileTrue(elevatorMid);
     gunnerController.start().whileTrue(openClamp);
     gunnerController.back().whileTrue(closeClamp);
-    gunnerController.leftBumper().onTrue(elevatorUp);
-    gunnerController.rightBumper().onTrue(elevatorDown);
+    gunnerController.leftBumper().whileTrue(tiltElevatorUp);
+    gunnerController.rightBumper().whileTrue(tiltElevatorDown);
     gunnerController.rightStick().whileTrue(clampBottom);
 
   }
