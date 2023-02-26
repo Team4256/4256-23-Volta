@@ -79,14 +79,15 @@ public class Constants {
   public static final int TRACTION_MOTOR_C_ID = 23; // AFT Left
   public static final int TRACTION_MOTOR_D_ID = 24; // AFT Right
 
-//   public static final double ABSOLUTE_ENCODER_A_TARE = 1.22; // Front Left
-//   public static final double ABSOLUTE_ENCODER_B_TARE = 2.89; // Front Right
-//   public static final double ABSOLUTE_ENCODER_C_TARE = 4.29; // Aft Left
-//   public static final double ABSOLUTE_ENCODER_D_TARE = 1.01; // Aft Right
-//   public static final double ANGLE_A_TARE = 9.074; // Front Left (angle) //new 2022, not implemented yet...
-//   public static final double ANGLE_B_TARE = 6.264; // Front Right
-//   public static final double ANGLE_C_TARE = 3.840; // Aft Left
-//   public static final double ANGLE_D_TARE = 6.723; // Aft Right
+  // public static final double ABSOLUTE_ENCODER_A_TARE = 1.22; // Front Left
+  // public static final double ABSOLUTE_ENCODER_B_TARE = 2.89; // Front Right
+  // public static final double ABSOLUTE_ENCODER_C_TARE = 4.29; // Aft Left
+  // public static final double ABSOLUTE_ENCODER_D_TARE = 1.01; // Aft Right
+  // public static final double ANGLE_A_TARE = 9.074; // Front Left (angle) //new
+  // 2022, not implemented yet...
+  // public static final double ANGLE_B_TARE = 6.264; // Front Right
+  // public static final double ANGLE_C_TARE = 3.840; // Aft Left
+  // public static final double ANGLE_D_TARE = 6.723; // Aft Right
 
   public static final double MAX_METERS_PER_SECOND = 3.83; // Max Speed TODO
   public static final double MAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * 2 * Math.PI;
@@ -126,6 +127,7 @@ public class Constants {
 
   // CLAMP
   public final static int CLAMP_MOTOR_ID = 18;
+  public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
   public final static int CLAMP_LIMIT_SWITCH_ID = 8;

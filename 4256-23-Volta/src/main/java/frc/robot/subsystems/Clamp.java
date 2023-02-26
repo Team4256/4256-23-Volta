@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.sensors.CANCoder;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //Note, VictorSPX encoders have 4096 ticks per rotation
 
@@ -24,11 +27,13 @@ public class Clamp extends SubsystemBase {
   private DoubleSolenoid solenoid;
   private VictorSPX clampMotor;
   public static Clamp instance = null;
+  private CANCoder clampCoder;
 
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
         Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
+    this.clampCoder = new CANCoder(Constants.CLAMP_ENCODER_ID);
     configClampMotor();
   }
 
@@ -38,6 +43,14 @@ public class Clamp extends SubsystemBase {
 
     }
     return instance;
+  }
+
+  public double getCANCoderAngle() {
+    return clampCoder.getAbsolutePosition();
+  }
+
+  public void resetClampEncoder() {
+    clampMotor.setSelectedSensorPosition(0);
   }
 
   public void clamp() {
@@ -50,24 +63,20 @@ public class Clamp extends SubsystemBase {
 
   public void clampBottom() {
 
-    
-      clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_BOTTOM_POSITION);
-  
+    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_BOTTOM_POSITION);
 
   }
 
   public void clampMid() {
 
-
-      clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_MID_POSITION);
-  
+    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_MID_POSITION);
 
   }
 
   public void clampTop() {
-  
-      clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_TOP_POSITION);
-    
+
+    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_TOP_POSITION);
+
   }
 
   public void setClampSpeed(double speed) {
@@ -91,5 +100,6 @@ public class Clamp extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ClampCoder Angle", getCANCoderAngle());
   }
 }

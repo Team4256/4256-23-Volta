@@ -100,10 +100,6 @@ public class SwerveSubsystem extends SubsystemBase {
     gyro.reset();
   }
 
-  public void setXFormation() {
-
-  }
-
   public void formX() {
 
     moduleA.setAngleDegrees(45.0);
