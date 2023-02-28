@@ -23,8 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Conversions;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 
-
-
 //Note, VictorSPX encoders have 4096 ticks per rotation
 
 public class Clamp extends SubsystemBase {
@@ -35,13 +33,13 @@ public class Clamp extends SubsystemBase {
   private CANCoder clampCoder;
   private PIDController clampPidController;
 
-
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
         Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
     this.clampCoder = new CANCoder(Constants.CLAMP_ENCODER_ID);
-    this.clampPidController = new PIDController(Constants.CLAMP_MOTOR_KP, Constants.CLAMP_MOTOR_KI, Constants.CLAMP_MOTOR_KD);
+    this.clampPidController = new PIDController(Constants.CLAMP_MOTOR_KP, Constants.CLAMP_MOTOR_KI,
+        Constants.CLAMP_MOTOR_KD);
     configClampMotor();
   }
 
@@ -71,11 +69,11 @@ public class Clamp extends SubsystemBase {
 
   public void setClampTop() {
 
-    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION);
+    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
     if (Math.abs(speed) > .2) {
       speed = .2 * Math.signum(speed);
     }
-    
+
     clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
@@ -85,7 +83,7 @@ public class Clamp extends SubsystemBase {
     if (Math.abs(speed) > .2) {
       speed = .2 * Math.signum(speed);
     }
-    
+
     clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
@@ -94,7 +92,7 @@ public class Clamp extends SubsystemBase {
     if (Math.abs(speed) > .2) {
       speed = .2 * Math.signum(speed);
     }
-    
+
     clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
@@ -103,7 +101,7 @@ public class Clamp extends SubsystemBase {
     if (Math.abs(speed) > .2) {
       speed = .2 * Math.signum(speed);
     }
-    
+
     clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
@@ -116,7 +114,7 @@ public class Clamp extends SubsystemBase {
     } else {
       clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
     }
-   }
+  }
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);

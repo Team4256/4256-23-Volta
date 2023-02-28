@@ -11,10 +11,12 @@ import frc.robot.commands.Swerve.BlankCommand;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
+import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.TwoConeAutoTop;
 import frc.robot.commands.Clamp.SetClampLow;
 import frc.robot.commands.Clamp.SetClampTop;
+import frc.robot.commands.Clamp.SetClampTopHold;
 import frc.robot.commands.Clamp.SetClampMid;
 import frc.robot.commands.Clamp.SetClampGrab;
 import frc.robot.commands.Clamp.CloseClamp;
@@ -77,6 +79,9 @@ public class RobotContainer {
   private final Command runIntake = new RunIntake();
   private final Command runIntakeReverse = new RunIntakeReverse();
 
+  //System 
+  private final Command placeHigh = new PlaceHigh();
+
   // Elevator
   private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
   private final Command tiltElevatorDown = new TiltElevatorDown(elevator);
@@ -89,6 +94,7 @@ public class RobotContainer {
 
   // Clamp
   private final Command setClampTop = new SetClampTop(clamp);
+  private final Command setClampTopHold = new SetClampTopHold(clamp);
   private final Command setClampMid = new SetClampMid(clamp);
   private final Command setClampLow = new SetClampLow(clamp);
   private final Command setClampGrab = new SetClampGrab(clamp);
@@ -172,9 +178,10 @@ public class RobotContainer {
     gunnerController.leftBumper().whileTrue(tiltElevatorUp);
     gunnerController.rightBumper().whileTrue(tiltElevatorDown);
     gunnerController.povDown().whileTrue(setClampLow);
-    gunnerController.povUp().whileTrue(setClampTop);
+    gunnerController.povUp().whileTrue(setClampTopHold);
     gunnerController.povLeft().whileTrue(setClampMid);
-    gunnerController.povRight().whileTrue(setClampGrab);    
+    gunnerController.povRight().whileTrue(setClampGrab);  
+    gunnerController.rightTrigger().whileTrue(placeHigh);  
 
   }
 

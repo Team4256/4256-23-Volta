@@ -5,6 +5,7 @@
 package frc.robot.commands.Clamp;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Clamp;
 
 
@@ -38,6 +39,12 @@ public class SetClampTop extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (clamp.getCANCoderAngle() <= Constants.CLAMP_TOP_POSITION_1 + 10) {
+      return true;
+    } else {
+      return false;
+    }
+
+    //return false;
   }
 }
