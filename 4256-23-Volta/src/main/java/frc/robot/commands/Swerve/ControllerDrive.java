@@ -30,7 +30,7 @@ public class ControllerDrive extends CommandBase {
   @Override
   public void execute() {
 
-    swerveDrive.drive(-controller.getLeftY(), -controller.getLeftX(), controller.getRightX(), fieldOrient);
+    swerveDrive.drive(controller.getLeftY(), controller.getLeftX(), controller.getRightX(), fieldOrient);
 
   }
 

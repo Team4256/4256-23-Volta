@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,6 +20,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Conversions;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+
+
 
 //Note, VictorSPX encoders have 4096 ticks per rotation
 
@@ -28,12 +33,15 @@ public class Clamp extends SubsystemBase {
   private VictorSPX clampMotor;
   public static Clamp instance = null;
   private CANCoder clampCoder;
+  private PIDController clampPidController;
+
 
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
         Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
     this.clampCoder = new CANCoder(Constants.CLAMP_ENCODER_ID);
+    this.clampPidController = new PIDController(Constants.CLAMP_MOTOR_KP, Constants.CLAMP_MOTOR_KI, Constants.CLAMP_MOTOR_KD);
     configClampMotor();
   }
 
@@ -46,11 +54,11 @@ public class Clamp extends SubsystemBase {
   }
 
   public double getCANCoderAngle() {
-    return clampCoder.getAbsolutePosition();
+    return clampCoder.getPosition();
   }
 
   public void resetClampEncoder() {
-    clampMotor.setSelectedSensorPosition(0);
+    clampCoder.setPosition(0);
   }
 
   public void clamp() {
@@ -61,27 +69,54 @@ public class Clamp extends SubsystemBase {
     solenoid.set(Value.kReverse);
   }
 
-  public void clampBottom() {
+  public void setClampTop() {
 
-    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_BOTTOM_POSITION);
-
+    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION);
+    if (Math.abs(speed) > .2) {
+      speed = .2 * Math.signum(speed);
+    }
+    
+    clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void clampMid() {
+  public void setClampMid() {
 
-    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_MID_POSITION);
-
+    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_MID_POSITION);
+    if (Math.abs(speed) > .2) {
+      speed = .2 * Math.signum(speed);
+    }
+    
+    clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void clampTop() {
+  public void setClampLow() {
+    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_LOW_POSITION);
+    if (Math.abs(speed) > .2) {
+      speed = .2 * Math.signum(speed);
+    }
+    
+    clampMotor.set(ControlMode.PercentOutput, speed);
+  }
 
-    clampMotor.set(VictorSPXControlMode.Position, Constants.CLAMP_TOP_POSITION);
-
+  public void setClampGrab() {
+    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_GRAB_POSITION);
+    if (Math.abs(speed) > .2) {
+      speed = .2 * Math.signum(speed);
+    }
+    
+    clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setClampSpeed(double speed) {
-    clampMotor.set(VictorSPXControlMode.PercentOutput, speed);
-  }
+
+    if (clampCoder.getPosition() >= 50 && speed > 0) {
+      stop();
+    } else if (clampCoder.getPosition() <= -115 && speed < 0) {
+      stop();
+    } else {
+      clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
+    }
+   }
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
@@ -92,7 +127,6 @@ public class Clamp extends SubsystemBase {
     clampMotor.config_kP(0, Constants.CLAMP_MOTOR_KP);
     clampMotor.config_kI(0, Constants.CLAMP_MOTOR_KI);
     clampMotor.config_kD(0, Constants.CLAMP_MOTOR_KD);
-    clampMotor.config_kF(0, Constants.CLAMP_MOTOR_KF);
     clampMotor.setInverted(false);
     clampMotor.setNeutralMode(NeutralMode.Brake);
   }

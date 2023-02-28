@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.ToDoubleBiFunction;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -65,10 +67,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(54.49);
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(278.52);
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.70);
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(95.71);
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.58);
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(188.43);
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(2.37);
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(5.62);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -96,6 +98,7 @@ public class Constants {
   public static final double TELEOP_ANGULAR_SPEED_LIMIT_RADIANS_PER_SECOND = MAX_ANGULAR_SPEED_RADIANS_PER_SECOND / 2;
   public static final double MAX_ACCELERATION = 3;
   public static final double TELEOP_MAX_ANGULAR_ACCELERATION = 3;
+  public static final double CLAMPY_GEAR_RATIO = 0.5;
   public static final double ENCODER_CONVERSION_TO_REVOLUTIONS_PER_SECONDS = 1 / 7.04; // gear ratio * encoder
                                                                                        // conversion *
   public static final double RPS_TO_METERS_PER_SECOND = ENCODER_CONVERSION_TO_REVOLUTIONS_PER_SECONDS * Math.PI
@@ -111,15 +114,12 @@ public class Constants {
   public final static int ELEVATOR_RIGHT_MOTOR_ID = 17;
   public final static int ELEVATOR_SOLENOID_FORWARD_CHANNEL = 5;
   public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 4;
-  public final static int ELEVATOR_ENCODER_ID = 1;
   public final static int ELEVATOR_TOP_LIMIT_SWITCH_ID = 1;
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
-  public final static int ELEVATOR_UPPER_LIMIT = 0;
-  public final static int ELEVATOR_BOTTOM_LIMIT = 0;
-  public final static int ELEVATOR_POSITION_HIGH = 25000;
-  public final static int ELEVATOR_POSITION_MID = 12000;
-  public final static int ELEVATOR_POSITION_LOW = 0;
-  public final static int ELEVATOR_POSITION_BOTTOM = 0;
+  public final static int ELEVATOR_TOP_POSITION = 25000;
+  public final static int ELEVATOR_MID_POSITION = 12000;
+  public final static int ELEVATOR_LOW_POSITION = 0;
+  public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;
   public final static double ELEVATOR_MOTOR_KD = 0;
@@ -130,17 +130,13 @@ public class Constants {
   public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
-  public final static int CLAMP_LIMIT_SWITCH_ID = 8;
-  public final static int CLAMP_UPPER_LIMIT = 0;
-  public final static int CLAMP_LOWER_LIMIT = 0;
-  public final static int CLAMP_TOP_POSITION = 0;
-  public final static int CLAMP_MID_POSITION = 0;
-  public final static int CLAMP_LOW_POSITION = 0;
-  public final static int CLAMP_BOTTOM_POSITION = 0;
+  public final static int CLAMP_TOP_POSITION = -122;
+  public final static int CLAMP_MID_POSITION = 0; /*TODO find these angles*/
+  public final static int CLAMP_LOW_POSITION = 0;/* */
+  public final static int CLAMP_GRAB_POSITION = 0;/* */
   public final static double CLAMP_MOTOR_KP = 0.0001;
-  public final static double CLAMP_MOTOR_KI = 0;
-  public final static double CLAMP_MOTOR_KD = 0;
-  public final static double CLAMP_MOTOR_KF = 0;
+  public final static double CLAMP_MOTOR_KI = 0;/* */
+  public final static double CLAMP_MOTOR_KD = 0;/* */
 
   // INTAKE
   public final static int INTAKE_MOTOR_ID = 15;

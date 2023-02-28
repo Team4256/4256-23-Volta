@@ -55,10 +55,6 @@ public class Intake extends SubsystemBase {
 
   private void configIntakeMotor() {
     intakeMotor.configFactoryDefault();
-        intakeMotor.config_kP(0, Constants.CLAMP_MOTOR_KP);
-        intakeMotor.config_kI(0, Constants.CLAMP_MOTOR_KI);
-        intakeMotor.config_kD(0, Constants.CLAMP_MOTOR_KD);
-        intakeMotor.config_kF(0, Constants.CLAMP_MOTOR_KF);
         intakeMotor.setInverted(false);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
   }
