@@ -41,6 +41,9 @@ public class Gyro extends AHRS {
 	 */
 	public double getCurrentAngle() {return Compass.validate(-(double)getAngle());}
 	
+	//public double getCurrentAngle() {return Compass.validate(-(double)getFusedHeading());}
+
+
 	public void setOffset(double offset) {
 		this.setAngleAdjustment(-offset);
 	}

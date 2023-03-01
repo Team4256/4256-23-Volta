@@ -38,10 +38,10 @@ public class MoveToTarget extends CommandBase {
 
     double xSpeed = -positionPID.calculate(limelight.getXOffset(),0);
     double strafeSpeed = Math.max(-.4, Math.min(xSpeed, .4));
-    double angularSpeed = -orientationPID.calculate(gyro.getAngle(),0);
+    double angularSpeed = -orientationPID.calculate(gyro.getAngle(),180);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
 
-    swerveDrive.drive(-controller.getLeftY(), strafeSpeed, spinSpeed, fieldOrient);
+    swerveDrive.drive(controller.getLeftY(), -strafeSpeed, spinSpeed, fieldOrient);
 
       // SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());
       // SmartDashboard.putNumber("Alignment Speed", spinSpeed);

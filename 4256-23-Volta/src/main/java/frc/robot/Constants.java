@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.util.function.ToDoubleBiFunction;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -11,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 public class Constants {
 
   // Controller
-  public static final double CONTROLLER_DEADBAND = 0.0;// .25
+  public static final double CONTROLLER_DEADBAND = 0.07;// .25
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
 
@@ -135,14 +134,14 @@ public class Constants {
   public final static int CLAMP_MID_POSITION = 0; /* TODO find these angles */
   public final static int CLAMP_LOW_POSITION = 0;/* */
   public final static int CLAMP_GRAB_POSITION = 52;/* */
-  public final static double CLAMP_MOTOR_KP = 0.07;
+  public final static double CLAMP_MOTOR_KP = 0.07; // .7
   public final static double CLAMP_MOTOR_KI = 0;/* */
-  public final static double CLAMP_MOTOR_KD = .002;/* */
+  public final static double CLAMP_MOTOR_KD = .002; //.002
 
   // INTAKE
   public final static int INTAKE_MOTOR_ID = 15;
   public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 2;
   public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 3;
-  public final static double INTAKE_MOTOR_SPEED = .6;
+  public final static double INTAKE_MOTOR_SPEED = 1;
 
 }
