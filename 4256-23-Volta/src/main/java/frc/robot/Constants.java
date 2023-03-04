@@ -17,6 +17,7 @@ public class Constants {
   // Gyro
   public static final byte GYRO_UPDATE_HZ = 50;
   public static final double GYRO_OFFSET = 0;
+  public static final double GYRO_SCALE_RATIO = 360.0/348.0;
   public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
   public static final double BEAM_BALANACED_DRIVE_KP = .001;
 
@@ -66,10 +67,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.58);
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(188.43);
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(2.37);
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(5.62);
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.66);
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(161.98);
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(1.32);
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(5.09);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -126,6 +127,8 @@ public class Constants {
 
   // CLAMP
   public final static int CLAMP_MOTOR_ID = 18;
+  public final static int CLAMP_INTAKE_MOTOR_ID = 28;
+  public final static double CLAMP_INTAKE_MOTOR_SPEED = 0.8;
   public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;

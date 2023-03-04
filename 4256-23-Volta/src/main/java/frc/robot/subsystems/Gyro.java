@@ -39,9 +39,7 @@ public class Gyro extends AHRS {
 	 * There is a negative because the gyro returns clockwise positive.
 	 * @return gyro heading in the range [0, 360)
 	 */
-	public double getCurrentAngle() {return Compass.validate(-(double)getAngle());}
-	
-	//public double getCurrentAngle() {return Compass.validate(-(double)getFusedHeading());}
+	public double getCurrentAngle() {return (Compass.validate(-(double)getAngle()));}
 
 
 	public void setOffset(double offset) {

@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Auto;
 
+import javax.swing.text.html.FormView;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -11,9 +13,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.*;
+import frc.robot.commands.Clamp.CloseClamp;
+import frc.robot.commands.Swerve.FormX;
+import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class TwoConeAutoTop extends SequentialCommandGroup {
+public class PlaceAndBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
@@ -23,7 +29,7 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
   PIDController yController = new PIDController(1, 0, 0);
   PIDController thetaController = new PIDController(5, 0, 0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Two Cone Auto Top", 5, 6);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Place And Balance", 5, 6);
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,
@@ -37,23 +43,16 @@ public class TwoConeAutoTop extends SequentialCommandGroup {
       swerve);
 
   /** Creates a new TwoConeAutoTop Command. */
-  public TwoConeAutoTop() {
+  public PlaceAndBalance() {
     addCommands(
         new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-        new InstantCommand(() -> clamp.clamp()),
-        new InstantCommand(() -> elevator.tiltElevatorDown()),
-        new InstantCommand(() -> elevator.setElevatorHigh()),
+        new CloseClamp(),
+        new PlaceHigh(),
         new InstantCommand(() -> clamp.unclamp()),
-        new InstantCommand(() -> elevator.tiltElevatorUp()),
-        new InstantCommand(() -> elevator.setElevatorBottom()),
+        new ResetToBottom(),
         pathCommand,
-        new InstantCommand(() -> elevator.tiltElevatorDown()),
-        new InstantCommand(() -> elevator.setElevatorHigh()),
-        new InstantCommand(() -> clamp.unclamp()),
-        new InstantCommand(() -> elevator.tiltElevatorUp()),
-        new InstantCommand(() -> elevator.setElevatorBottom()),
-        new InstantCommand(() -> swerve.stopModules())
+        new FormX(swerve)
     );
   }
 }

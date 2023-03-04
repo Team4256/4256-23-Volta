@@ -13,10 +13,12 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.Auto.DirectBalance;
-import frc.robot.commands.Auto.TwoConeAutoTop;
+import frc.robot.commands.Auto.PlaceAndBalance;
 import frc.robot.commands.Clamp.SetClampLow;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
+import frc.robot.commands.Clamp.SpitClamp;
+import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Clamp.SetClampMid;
 import frc.robot.commands.Clamp.SetClampGrab;
 import frc.robot.commands.Clamp.CloseClamp;
@@ -101,6 +103,9 @@ public class RobotContainer {
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
   private final Command openClamp = new OpenClamp();
   private final Command closeClamp = new CloseClamp();
+  private final Command suckClamp = new SuckClamp();
+  private final Command spitClamp = new SpitClamp();
+
 
   // Swerve
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
@@ -109,7 +114,7 @@ public class RobotContainer {
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
-  private final Command twoConeAutoTop = new TwoConeAutoTop();
+  private final Command placeAndBalance = new PlaceAndBalance();
   private final Command directBalance = new DirectBalance();
   private final Command blankCommand = new BlankCommand(robotDrive);
 
@@ -127,7 +132,7 @@ public class RobotContainer {
     clamp.setDefaultCommand(controllerClamp);
 
     chooser.setDefaultOption("Direct Balance", directBalance);
-    chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
+    chooser.addOption("Place and Balance", placeAndBalance);
 
     // Put the chooser on the dashboard
     // Shuffleboard.getTab("Competition").add(chooser);
@@ -162,15 +167,19 @@ public class RobotContainer {
     driverController.y().onTrue(intakeUp);
     driverController.a().onTrue(intakeDown);
     driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
-    driverController.x().onTrue(formX);
+    driverController.x().whileTrue(formX);
     driverController.start().whileTrue(moveToTarget);
     driverController.back().onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     driverController.leftBumper().whileTrue(runIntake);
     driverController.rightBumper().whileTrue(runIntakeReverse);
+    driverController.povUp().whileTrue(suckClamp);
+    driverController.povDown().whileTrue(spitClamp);
+    driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
+    driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
 
     // Gunner Button Bindings
-    gunnerController.y().whileTrue(elevatorHigh);
-    gunnerController.a().whileTrue(elevatorBottom);
+    gunnerController.y().whileTrue(suckClamp);
+    gunnerController.a().whileTrue(spitClamp);
     gunnerController.b().onTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.x().whileTrue(elevatorMid);
     gunnerController.start().whileTrue(openClamp);

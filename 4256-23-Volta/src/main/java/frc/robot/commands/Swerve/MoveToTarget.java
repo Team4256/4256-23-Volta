@@ -17,8 +17,8 @@ public class MoveToTarget extends CommandBase {
   private final CommandXboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController orientationPID = new PIDController(-0.01, 0, -0.00); //Values must be negative
-  private PIDController positionPID = new PIDController(-0.038, 0, -0.0); //Values must be negative (.02)
+  private PIDController orientationPID = new PIDController(-0.03, 0, -0.001); //Values must be negative
+  private PIDController positionPID = new PIDController(0.03, 0, -0.0000); //Values must be negative (.02)
 
   public MoveToTarget(SwerveSubsystem swerve, Limelight camera, CommandXboxController driverController) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
@@ -38,9 +38,13 @@ public class MoveToTarget extends CommandBase {
 
     double xSpeed = -positionPID.calculate(limelight.getXOffset(),0);
     double strafeSpeed = Math.max(-.4, Math.min(xSpeed, .4));
-    double angularSpeed = -orientationPID.calculate(gyro.getAngle(),180);
+    double angularSpeed = -orientationPID.calculate(gyro.getAngle(),0);
     double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
 
+
+    // if (Math.abs(strafeSpeed) > .3 ) {
+    //   strafeSpeed = Math.signum(strafeSpeed);
+    // }
     swerveDrive.drive(controller.getLeftY(), -strafeSpeed, spinSpeed, fieldOrient);
 
       // SmartDashboard.putNumber("Limeight X Error", limelight.getXOffset());

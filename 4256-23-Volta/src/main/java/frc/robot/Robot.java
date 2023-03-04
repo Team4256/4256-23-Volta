@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +28,7 @@ public class Robot extends TimedRobot {
   private Limelight limelight = new Limelight();
   private Elevator elevator = Elevator.getInstance();
   private Gyro gyro = Gyro.getInstance();
-  private VictorSP lights = new VictorSP(0);
+  private Spark lights = new Spark(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -55,11 +56,11 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     limelight.outputToSmartDashboard();
-    SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+    SmartDashboard.putNumber("Gyro Heading", gyro.getCurrentAngle());
     SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
     SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
-    lights.set(-1);
+    lights.set(.87);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

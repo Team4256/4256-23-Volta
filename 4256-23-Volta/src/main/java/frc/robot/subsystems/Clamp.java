@@ -29,6 +29,7 @@ public class Clamp extends SubsystemBase {
 
   private DoubleSolenoid solenoid;
   private VictorSPX clampMotor;
+  private VictorSPX intakeMotor;
   public static Clamp instance = null;
   private CANCoder clampCoder;
   private PIDController clampPidController;
@@ -37,6 +38,7 @@ public class Clamp extends SubsystemBase {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
         Constants.CLAMP_SOLENOID_REVERSE_CHANNEL);
     this.clampMotor = new VictorSPX(Constants.CLAMP_MOTOR_ID);
+    this.intakeMotor = new VictorSPX(Constants.CLAMP_INTAKE_MOTOR_ID);
     this.clampCoder = new CANCoder(Constants.CLAMP_ENCODER_ID);
     this.clampPidController = new PIDController(Constants.CLAMP_MOTOR_KP, Constants.CLAMP_MOTOR_KI,
         Constants.CLAMP_MOTOR_KD);
@@ -67,6 +69,17 @@ public class Clamp extends SubsystemBase {
     solenoid.set(Value.kReverse);
   }
 
+  public void suck() {
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, Constants.CLAMP_INTAKE_MOTOR_SPEED);
+  }
+
+  public void spit() {
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, -Constants.CLAMP_INTAKE_MOTOR_SPEED);
+  }
+
+  public void stopIntake() {
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
+  }
   public void setClampTop() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
@@ -107,9 +120,9 @@ public class Clamp extends SubsystemBase {
 
   public void setClampSpeed(double speed) {
 
-    if (clampCoder.getPosition() >= 50 && speed > 0) {
+    if (clampCoder.getPosition() >= 80 && speed > 0) {
       stop();
-    } else if (clampCoder.getPosition() <= -115 && speed < 0) {
+    } else if (clampCoder.getPosition() <= 0  && speed < 0) {
       stop();
     } else {
       clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
