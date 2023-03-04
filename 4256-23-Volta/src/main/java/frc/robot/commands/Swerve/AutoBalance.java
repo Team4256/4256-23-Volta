@@ -14,8 +14,8 @@ public class AutoBalance extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController balancePID = new PIDController(-0.01, 0, -0.00); // Values must be negative
-  private double xSpeed;
+  private PIDController balancePID = new PIDController(-0.014, 0, -0.00); // Values must be negative
+  private double ySpeed;
 
   public AutoBalance(SwerveSubsystem swerve) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
@@ -32,15 +32,16 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() {
 
-    xSpeed = -Math.min(balancePID.calculate(gyro.getPitch(), 0), 1);
+    swerveDrive.setBrakeMode();
+    ySpeed = -Math.min(balancePID.calculate(gyro.getPitch(), 0), 1);
 
     // Limit the max power
-    if (Math.abs(xSpeed) > 0.4) {
-      xSpeed = Math.copySign(0.4, xSpeed);
+    if (Math.abs(ySpeed) > 0.2) {
+      ySpeed = Math.copySign(0.2, ySpeed);
     }
-    swerveDrive.drive(-xSpeed, 0, 0, fieldOrient);
+    swerveDrive.drive(-ySpeed, 0, 0, fieldOrient);
 
-    SmartDashboard.putNumber("Balance Speed", xSpeed);
+    SmartDashboard.putNumber("Balance Speed", ySpeed);
     
   }
 

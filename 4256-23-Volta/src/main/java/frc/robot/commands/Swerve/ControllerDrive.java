@@ -29,7 +29,7 @@ public class ControllerDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    swerveDrive.setCoastMode();
     swerveDrive.drive(controller.getLeftY(), controller.getLeftX(), controller.getRightX(), fieldOrient);
 
   }

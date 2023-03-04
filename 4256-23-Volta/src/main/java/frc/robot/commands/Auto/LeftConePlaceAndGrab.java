@@ -4,30 +4,42 @@
 
 package frc.robot.commands.Auto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
+import frc.robot.commands.Intake.IntakeDown;
+import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class PlaceAndTaxi extends SequentialCommandGroup {
+public class LeftConePlaceAndGrab extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
   Clamp clamp = Clamp.getInstance();
   Elevator elevator = Elevator.getInstance();
+  Intake intake = Intake.getInstance();
   PIDController xController = new PIDController(2, 0, 0);
   PIDController yController = new PIDController(2,0, 0);
   PIDController thetaController = new PIDController(-2, 0, 0);
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Place And Taxi", 1, 1);
+  //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
+
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,
@@ -41,15 +53,27 @@ public class PlaceAndTaxi extends SequentialCommandGroup {
       swerve);
 
   /** Creates a new DirectBalance Command. */
-  public PlaceAndTaxi() {
+  public LeftConePlaceAndGrab() {
+
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("Intake", new RunIntake());
+
+    FollowPathWithEvents command = new FollowPathWithEvents(
+    pathCommand,
+    autoPath.getMarkers(),
+    eventMap
+    );
+
     addCommands(
-      new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
+      new InstantCommand(() -> gyro.reset()),
+      new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
       new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-      new CloseClamp(),
-      new PlaceHigh(),
-      new InstantCommand(() -> clamp.unclamp()),
-      new ResetToBottom(),
-      pathCommand,
+      new InstantCommand(() -> clamp.clamp()),
+      //new PlaceHigh(),
+      //new InstantCommand(() -> clamp.unclamp()),
+      //new ResetToBottom(),
+      new InstantCommand(() -> intake.intakeDown()),
+      command,
       new FormX(swerve)
     );
   }

@@ -13,6 +13,7 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.Auto.DirectBalance;
+import frc.robot.commands.Auto.LeftConePlaceAndGrab;
 import frc.robot.commands.Auto.PlaceAndBalance;
 import frc.robot.commands.Clamp.SetClampLow;
 import frc.robot.commands.Clamp.SetClampTop;
@@ -83,6 +84,7 @@ public class RobotContainer {
 
   //System 
   private final Command placeHigh = new PlaceHigh();
+  private final Command blankCommand = new BlankCommand(robotDrive);
 
   // Elevator
   private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
@@ -114,9 +116,12 @@ public class RobotContainer {
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
+
+  //Auto
   private final Command placeAndBalance = new PlaceAndBalance();
   private final Command directBalance = new DirectBalance();
-  private final Command blankCommand = new BlankCommand(robotDrive);
+  private final Command leftConePlaceAndGrab = new LeftConePlaceAndGrab();
+  
 
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -133,6 +138,7 @@ public class RobotContainer {
 
     chooser.setDefaultOption("Direct Balance", directBalance);
     chooser.addOption("Place and Balance", placeAndBalance);
+    chooser.addOption("Left Cone Place And Grab", leftConePlaceAndGrab);
 
     // Put the chooser on the dashboard
     // Shuffleboard.getTab("Competition").add(chooser);
@@ -169,7 +175,7 @@ public class RobotContainer {
     driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
     driverController.x().whileTrue(formX);
     driverController.start().whileTrue(moveToTarget);
-    driverController.back().onTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
+    driverController.back().whileTrue(autoBalance);
     driverController.leftBumper().whileTrue(runIntake);
     driverController.rightBumper().whileTrue(runIntakeReverse);
     driverController.povUp().whileTrue(suckClamp);

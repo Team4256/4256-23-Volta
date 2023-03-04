@@ -125,6 +125,14 @@ public final class SwerveModule {
         resetToAbsolute();
     }
 
+    public void setCoastMode() {
+        driveMotor.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public void setBrakeMode() {
+        driveMotor.setNeutralMode(NeutralMode.Brake);
+    }
+
     private void configDriveMotor() {
         driveMotor.configFactoryDefault();
         driveMotor.config_kP(0, Constants.DRIVE_KP);

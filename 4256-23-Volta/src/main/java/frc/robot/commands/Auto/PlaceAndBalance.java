@@ -25,11 +25,11 @@ public class PlaceAndBalance extends SequentialCommandGroup {
   Gyro gyro = Gyro.getInstance();
   Clamp clamp = Clamp.getInstance();
   Elevator elevator = Elevator.getInstance();
-  PIDController xController = new PIDController(1, 0, 0);
-  PIDController yController = new PIDController(1, 0, 0);
-  PIDController thetaController = new PIDController(5, 0, 0);
+  PIDController xController = new PIDController(2, 0, 0);
+  PIDController yController = new PIDController(2, 0, 0);
+  PIDController thetaController = new PIDController(-2, 0, 0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Place And Balance", 5, 6);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Over and Back", 1, 1);
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,
@@ -47,7 +47,7 @@ public class PlaceAndBalance extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-        new CloseClamp(),
+        new InstantCommand(() -> clamp.clamp()),
         new PlaceHigh(),
         new InstantCommand(() -> clamp.unclamp()),
         new ResetToBottom(),
