@@ -6,12 +6,15 @@ package frc.robot.commands.System;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Clamp.SetClampGrab;
 import frc.robot.commands.Clamp.SetClampMid;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorDownMid;
 import frc.robot.commands.Elevator.ElevatorHigh;
-import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
@@ -28,11 +31,12 @@ public class ResetToBottom extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElevatorMid(elevator),
-      new SetClampMid(clamp),
+      new SetClampTop(clamp),
+      new ElevatorDownMid(elevator),
       new InstantCommand(() -> elevator.tiltElevatorDown()),
+      new WaitCommand(3),
+      new SetClampGrab(clamp),
       new ElevatorBottom(elevator)
-      //new SetClampBottomHold(clamp)
       
     );
   }

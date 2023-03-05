@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorMid extends CommandBase {
+public class ElevatorDownMid extends CommandBase {
 
   private Elevator elevator;
   /** Creates a new ElevatorHigh. */
-  public ElevatorMid(Elevator elevator) {
+  public ElevatorDownMid(Elevator elevator) {
     this.elevator = elevator;
     addRequirements(elevator);
   }
@@ -39,7 +39,7 @@ public class ElevatorMid extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    if (elevator.getElevatorEncoderPosition() >= Constants.ELEVATOR_MID_POSITION - 100) {
+    if (elevator.getElevatorEncoderPosition() <= Constants.ELEVATOR_MID_POSITION - 100) {
       return true;
     } else {
       return false;

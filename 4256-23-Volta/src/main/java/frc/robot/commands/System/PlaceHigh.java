@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
 import frc.robot.commands.Elevator.ElevatorHigh;
-import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
@@ -26,12 +26,11 @@ public class PlaceHigh extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElevatorMid(elevator),
+      new ElevatorUpMid(elevator),
       new SetClampTop(clamp),
       new InstantCommand(() -> elevator.tiltElevatorUp()),
       new ElevatorHigh(elevator),
-      new SetClampTopHold(clamp)
-      
+      new SetClampTop(clamp)
     );
   }
 }

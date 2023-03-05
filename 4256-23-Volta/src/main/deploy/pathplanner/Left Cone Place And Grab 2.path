@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 14.582629336442697,
-        "y": 0.445982860581982
+        "x": 14.61,
+        "y": 0.42
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.608199797803238,
-        "y": 0.445982860581982
+        "x": 14.61946195553456,
+        "y": 0.42
       },
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,18 +24,18 @@
     },
     {
       "anchorPoint": {
-        "x": 9.905527029313689,
-        "y": 0.9491430109821704
+        "x": 10.042752524877377,
+        "y": 0.9148366370912484
       },
       "prevControl": {
-        "x": 9.905527029313689,
-        "y": 0.9491430109821704
+        "x": 10.042752524877377,
+        "y": 0.9148366370912484
       },
       "nextControl": {
-        "x": 9.905527029313689,
-        "y": 0.9491430109821704
+        "x": 10.042752524877377,
+        "y": 0.9148366370912484
       },
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
@@ -49,22 +49,25 @@
     },
     {
       "anchorPoint": {
-        "x": 14.628371168297264,
-        "y": 1.132110338400419
+        "x": 13.381906250260434,
+        "y": 0.9605784689458102
       },
       "prevControl": {
-        "x": 14.612198988553137,
-        "y": 1.132110338400419
+        "x": 12.542618071284647,
+        "y": 0.35449919687285947
       },
       "nextControl": null,
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
+        "names": [
+          "Clamp",
+          "Place High"
+        ],
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
@@ -72,7 +75,7 @@
   ],
   "markers": [
     {
-      "position": 0.9018181818181307,
+      "position": 0.7854545454545175,
       "names": [
         "Intake"
       ]

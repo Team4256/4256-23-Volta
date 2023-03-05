@@ -5,6 +5,7 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorHigh extends CommandBase {
@@ -37,6 +38,11 @@ public class ElevatorHigh extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (elevator.getElevatorTopLimitSwitch()) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 }

@@ -12,6 +12,7 @@ import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.ResetToBottom;
 import frc.robot.commands.Auto.DirectBalance;
 import frc.robot.commands.Auto.LeftConePlaceAndGrab;
 import frc.robot.commands.Auto.PlaceAndBalance;
@@ -36,7 +37,7 @@ import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorLow;
-import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
@@ -84,13 +85,14 @@ public class RobotContainer {
 
   //System 
   private final Command placeHigh = new PlaceHigh();
+  private final Command resetToBottom = new ResetToBottom();
   private final Command blankCommand = new BlankCommand(robotDrive);
 
   // Elevator
   private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
   private final Command tiltElevatorDown = new TiltElevatorDown(elevator);
   private final Command elevatorHigh = new ElevatorHigh(elevator);
-  private final Command elevatorMid = new ElevatorMid(elevator);
+  private final Command elevatorMid = new ElevatorUpMid(elevator);
   private final Command elevatorLow = new ElevatorLow(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command incrementElevator = new IncrementElevator(elevator);
@@ -175,28 +177,22 @@ public class RobotContainer {
     driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
     driverController.x().whileTrue(formX);
     driverController.start().whileTrue(moveToTarget);
-    driverController.back().whileTrue(autoBalance);
     driverController.leftBumper().whileTrue(runIntake);
     driverController.rightBumper().whileTrue(runIntakeReverse);
-    driverController.povUp().whileTrue(suckClamp);
-    driverController.povDown().whileTrue(spitClamp);
     driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
     driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
 
     // Gunner Button Bindings
-    gunnerController.y().whileTrue(suckClamp);
-    gunnerController.a().whileTrue(spitClamp);
-    gunnerController.b().onTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
-    gunnerController.x().whileTrue(elevatorMid);
-    gunnerController.start().whileTrue(openClamp);
-    gunnerController.back().whileTrue(closeClamp);
-    gunnerController.leftBumper().whileTrue(tiltElevatorUp);
-    gunnerController.rightBumper().whileTrue(tiltElevatorDown);
-    gunnerController.povDown().whileTrue(setClampLow);
-    gunnerController.povUp().whileTrue(setClampTopHold);
-    gunnerController.povLeft().whileTrue(setClampMid);
-    gunnerController.povRight().whileTrue(setClampGrab);  
+    gunnerController.y().whileTrue(tiltElevatorUp);
+    gunnerController.a().whileTrue(tiltElevatorDown);
+    gunnerController.b().onTrue(openClamp);
+    gunnerController.x().whileTrue(closeClamp);
+    gunnerController.leftBumper().whileTrue(suckClamp);
+    gunnerController.rightBumper().whileTrue(spitClamp);
     gunnerController.rightTrigger().whileTrue(placeHigh);  
+    gunnerController.leftTrigger().whileTrue(resetToBottom);
+    gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
+    gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
 
   }
 

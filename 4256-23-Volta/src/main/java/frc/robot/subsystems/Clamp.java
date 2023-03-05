@@ -62,19 +62,19 @@ public class Clamp extends SubsystemBase {
   }
 
   public void clamp() {
-    solenoid.set(Value.kForward);
-  }
-
-  public void unclamp() {
     solenoid.set(Value.kReverse);
   }
 
+  public void unclamp() {
+    solenoid.set(Value.kForward);
+  }
+
   public void suck() {
-    intakeMotor.set(VictorSPXControlMode.PercentOutput, Constants.CLAMP_INTAKE_MOTOR_SPEED);
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, -Constants.CLAMP_INTAKE_MOTOR_SPEED);
   }
 
   public void spit() {
-    intakeMotor.set(VictorSPXControlMode.PercentOutput, -Constants.CLAMP_INTAKE_MOTOR_SPEED);
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, Constants.CLAMP_INTAKE_MOTOR_SPEED);
   }
 
   public void stopIntake() {
@@ -83,8 +83,8 @@ public class Clamp extends SubsystemBase {
   public void setClampTop() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
-    if (Math.abs(speed) > .2) {
-      speed = .2 * Math.signum(speed);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, speed);
@@ -93,8 +93,8 @@ public class Clamp extends SubsystemBase {
   public void setClampMid() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_MID_POSITION);
-    if (Math.abs(speed) > .2) {
-      speed = .2 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, speed);
@@ -102,8 +102,8 @@ public class Clamp extends SubsystemBase {
 
   public void setClampLow() {
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_LOW_POSITION);
-    if (Math.abs(speed) > .2) {
-      speed = .2 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, speed);
@@ -111,8 +111,8 @@ public class Clamp extends SubsystemBase {
 
   public void setClampGrab() {
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_GRAB_POSITION);
-    if (Math.abs(speed) > .2) {
-      speed = .2 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, speed);
@@ -120,17 +120,19 @@ public class Clamp extends SubsystemBase {
 
   public void setClampSpeed(double speed) {
 
-    if (clampCoder.getPosition() >= 80 && speed > 0) {
-      stop();
-    } else if (clampCoder.getPosition() <= 0  && speed < 0) {
-      stop();
-    } else {
-      clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
-    }
+    // if (clampCoder.getPosition() >= 80 && speed > 0) {
+    //   stop();
+    // } else if (clampCoder.getPosition() <= 0  && speed < 0) {
+    //   stop();
+    // } else {
+    //   clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
+    // }
+       clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
   }
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
+    
   }
 
   private void configClampMotor() {
@@ -146,5 +148,6 @@ public class Clamp extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ClampCoder Angle", getCANCoderAngle());
+    SmartDashboard.putNumber("Clamp Motor Voltage", clampMotor.getMotorOutputVoltage());
   }
 }

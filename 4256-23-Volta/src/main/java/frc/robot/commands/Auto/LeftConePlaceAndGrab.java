@@ -39,10 +39,34 @@ public class LeftConePlaceAndGrab extends SequentialCommandGroup {
   PIDController thetaController = new PIDController(-2, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Left Cone Place And Grab 1", 1, 1);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Left Cone Place And Grab 2", 1, 1);
+  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Left Cone Place And Grab 3", 1, 1);
 
-  PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
-      autoPath,
+  PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
+      autoPath1,
+      swerve::getPose,
+      Constants.DRIVE_KINEMATICS,
+      xController,
+      yController,
+      thetaController,
+      swerve::setModuleStates,
+      false,
+      swerve);
+
+  PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
+      autoPath2,
+      swerve::getPose,
+      Constants.DRIVE_KINEMATICS,
+      xController,
+      yController,
+      thetaController,
+      swerve::setModuleStates,
+      false,
+      swerve);
+
+  PPSwerveControllerCommand pathCommand3 = new PPSwerveControllerCommand(
+      autoPath3,
       swerve::getPose,
       Constants.DRIVE_KINEMATICS,
       xController,
@@ -55,26 +79,55 @@ public class LeftConePlaceAndGrab extends SequentialCommandGroup {
   /** Creates a new DirectBalance Command. */
   public LeftConePlaceAndGrab() {
 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("Intake", new RunIntake());
+    HashMap<String, Command> eventMap1 = new HashMap<>();
+    eventMap1.put("Clamp", new InstantCommand(() -> clamp.clamp()));
+    eventMap1.put("Place High", new PlaceHigh());
+    eventMap1.put("Unclamp", new InstantCommand(() -> clamp.unclamp()));
+    eventMap1.put("Reset To Bottom", new ResetToBottom());
+    eventMap1.put("Intake Down", new InstantCommand(() -> intake.intakeDown()));
 
-    FollowPathWithEvents command = new FollowPathWithEvents(
-    pathCommand,
-    autoPath.getMarkers(),
-    eventMap
+    HashMap<String, Command> eventMap2 = new HashMap<>();
+    eventMap2.put("Intake", new RunIntake());
+
+    HashMap<String, Command> eventMap3 = new HashMap<>();
+    eventMap1.put("Clamp", new InstantCommand(() -> clamp.clamp()));
+    eventMap1.put("Place High", new PlaceHigh());
+    eventMap1.put("Unclamp", new InstantCommand(() -> clamp.unclamp()));
+
+    FollowPathWithEvents command1 = new FollowPathWithEvents(
+    pathCommand1,
+    autoPath1.getMarkers(),
+    eventMap1
+    );
+
+    FollowPathWithEvents command2 = new FollowPathWithEvents(
+    pathCommand2,
+    autoPath2.getMarkers(),
+    eventMap2
+    );
+
+    FollowPathWithEvents command3 = new FollowPathWithEvents(
+    pathCommand3,
+    autoPath3.getMarkers(),
+    eventMap3
     );
 
     addCommands(
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
-      new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
+      new InstantCommand(() -> swerve.resetOdometer(autoPath1.getInitialPose())),
       new InstantCommand(() -> clamp.clamp()),
-      //new PlaceHigh(),
-      //new InstantCommand(() -> clamp.unclamp()),
-      //new ResetToBottom(),
+      new PlaceHigh(),
+      command1,
+      new InstantCommand(() -> clamp.unclamp()),
+      new ResetToBottom(),
       new InstantCommand(() -> intake.intakeDown()),
-      command,
-      new FormX(swerve)
+      command2,
+      new InstantCommand(() -> clamp.clamp()),
+      new PlaceHigh(),
+      command3,
+      new InstantCommand(() -> clamp.unclamp()),
+      new ResetToBottom()
     );
   }
 }

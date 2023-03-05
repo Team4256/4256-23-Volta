@@ -117,7 +117,7 @@ public class Constants {
   public final static int ELEVATOR_TOP_LIMIT_SWITCH_ID = 1;
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
   public final static int ELEVATOR_TOP_POSITION = 25000;
-  public final static int ELEVATOR_MID_POSITION = 9855;
+  public final static int ELEVATOR_MID_POSITION = 8500;
   public final static int ELEVATOR_LOW_POSITION = 0;
   public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
@@ -128,15 +128,15 @@ public class Constants {
   // CLAMP
   public final static int CLAMP_MOTOR_ID = 18;
   public final static int CLAMP_INTAKE_MOTOR_ID = 28;
-  public final static double CLAMP_INTAKE_MOTOR_SPEED = 0.8;
+  public final static double CLAMP_INTAKE_MOTOR_SPEED = .65;
   public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
   public final static int CLAMP_TOP_POSITION_2 = -122;
-  public final static int CLAMP_TOP_POSITION_1 = -172;
+  public final static int CLAMP_TOP_POSITION_1 = -130;
   public final static int CLAMP_MID_POSITION = 0; /* TODO find these angles */
   public final static int CLAMP_LOW_POSITION = 0;/* */
-  public final static int CLAMP_GRAB_POSITION = 52;/* */
+  public final static int CLAMP_GRAB_POSITION = 20;/* */
   public final static double CLAMP_MOTOR_KP = 0.07; // .7
   public final static double CLAMP_MOTOR_KI = 0;/* */
   public final static double CLAMP_MOTOR_KD = .002; //.002

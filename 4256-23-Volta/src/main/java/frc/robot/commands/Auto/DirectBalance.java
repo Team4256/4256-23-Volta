@@ -19,6 +19,7 @@ public class DirectBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = new SwerveSubsystem();
   Gyro gyro = Gyro.getInstance();
+  Intake intake = Intake.getInstance();
   PIDController xController = new PIDController(2, 0, 0);
   PIDController yController = new PIDController(2, 0, 0);
   PIDController thetaController = new PIDController(-2, 0, 0.0);
@@ -42,6 +43,7 @@ public class DirectBalance extends SequentialCommandGroup {
         new InstantCommand(() -> gyro.reset()),
         new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
+        new InstantCommand(() -> intake.intakeUp()),
         command,
         new AutoBalance(swerve)
 

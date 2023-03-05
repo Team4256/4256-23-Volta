@@ -79,8 +79,8 @@ public class Elevator extends SubsystemBase {
   public void setElevatorHigh() {
 
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TOP_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .5) {
+      speed = .5 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -89,8 +89,8 @@ public class Elevator extends SubsystemBase {
   public void setElevatorMid() {
 
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_MID_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .5) {
+      speed = .5 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -99,19 +99,20 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorLow() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_LOW_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .5) {
+      speed = .5 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setElevatorBottom() {
-    if (!elevatorBottomLimitSwitch.get()) {
-      leftElevatorMotor.set(TalonSRXControlMode.Position, Constants.ELEVATOR_BASE_POSITION);
-    } else {
-      stopElevator();
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_LOW_POSITION);
+    if (Math.abs(speed) > .5) {
+      speed = .5 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void incrementElevator() {
