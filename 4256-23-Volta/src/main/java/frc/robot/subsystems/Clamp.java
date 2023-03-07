@@ -119,15 +119,7 @@ public class Clamp extends SubsystemBase {
   }
 
   public void setClampSpeed(double speed) {
-
-    // if (clampCoder.getPosition() >= 80 && speed > 0) {
-    //   stop();
-    // } else if (clampCoder.getPosition() <= 0  && speed < 0) {
-    //   stop();
-    // } else {
-    //   clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
-    // }
-       clampMotor.set(VictorSPXControlMode.PercentOutput, Math.signum(speed) * speed * speed);
+       clampMotor.set(VictorSPXControlMode.PercentOutput, speed);
   }
 
   public void stop() {

@@ -185,7 +185,7 @@ public class RobotContainer {
     // Gunner Button Bindings
     gunnerController.y().whileTrue(tiltElevatorUp);
     gunnerController.a().whileTrue(tiltElevatorDown);
-    gunnerController.b().onTrue(openClamp);
+    gunnerController.b().whileTrue(openClamp);
     gunnerController.x().whileTrue(closeClamp);
     gunnerController.leftBumper().whileTrue(suckClamp);
     gunnerController.rightBumper().whileTrue(spitClamp);

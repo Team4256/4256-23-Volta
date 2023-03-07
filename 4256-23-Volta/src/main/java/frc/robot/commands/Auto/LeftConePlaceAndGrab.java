@@ -124,10 +124,10 @@ public class LeftConePlaceAndGrab extends SequentialCommandGroup {
       new InstantCommand(() -> intake.intakeDown()),
       command2,
       new InstantCommand(() -> clamp.clamp()),
-      //new PlaceHigh(),
+      new PlaceHigh(),
       command3,
-      new InstantCommand(() -> clamp.unclamp())
-      //new ResetToBottom()
+      new InstantCommand(() -> clamp.unclamp()),
+      new ResetToBottom()
     );
   }
 }
