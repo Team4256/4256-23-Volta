@@ -38,8 +38,8 @@ public class BluePlaceAndBalance extends SequentialCommandGroup {
   PIDController yController = new PIDController(2, 0, 0);
   PIDController thetaController = new PIDController(-2, 0, 0);
 
-  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Place And Balance 1", 2, 1.5);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Place And Balance 2", 2, 1.5);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Blue Place And Balance 1", 2, 1.5);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Blue Place And Balance 2", 2, 1.5);
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,

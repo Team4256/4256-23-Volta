@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 14.61,
-        "y": 0.42
+        "x": 1.9,
+        "y": 3.25
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.61946195553456,
-        "y": 0.42
+        "x": 1.9511409227210823,
+        "y": 3.25
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,19 +24,19 @@
     },
     {
       "anchorPoint": {
-        "x": 9.832734073772645,
-        "y": 0.8660028669538314
+        "x": 5.708713956657585,
+        "y": 3.247670061673931
       },
       "prevControl": {
-        "x": 9.832734073772645,
-        "y": 0.8660028669538314
+        "x": 5.6967375210927305,
+        "y": 3.247670061673931
       },
       "nextControl": {
-        "x": 9.832734073772645,
-        "y": 0.8660028669538314
+        "x": 5.720690392222439,
+        "y": 3.247670061673931
       },
-      "holonomicAngle": 0,
-      "isReversal": true,
+      "holonomicAngle": 0.0,
+      "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
@@ -49,42 +49,26 @@
     },
     {
       "anchorPoint": {
-        "x": 13.381906250260434,
-        "y": 0.9605784689458102
+        "x": 3.9819598041478534,
+        "y": 3.25
       },
       "prevControl": {
-        "x": 12.542618071284647,
-        "y": 0.35449919687285947
+        "x": 4.85132509818515,
+        "y": 3.2328468130545387
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "Clamp",
-          "Place High"
-        ],
-        "executionBehavior": "sequential",
+        "names": [],
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.7854545454545175,
-      "names": [
-        "Intake"
-      ]
-    },
-    {
-      "position": 1.3527272727272015,
-      "names": [
-        "Stop Intake"
-      ]
-    }
-  ]
+  "markers": []
 }

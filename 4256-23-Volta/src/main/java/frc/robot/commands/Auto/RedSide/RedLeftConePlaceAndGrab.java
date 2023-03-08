@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
+import frc.robot.commands.Clamp.SetClampGrab;
+import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.RunIntake;
@@ -39,12 +41,15 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   Intake intake = Intake.getInstance();
   PIDController xController = new PIDController(3, 0, 0);
   PIDController yController = new PIDController(3,0, 0);
-  PIDController thetaController = new PIDController(-3, 0, 0);
+  PIDController thetaController = new PIDController(-4, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Left Cone Place And Grab 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Left Cone Place And Grab 2", 1, 1);
-  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Left Cone Place And Grab 3", 1, 1);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Left Cone Place And Grab 1", 1, 1);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Left Cone Place And Grab 2", 1, 1);
+  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Red Left Cone Place And Grab 3", 1, 1);
+
+
+  
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,
@@ -81,7 +86,15 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
 
   /** Creates a new DirectBalance Command. */
   public RedLeftConePlaceAndGrab() {
-
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("Stop Intake", new InstantCommand(() -> clamp.stopInnerClamp()));
+    eventMap.put("Intake", new RunIntake());
+    
+    FollowPathWithEvents command = new FollowPathWithEvents(
+        pathCommand2,
+        autoPath2.getMarkers(),
+        eventMap
+    );
     addCommands(
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
@@ -92,12 +105,13 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       pathCommand1,
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
+      new SetClampGrab(clamp),
       new InstantCommand(() -> intake.intakeDown()),
-      pathCommand2,
-      new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
+      new ParallelDeadlineGroup(pathCommand2, new RunIntake()),
+      new ParallelDeadlineGroup(new WaitCommand(1), new SuckClamp()),
       new PlaceHigh(),
       pathCommand3,
-      new InstantCommand(() -> clamp.unclamp()),
+      new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom()
     );
   }

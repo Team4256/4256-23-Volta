@@ -132,9 +132,14 @@ public class Clamp extends SubsystemBase {
        clampMotor.set(VictorSPXControlMode.PercentOutput, -speed);
   }
 
+  public void stopInnerClamp() {
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
+  }
+
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
+    
   }
 
   private void configClampMotor() {

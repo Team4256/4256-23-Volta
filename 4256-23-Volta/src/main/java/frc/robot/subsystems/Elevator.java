@@ -107,7 +107,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setElevatorBottom() {
-    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_LOW_POSITION);
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_BASE_POSITION);
     if (Math.abs(speed) > .5) {
       speed = .5 * Math.signum(speed);
     }

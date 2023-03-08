@@ -12,6 +12,7 @@ import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.PlaceHighAuto;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.commands.Auto.RedSide.RedDirectBalance;
 import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
@@ -145,9 +146,11 @@ public class RobotContainer {
     elevator.setDefaultCommand(controllerElevator);
     clamp.setDefaultCommand(controllerClamp);
 
-    chooser.setDefaultOption("Direct Balance", directBalance);
-    chooser.addOption("Place and Balance", placeAndBalance);
-    chooser.addOption("Left Cone Place And Grab", leftConePlaceAndGrab);
+    chooser.setDefaultOption("Red Direct Balance", redDirectBalance);
+    chooser.addOption("Red Place and Balance", redPlaceAndBalance);
+    chooser.addOption("Red Left Cone Place And Grab", redLeftConePlaceAndGrab);
+    chooser.addOption("Blue Place and Balance", bluePlaceAndBalance);
+    chooser.addOption("Blue Left Cone Place And Grab", blueLeftConePlaceAndGrab);
 
     // Put the chooser on the dashboard
     // Shuffleboard.getTab("Competition").add(chooser);
@@ -200,7 +203,7 @@ public class RobotContainer {
     gunnerController.leftTrigger().whileTrue(resetToBottom);
     gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
-
+    gunnerController.povUp().whileTrue(new PlaceHighAuto());
   }
 
   // /**
