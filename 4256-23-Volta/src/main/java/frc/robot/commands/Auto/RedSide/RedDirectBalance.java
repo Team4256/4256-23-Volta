@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Auto;
+package frc.robot.commands.Auto.RedSide;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -15,7 +15,7 @@ import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.subsystems.*;
 
-public class DirectBalance extends SequentialCommandGroup {
+public class RedDirectBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = new SwerveSubsystem();
   Gyro gyro = Gyro.getInstance();
@@ -38,7 +38,7 @@ public class DirectBalance extends SequentialCommandGroup {
       swerve);
 
   /** Creates a new DirectBalance Command. */
-  public DirectBalance() {
+  public RedDirectBalance() {
     addCommands(
         new InstantCommand(() -> gyro.reset()),
         new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),

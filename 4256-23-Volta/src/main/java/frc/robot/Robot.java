@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
     SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
+    
     lights.set(.87);
   }
 

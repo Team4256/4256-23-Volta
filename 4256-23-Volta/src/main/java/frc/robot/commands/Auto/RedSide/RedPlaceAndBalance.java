@@ -2,7 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Auto;
+package frc.robot.commands.Auto.RedSide;
+
+import java.time.Instant;
 
 import javax.swing.text.html.FormView;
 
@@ -11,10 +13,13 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
+import frc.robot.commands.Clamp.SpitClamp;
+import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
@@ -22,7 +27,7 @@ import frc.robot.commands.System.PlaceHighAuto;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class PlaceAndBalance extends SequentialCommandGroup {
+public class RedPlaceAndBalance extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
@@ -33,8 +38,8 @@ public class PlaceAndBalance extends SequentialCommandGroup {
   PIDController yController = new PIDController(2, 0, 0);
   PIDController thetaController = new PIDController(-2, 0, 0);
 
-  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Place And Balance 1", .5, .5);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Place And Balance 1", .5, .5);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Place And Balance 1", 2, 1.5);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Place And Balance 2", 2, 1.5);
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,
@@ -44,7 +49,7 @@ public class PlaceAndBalance extends SequentialCommandGroup {
       yController,
       thetaController,
       swerve::setModuleStates,
-      true,
+      false,
       swerve);
       
 PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
@@ -55,22 +60,23 @@ PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
       yController,
       thetaController,
       swerve::setModuleStates,
-      true,
+      false,
       swerve);
   /** Creates a new TwoConeAutoTop Command. */
-  public PlaceAndBalance() {
+  public RedPlaceAndBalance() {
     addCommands(
-        new InstantCommand(() -> thetaController.enableContinuousInput(0, 360)),
+        new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
         new InstantCommand(() -> swerve.resetOdometer(autoPath1.getInitialPose())),
         new InstantCommand(() -> intake.intakeDown()),
-        new InstantCommand(() -> clamp.clamp()),
+        new ParallelDeadlineGroup(new WaitCommand(.5), new SuckClamp()),
         new PlaceHigh(),
-        new WaitCommand(2),
-        //pathCommand1,
+        pathCommand1,
+        new ParallelDeadlineGroup(new WaitCommand(.5), new SpitClamp()),
         new InstantCommand(() -> clamp.unclamp()),
         new ResetToBottom(),
-        new InstantCommand(() -> intake.intakeDown())
-        //pathCommand2
+        new InstantCommand(() -> intake.intakeUp()),
+        new WaitCommand(.5),
+        pathCommand2
         //new AutoBalance(swerve)
     );
   }

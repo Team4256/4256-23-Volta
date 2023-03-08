@@ -33,6 +33,7 @@ public class Clamp extends SubsystemBase {
   public static Clamp instance = null;
   private CANCoder clampCoder;
   private PIDController clampPidController;
+  private DigitalInput clampLimitSwitch;
 
   public Clamp() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.CLAMP_SOLENOID_FORWARD_CHANNEL,
@@ -42,6 +43,7 @@ public class Clamp extends SubsystemBase {
     this.clampCoder = new CANCoder(Constants.CLAMP_ENCODER_ID);
     this.clampPidController = new PIDController(Constants.CLAMP_MOTOR_KP, Constants.CLAMP_MOTOR_KI,
         Constants.CLAMP_MOTOR_KD);
+    this.clampLimitSwitch = new DigitalInput(Constants.CLAMP_LIMIT_SWITCH_ID);
     configClampMotor();
   }
 
@@ -52,7 +54,15 @@ public class Clamp extends SubsystemBase {
     }
     return instance;
   }
+  public boolean getClampLimitSwitch() {
 
+    if (clampLimitSwitch.get()) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
   public double getCANCoderAngle() {
     return clampCoder.getPosition();
   }
@@ -87,7 +97,7 @@ public class Clamp extends SubsystemBase {
       speed = .6 * Math.signum(speed);
     }
 
-    clampMotor.set(ControlMode.PercentOutput, speed);
+    clampMotor.set(ControlMode.PercentOutput, -speed);
   }
 
   public void setClampMid() {
@@ -97,7 +107,7 @@ public class Clamp extends SubsystemBase {
       speed = .8 * Math.signum(speed);
     }
 
-    clampMotor.set(ControlMode.PercentOutput, speed);
+    clampMotor.set(ControlMode.PercentOutput, -speed);
   }
 
   public void setClampLow() {
@@ -106,7 +116,7 @@ public class Clamp extends SubsystemBase {
       speed = .8 * Math.signum(speed);
     }
 
-    clampMotor.set(ControlMode.PercentOutput, speed);
+    clampMotor.set(ControlMode.PercentOutput, -speed);
   }
 
   public void setClampGrab() {
@@ -115,16 +125,16 @@ public class Clamp extends SubsystemBase {
       speed = .8 * Math.signum(speed);
     }
 
-    clampMotor.set(ControlMode.PercentOutput, speed);
+    clampMotor.set(ControlMode.PercentOutput, -speed);
   }
 
   public void setClampSpeed(double speed) {
-       clampMotor.set(VictorSPXControlMode.PercentOutput, speed);
+       clampMotor.set(VictorSPXControlMode.PercentOutput, -speed);
   }
+
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
-    
   }
 
   private void configClampMotor() {
@@ -141,5 +151,6 @@ public class Clamp extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ClampCoder Angle", getCANCoderAngle());
     SmartDashboard.putNumber("Clamp Motor Voltage", clampMotor.getMotorOutputVoltage());
+    SmartDashboard.putBoolean("Clamp Limit Switch", getClampLimitSwitch());
   }
 }

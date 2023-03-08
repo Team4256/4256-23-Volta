@@ -39,7 +39,7 @@ public class SetClampTop extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (clamp.getCANCoderAngle() <= Constants.CLAMP_TOP_POSITION_1 + 10) {
+    if (clamp.getClampLimitSwitch()) {
       return true;
     } else {
       return false;

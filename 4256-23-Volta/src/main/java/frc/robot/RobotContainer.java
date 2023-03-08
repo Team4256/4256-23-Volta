@@ -13,9 +13,12 @@ import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
-import frc.robot.commands.Auto.DirectBalance;
-import frc.robot.commands.Auto.LeftConePlaceAndGrab;
-import frc.robot.commands.Auto.PlaceAndBalance;
+import frc.robot.commands.Auto.RedSide.RedDirectBalance;
+import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
+import frc.robot.commands.Auto.RedSide.RedPlaceAndBalance;
+import frc.robot.commands.Auto.BlueSide.BlueDirectBalance;
+import frc.robot.commands.Auto.BlueSide.BlueLeftConePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BluePlaceAndBalance;
 import frc.robot.commands.Clamp.SetClampLow;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
@@ -120,9 +123,13 @@ public class RobotContainer {
   private final Command formX = new FormX(robotDrive);
 
   //Auto
-  private final Command placeAndBalance = new PlaceAndBalance();
-  private final Command directBalance = new DirectBalance();
-  private final Command leftConePlaceAndGrab = new LeftConePlaceAndGrab();
+  private final Command bluePlaceAndBalance = new BluePlaceAndBalance();
+  private final Command blueDirectBalance = new BlueDirectBalance();
+  private final Command blueLeftConePlaceAndGrab = new BlueLeftConePlaceAndGrab();
+
+  private final Command redPlaceAndBalance = new RedPlaceAndBalance();
+  private final Command redDirectBalance = new RedDirectBalance();
+  private final Command redLeftConePlaceAndGrab = new RedLeftConePlaceAndGrab();
   
 
   SendableChooser<Command> chooser = new SendableChooser<>();

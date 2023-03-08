@@ -6,6 +6,7 @@ package frc.robot.commands.System;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
 import frc.robot.commands.Elevator.ElevatorHigh;
@@ -29,6 +30,7 @@ public class PlaceHigh extends SequentialCommandGroup {
       new ElevatorUpMid(elevator),
       new SetClampTop(clamp),
       new InstantCommand(() -> elevator.tiltElevatorUp()),
+      new WaitCommand(1),
       new ElevatorHigh(elevator),
       new SetClampTop(clamp)
     );
