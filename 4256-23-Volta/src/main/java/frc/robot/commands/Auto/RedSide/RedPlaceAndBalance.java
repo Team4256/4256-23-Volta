@@ -23,7 +23,6 @@ import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
-import frc.robot.commands.System.PlaceHighAuto;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
@@ -72,12 +71,11 @@ PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
         new PlaceHigh(),
         pathCommand1,
         new ParallelDeadlineGroup(new WaitCommand(.5), new SpitClamp()),
-        new InstantCommand(() -> clamp.unclamp()),
         new ResetToBottom(),
         new InstantCommand(() -> intake.intakeUp()),
-        new WaitCommand(.5),
-        pathCommand2
-        //new AutoBalance(swerve)
+        new WaitCommand(.7),
+        pathCommand2,
+        new AutoBalance(swerve)
     );
   }
 }

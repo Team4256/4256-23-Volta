@@ -45,6 +45,5 @@ public class SetClampTop extends CommandBase {
       return false;
     }
 
-    //return false;
   }
 }

@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
+import frc.robot.commands.Clamp.SetClampGrab;
+import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.RunIntake;
@@ -30,7 +32,7 @@ import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class BlueLeftConePlaceAndGrab extends SequentialCommandGroup {
+public class BlueLeftCubePlaceAndGrab extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
@@ -42,9 +44,9 @@ public class BlueLeftConePlaceAndGrab extends SequentialCommandGroup {
   PIDController thetaController = new PIDController(-3, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Left Cone Place And Grab 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Left Cone Place And Grab 2", 1, 1);
-  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Left Cone Place And Grab 3", 1, 1);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Blue Left Cube Place And Grab", 1, 1);
+  // PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Blue Right Cone Place And Grab 2", 1, 1);
+  // PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Blue Right Cone Place And Grab 3", 1, 1);
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,
@@ -57,47 +59,45 @@ public class BlueLeftConePlaceAndGrab extends SequentialCommandGroup {
       false,
       swerve);
 
-  PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
-      autoPath2,
-      swerve::getPose,
-      Constants.DRIVE_KINEMATICS,
-      xController,
-      yController,
-      thetaController,
-      swerve::setModuleStates,
-      false,
-      swerve);
+  // PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
+  //     autoPath2,
+  //     swerve::getPose,
+  //     Constants.DRIVE_KINEMATICS,
+  //     xController,
+  //     yController,
+  //     thetaController,
+  //     swerve::setModuleStates,
+  //     false,
+  //     swerve);
 
-  PPSwerveControllerCommand pathCommand3 = new PPSwerveControllerCommand(
-      autoPath3,
-      swerve::getPose,
-      Constants.DRIVE_KINEMATICS,
-      xController,
-      yController,
-      thetaController,
-      swerve::setModuleStates,
-      false,
-      swerve);
+  // PPSwerveControllerCommand pathCommand3 = new PPSwerveControllerCommand(
+  //     autoPath3,
+  //     swerve::getPose,
+  //     Constants.DRIVE_KINEMATICS,
+  //     xController,
+  //     yController,
+  //     thetaController,
+  //     swerve::setModuleStates,
+  //     false,
+  //     swerve);
 
   /** Creates a new DirectBalance Command. */
-  public BlueLeftConePlaceAndGrab() {
+  public BlueLeftCubePlaceAndGrab() {
 
     addCommands(
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
       new InstantCommand(() -> swerve.resetOdometer(autoPath1.getInitialPose())),
       new InstantCommand(() -> intake.intakeDown()),
-      new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
+      new ParallelDeadlineGroup(new WaitCommand(.5), new SuckClamp()),
       new PlaceHigh(),
-      pathCommand1,
-      new InstantCommand(() -> clamp.unclamp()),
+      new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom(),
-      new InstantCommand(() -> intake.intakeDown()),
-      pathCommand2,
-      new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
+      new ParallelDeadlineGroup(pathCommand1, new RunIntake()),
+      new SetClampGrab(clamp),
+      new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp()),
       new PlaceHigh(),
-      pathCommand3,
-      new InstantCommand(() -> clamp.unclamp()),
+      new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom()
     );
   }

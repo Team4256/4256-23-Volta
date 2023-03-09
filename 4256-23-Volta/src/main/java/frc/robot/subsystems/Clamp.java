@@ -11,8 +11,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -20,8 +18,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Conversions;
-import edu.wpi.first.math.filter.SlewRateLimiter;
+
 
 //Note, VictorSPX encoders have 4096 ticks per rotation
 
@@ -93,8 +90,8 @@ public class Clamp extends SubsystemBase {
   public void setClampTop() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
-    if (Math.abs(speed) > .6) {
-      speed = .6 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, -speed);
@@ -136,10 +133,8 @@ public class Clamp extends SubsystemBase {
     intakeMotor.set(VictorSPXControlMode.PercentOutput, 0);
   }
 
-
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
-    
   }
 
   private void configClampMotor() {

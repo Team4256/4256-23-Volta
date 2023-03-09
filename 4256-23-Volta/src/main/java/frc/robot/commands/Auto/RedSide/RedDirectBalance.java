@@ -24,7 +24,7 @@ public class RedDirectBalance extends SequentialCommandGroup {
   PIDController yController = new PIDController(2, 0, 0);
   PIDController thetaController = new PIDController(-2, 0, 0.0);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Over and Back", 1, 1);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Red Over and Back", 1, 1);
 
   PPSwerveControllerCommand command = new PPSwerveControllerCommand(
       autoPath,
@@ -46,7 +46,6 @@ public class RedDirectBalance extends SequentialCommandGroup {
         new InstantCommand(() -> intake.intakeUp()),
         command,
         new AutoBalance(swerve)
-
     );
   }
 }

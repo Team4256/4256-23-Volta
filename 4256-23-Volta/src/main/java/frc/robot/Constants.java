@@ -118,7 +118,7 @@ public class Constants {
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
   public final static int ELEVATOR_TOP_POSITION = 25000;
   public final static int ELEVATOR_MID_POSITION = 8500;
-  public final static int ELEVATOR_LOW_POSITION = 16000;
+  public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 16000;
   public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;

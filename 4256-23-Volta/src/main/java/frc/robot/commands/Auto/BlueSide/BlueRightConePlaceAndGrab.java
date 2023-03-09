@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Auto.RedSide;
+package frc.robot.commands.Auto.BlueSide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
+public class BlueRightConePlaceAndGrab extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
@@ -41,15 +41,12 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   Intake intake = Intake.getInstance();
   PIDController xController = new PIDController(3, 0, 0);
   PIDController yController = new PIDController(3,0, 0);
-  PIDController thetaController = new PIDController(-4, 0, 0);
+  PIDController thetaController = new PIDController(-3, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Left Cone Place And Grab 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Left Cone Place And Grab 2", 1, 1);
-  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Red Left Cone Place And Grab 3", 1, 1);
-
-
-  
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Blue Right Cone Place And Grab 1", 1, 1);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Blue Right Cone Place And Grab 2", 1, 1);
+  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Blue Right Cone Place And Grab 3", 1, 1);
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,
@@ -85,16 +82,8 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       swerve);
 
   /** Creates a new DirectBalance Command. */
-  public RedLeftConePlaceAndGrab() {
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("Stop Intake", new InstantCommand(() -> clamp.stopInnerClamp()));
-    eventMap.put("Intake", new RunIntake());
-    
-    FollowPathWithEvents command = new FollowPathWithEvents(
-        pathCommand2,
-        autoPath2.getMarkers(),
-        eventMap
-    );
+  public BlueRightConePlaceAndGrab() {
+
     addCommands(
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),

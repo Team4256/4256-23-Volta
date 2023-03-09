@@ -12,13 +12,15 @@ import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
 import frc.robot.commands.System.PlaceHigh;
-import frc.robot.commands.System.PlaceHighAuto;
+import frc.robot.commands.System.PlaceMid;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.commands.Auto.RedSide.RedDirectBalance;
 import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
 import frc.robot.commands.Auto.RedSide.RedPlaceAndBalance;
+import frc.robot.commands.Auto.RedSide.RedRightCubePlaceAndGrab;
 import frc.robot.commands.Auto.BlueSide.BlueDirectBalance;
-import frc.robot.commands.Auto.BlueSide.BlueLeftConePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BlueLeftCubePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BlueRightConePlaceAndGrab;
 import frc.robot.commands.Auto.BlueSide.BluePlaceAndBalance;
 import frc.robot.commands.Clamp.SetClampLow;
 import frc.robot.commands.Clamp.SetClampTop;
@@ -40,7 +42,7 @@ import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
-import frc.robot.commands.Elevator.ElevatorLow;
+import frc.robot.commands.Elevator.ElevatorTeleopLimit;
 import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
@@ -91,13 +93,14 @@ public class RobotContainer {
   private final Command placeHigh = new PlaceHigh();
   private final Command resetToBottom = new ResetToBottom();
   private final Command blankCommand = new BlankCommand(robotDrive);
+  private final Command placeMid = new PlaceMid();
 
   // Elevator
   private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
   private final Command tiltElevatorDown = new TiltElevatorDown(elevator);
   private final Command elevatorHigh = new ElevatorHigh(elevator);
   private final Command elevatorMid = new ElevatorUpMid(elevator);
-  private final Command elevatorLow = new ElevatorLow(elevator);
+  private final Command elevatorTeleopLimit = new ElevatorTeleopLimit(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command incrementElevator = new IncrementElevator(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
@@ -126,11 +129,13 @@ public class RobotContainer {
   //Auto
   private final Command bluePlaceAndBalance = new BluePlaceAndBalance();
   private final Command blueDirectBalance = new BlueDirectBalance();
-  private final Command blueLeftConePlaceAndGrab = new BlueLeftConePlaceAndGrab();
+  private final Command blueRightConePlaceAndGrab = new BlueRightConePlaceAndGrab();
+  private final Command blueLeftCubePlaceAndGrab = new BlueLeftCubePlaceAndGrab();
 
   private final Command redPlaceAndBalance = new RedPlaceAndBalance();
   private final Command redDirectBalance = new RedDirectBalance();
   private final Command redLeftConePlaceAndGrab = new RedLeftConePlaceAndGrab();
+  private final Command redRightCubePlaceAndGrab = new RedRightCubePlaceAndGrab();
   
 
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -149,16 +154,23 @@ public class RobotContainer {
     chooser.setDefaultOption("Red Direct Balance", redDirectBalance);
     chooser.addOption("Red Place and Balance", redPlaceAndBalance);
     chooser.addOption("Red Left Cone Place And Grab", redLeftConePlaceAndGrab);
+    chooser.addOption("Red Right Cube Place And Grab", redRightCubePlaceAndGrab);
+    chooser.addOption("Blue Direct Balance", blueDirectBalance);
     chooser.addOption("Blue Place and Balance", bluePlaceAndBalance);
-    chooser.addOption("Blue Left Cone Place And Grab", blueLeftConePlaceAndGrab);
+    chooser.addOption("Blue Right Cone Place And Grab", blueRightConePlaceAndGrab);
+    chooser.addOption("Blue Left Cube Place And Grab", blueLeftCubePlaceAndGrab);
 
     // Put the chooser on the dashboard
-    // Shuffleboard.getTab("Competition").add(chooser);
     SmartDashboard.putData(chooser);
   }
 
   public void setTeleopDefaultCommands() {
     robotDrive.setDefaultCommand(controllerDrive);
+  }
+
+  public void initMethods() {
+    elevator.resetElevatorEncoder();
+    clamp.resetClampEncoder();
   }
 
   public void setAutoDefaultCommands() {
@@ -186,9 +198,9 @@ public class RobotContainer {
     driverController.a().onTrue(intakeDown);
     driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
     driverController.x().whileTrue(formX);
-    driverController.start().whileTrue(moveToTarget);
     driverController.leftBumper().whileTrue(runIntake);
     driverController.rightBumper().whileTrue(runIntakeReverse);
+    driverController.start().whileTrue(moveToTarget);
     driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
     driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
 
@@ -203,7 +215,8 @@ public class RobotContainer {
     gunnerController.leftTrigger().whileTrue(resetToBottom);
     gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
-    gunnerController.povUp().whileTrue(new PlaceHighAuto());
+    gunnerController.povUp().whileTrue(placeMid);
+    gunnerController.povDown().whileTrue(elevatorTeleopLimit);
   }
 
   // /**
