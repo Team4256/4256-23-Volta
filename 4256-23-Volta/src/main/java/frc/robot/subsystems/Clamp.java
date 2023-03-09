@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -42,6 +43,7 @@ public class Clamp extends SubsystemBase {
         Constants.CLAMP_MOTOR_KD);
     this.clampLimitSwitch = new DigitalInput(Constants.CLAMP_LIMIT_SWITCH_ID);
     configClampMotor();
+    clampCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
   }
 
   public static synchronized Clamp getInstance() {
@@ -61,11 +63,11 @@ public class Clamp extends SubsystemBase {
 
   }
   public double getCANCoderAngle() {
-    return clampCoder.getPosition();
+    return clampCoder.getAbsolutePosition();
   }
 
   public void resetClampEncoder() {
-    clampCoder.setPosition(0);
+    clampCoder.setPositionToAbsolute(0);
   }
 
   public void clamp() {
@@ -90,11 +92,11 @@ public class Clamp extends SubsystemBase {
   public void setClampTop() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
-    if (Math.abs(speed) > .8) {
-      speed = .8 * Math.signum(speed);
+    if (Math.abs(speed) > .5) {
+      speed = .5 * Math.signum(speed);
     }
 
-    clampMotor.set(ControlMode.PercentOutput, -speed);
+    clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setClampMid() {
@@ -117,7 +119,9 @@ public class Clamp extends SubsystemBase {
   }
 
   public void setClampGrab() {
-    double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_GRAB_POSITION);
+
+    
+    double speed = clampPidController.calculate(getCANCoderAngle(), placeInAppropriate0To360Scope(getCANCoderAngle(), Constants.CLAMP_GRAB_POSITION));
     if (Math.abs(speed) > .8) {
       speed = .8 * Math.signum(speed);
     }
@@ -126,7 +130,13 @@ public class Clamp extends SubsystemBase {
   }
 
   public void setClampSpeed(double speed) {
-       clampMotor.set(VictorSPXControlMode.PercentOutput, -speed);
+
+    if (getClampLimitSwitch() && speed < 0) {
+      stop();
+    } else {
+      clampMotor.set(VictorSPXControlMode.PercentOutput, -speed);
+    }
+       
   }
 
   public void stopInnerClamp() {
@@ -135,6 +145,36 @@ public class Clamp extends SubsystemBase {
 
   public void stop() {
     clampMotor.set(VictorSPXControlMode.PercentOutput, 0);
+  }
+
+  /**
+     * @param scopeReference Current Angle
+     * @param newAngle       Target Angle
+     * @return Closest angle within scope
+     */
+    private static double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+      double lowerBound;
+      double upperBound;
+      double lowerOffset = scopeReference % 360;
+      if (lowerOffset >= 0) {
+          lowerBound = scopeReference - lowerOffset;
+          upperBound = scopeReference + (360 - lowerOffset);
+      } else {
+          upperBound = scopeReference - lowerOffset;
+          lowerBound = scopeReference - (360 + lowerOffset);
+      }
+      while (newAngle < lowerBound) {
+          newAngle += 360;
+      }
+      while (newAngle > upperBound) {
+          newAngle -= 360;
+      }
+      if (newAngle - scopeReference > 180) {
+          newAngle -= 360;
+      } else if (newAngle - scopeReference < -180) {
+          newAngle += 360;
+      }
+      return newAngle;
   }
 
   private void configClampMotor() {

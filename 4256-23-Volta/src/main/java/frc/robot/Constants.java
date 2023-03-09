@@ -133,11 +133,10 @@ public class Constants {
   public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
-  public final static int CLAMP_TOP_POSITION_2 = -122;
-  public final static int CLAMP_TOP_POSITION_1 = -130;
+  public final static int CLAMP_TOP_POSITION_1 = 295; //-130
   public final static int CLAMP_MID_POSITION = 0; /* TODO find these angles */
   public final static int CLAMP_LOW_POSITION = 0;/* */
-  public final static int CLAMP_GRAB_POSITION = 57;/* */
+  public final static int CLAMP_GRAB_POSITION = 110;/* */
   public final static double CLAMP_MOTOR_KP = 0.07; // .7
   public final static double CLAMP_MOTOR_KI = 0;/* */
   public final static double CLAMP_MOTOR_KD = .002; //.002

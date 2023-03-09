@@ -83,6 +83,7 @@ public class Elevator extends SubsystemBase {
       speed = .5 * Math.signum(speed);
     }
     
+    SmartDashboard.putNumber("Elevator Speed", speed);
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
@@ -99,8 +100,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorTeleopLimit() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TELEOP_LIMIT_POSITION);
-    if (Math.abs(speed) > .5) {
-      speed = .5 * Math.signum(speed);
+    if (Math.abs(speed) > .3) {
+      speed = .3 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -108,8 +109,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorBottom() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_BASE_POSITION);
-    if (Math.abs(speed) > .5) {
-      speed = .5 * Math.signum(speed);
+    if (Math.abs(speed) > .3) {
+      speed = .3 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);

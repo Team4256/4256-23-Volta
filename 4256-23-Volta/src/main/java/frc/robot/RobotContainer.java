@@ -203,6 +203,8 @@ public class RobotContainer {
     driverController.start().whileTrue(moveToTarget);
     driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
     driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
+    driverController.povUp().whileTrue(autoBalance);
+    driverController.povDown().whileTrue(setClampTop);
 
     // Gunner Button Bindings
     gunnerController.y().whileTrue(tiltElevatorUp);
@@ -217,6 +219,8 @@ public class RobotContainer {
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     gunnerController.povUp().whileTrue(placeMid);
     gunnerController.povDown().whileTrue(elevatorTeleopLimit);
+    gunnerController.povLeft().whileTrue(setClampGrab);
+    gunnerController.povRight().whileTrue(setClampTop);
   }
 
   // /**

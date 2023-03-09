@@ -14,12 +14,12 @@ public class AutoBalance extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController balancePID = new PIDController(-0.014, 0, -0.00); // Values must be negative
+  private PIDController balancePID = new PIDController(-0.01, 0, -0.00); // Values must be negative
   private double ySpeed;
 
   public AutoBalance(SwerveSubsystem swerve) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
-    balancePID.setTolerance(0.5);
+    balancePID.setTolerance(8);
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
 
@@ -39,8 +39,13 @@ public class AutoBalance extends CommandBase {
     if (Math.abs(ySpeed) > 0.2) {
       ySpeed = Math.copySign(0.2, ySpeed);
     }
-    swerveDrive.drive(-ySpeed, 0, 0, fieldOrient);
 
+    if (gyro.getPitch() < 8) {
+      swerveDrive.formX();
+    } else {
+      swerveDrive.drive(-ySpeed, 0, 0, fieldOrient);
+    }
+    
     SmartDashboard.putNumber("Balance Speed", ySpeed);
     
   }

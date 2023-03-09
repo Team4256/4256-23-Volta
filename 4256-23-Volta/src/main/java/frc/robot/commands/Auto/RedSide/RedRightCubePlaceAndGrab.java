@@ -29,6 +29,7 @@ import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.PlaceMid;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
@@ -96,7 +97,7 @@ public class RedRightCubePlaceAndGrab extends SequentialCommandGroup {
       new ParallelDeadlineGroup(pathCommand1, new RunIntake()),
       new SetClampGrab(clamp),
       new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp()),
-      new PlaceHigh(),
+      new PlaceMid(),
       new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom()
     );
