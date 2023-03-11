@@ -116,6 +116,24 @@ public class Elevator extends SubsystemBase {
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  public void setElevatorSmallRaise() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_SMALL_RAISE_POSITION);
+    if (Math.abs(speed) > .3) {
+      speed = .3 * Math.signum(speed);
+    }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setElevatorFeederStation() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_FEEDER_STATION_POSITION);
+    if (Math.abs(speed) > .3) {
+      speed = .3 * Math.signum(speed);
+    }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+
   public void incrementElevator() {
     targetHeight = getElevatorEncoderPosition() + 5;
     if (!elevatorBottomLimitSwitch.get()) {

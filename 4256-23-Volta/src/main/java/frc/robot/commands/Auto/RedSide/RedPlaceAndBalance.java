@@ -20,6 +20,7 @@ import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
+import frc.robot.commands.Elevator.ElevatorSmallRaise;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
@@ -33,9 +34,9 @@ public class RedPlaceAndBalance extends SequentialCommandGroup {
   Clamp clamp = Clamp.getInstance();
   Elevator elevator = Elevator.getInstance();
   Intake intake = Intake.getInstance();
-  PIDController xController = new PIDController(2, 0, 0);
-  PIDController yController = new PIDController(2, 0, 0);
-  PIDController thetaController = new PIDController(-2, 0, 0);
+  PIDController xController = new PIDController(3, 0, 0);
+  PIDController yController = new PIDController(3, 0, 0);
+  PIDController thetaController = new PIDController(-4, 0, 0);
 
   PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Place And Balance 1", 1, 1);
   PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Place And Balance 2", 1.5, 1.5);
@@ -74,6 +75,7 @@ PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
         new ResetToBottom(),
         new InstantCommand(() -> intake.intakeUp()),
         new WaitCommand(.7),
+        new ElevatorSmallRaise(elevator),
         pathCommand2,
         new AutoBalance(swerve)
     );

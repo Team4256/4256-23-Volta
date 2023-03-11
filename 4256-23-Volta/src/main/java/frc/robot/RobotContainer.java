@@ -11,9 +11,11 @@ import frc.robot.commands.Swerve.BlankCommand;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
+import frc.robot.commands.System.FeederStationPosition;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.PlaceMid;
 import frc.robot.commands.System.ResetToBottom;
+import frc.robot.commands.Auto.RedSide.RedCubePlaceAndMove;
 import frc.robot.commands.Auto.RedSide.RedDirectBalance;
 import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
 import frc.robot.commands.Auto.RedSide.RedPlaceAndBalance;
@@ -28,10 +30,11 @@ import frc.robot.commands.Clamp.SetClampTopHold;
 import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Clamp.SetClampMid;
-import frc.robot.commands.Clamp.SetClampGrab;
+import frc.robot.commands.Clamp.SetClampCube;
 import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.ControllerClamp;
 import frc.robot.commands.Clamp.OpenClamp;
+import frc.robot.commands.Clamp.SetClampCone;
 import frc.robot.commands.Elevator.IncrementElevator;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.IntakeUp;
@@ -40,8 +43,10 @@ import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorFeederStation;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
+import frc.robot.commands.Elevator.ElevatorSmallRaise;
 import frc.robot.commands.Elevator.ElevatorTeleopLimit;
 import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorUp;
@@ -102,6 +107,8 @@ public class RobotContainer {
   private final Command elevatorMid = new ElevatorUpMid(elevator);
   private final Command elevatorTeleopLimit = new ElevatorTeleopLimit(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
+  private final Command elevatorSmallRaise = new ElevatorSmallRaise(elevator);
+  private final Command elevatorFeederStationPosition = new FeederStationPosition();
   private final Command incrementElevator = new IncrementElevator(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
@@ -110,7 +117,8 @@ public class RobotContainer {
   private final Command setClampTopHold = new SetClampTopHold(clamp);
   private final Command setClampMid = new SetClampMid(clamp);
   private final Command setClampLow = new SetClampLow(clamp);
-  private final Command setClampGrab = new SetClampGrab(clamp);
+  private final Command setClampCube = new SetClampCube(clamp);
+  private final Command setClampCone = new SetClampCone(clamp);
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
   private final Command openClamp = new OpenClamp();
   private final Command closeClamp = new CloseClamp();
@@ -136,6 +144,7 @@ public class RobotContainer {
   private final Command redDirectBalance = new RedDirectBalance();
   private final Command redLeftConePlaceAndGrab = new RedLeftConePlaceAndGrab();
   private final Command redRightCubePlaceAndGrab = new RedRightCubePlaceAndGrab();
+  private final Command redCubePlaceAndMove = new RedCubePlaceAndMove();
   
 
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -155,6 +164,7 @@ public class RobotContainer {
     chooser.addOption("Red Place and Balance", redPlaceAndBalance);
     chooser.addOption("Red Left Cone Place And Grab", redLeftConePlaceAndGrab);
     chooser.addOption("Red Right Cube Place And Grab", redRightCubePlaceAndGrab);
+    chooser.addOption("Red Cube Place And Move", redCubePlaceAndMove);
     chooser.addOption("Blue Direct Balance", blueDirectBalance);
     chooser.addOption("Blue Place and Balance", bluePlaceAndBalance);
     chooser.addOption("Blue Right Cone Place And Grab", blueRightConePlaceAndGrab);
@@ -218,9 +228,9 @@ public class RobotContainer {
     gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     gunnerController.povUp().whileTrue(placeMid);
-    gunnerController.povDown().whileTrue(elevatorTeleopLimit);
-    gunnerController.povLeft().whileTrue(setClampGrab);
-    gunnerController.povRight().whileTrue(setClampTop);
+    gunnerController.povDown().whileTrue(elevatorFeederStationPosition);
+    gunnerController.povLeft().whileTrue(setClampCube);
+    gunnerController.povRight().whileTrue(setClampCone);
   }
 
   // /**

@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
-import frc.robot.commands.Clamp.SetClampGrab;
+import frc.robot.commands.Clamp.SetClampCube;
 import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
@@ -105,7 +105,7 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       pathCommand1,
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
-      new SetClampGrab(clamp),
+      new SetClampCube(clamp),
       new ParallelDeadlineGroup(pathCommand2, new RunIntake()),
       new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp()),
       new PlaceHigh(),

@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
 import frc.robot.commands.Clamp.CloseClamp;
-import frc.robot.commands.Clamp.SetClampGrab;
+import frc.robot.commands.Clamp.SetClampCube;
 import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
@@ -42,7 +42,7 @@ public class RedRightCubePlaceAndGrab extends SequentialCommandGroup {
   Intake intake = Intake.getInstance();
   PIDController xController = new PIDController(3, 0, 0);
   PIDController yController = new PIDController(3,0, 0);
-  PIDController thetaController = new PIDController(-3, 0, 0);
+  PIDController thetaController = new PIDController(-4, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
   PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Right Cube Place And Grab", 1, 1);
@@ -95,7 +95,7 @@ public class RedRightCubePlaceAndGrab extends SequentialCommandGroup {
       new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom(),
       new ParallelDeadlineGroup(pathCommand1, new RunIntake()),
-      new SetClampGrab(clamp),
+      new SetClampCube(clamp),
       new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp()),
       new PlaceMid(),
       new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),

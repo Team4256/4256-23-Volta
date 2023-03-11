@@ -9,11 +9,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Clamp;
 
 
-public class SetClampGrab extends CommandBase {
+public class SetClampFeederStation extends CommandBase {
 
   private Clamp clamp;
   /** Creates a new ElevatorHigh. */
-  public SetClampGrab(Clamp clamp) {
+  public SetClampFeederStation(Clamp clamp) {
     this.clamp = clamp;
     addRequirements(clamp);
   }
@@ -26,7 +26,7 @@ public class SetClampGrab extends CommandBase {
   @Override
   public void execute() {
 
-    clamp.setClampGrab();
+    clamp.SetClampFeederStation();
 
   }
 
@@ -39,10 +39,11 @@ public class SetClampGrab extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (clamp.getCANCoderAngle() >= Constants.CLAMP_GRAB_POSITION - 5) {
+    if (clamp.getCANCoderAngle() <= Constants.CLAMP_FEEDER_STATION_POSITION + 5) {
       return true;
     } else {
       return false;
     }
+
   }
 }

@@ -67,10 +67,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.66);
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(161.98);
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(1.32);
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(5.09);
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.05);
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(165.08);
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.43);
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(6.41);
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -119,6 +119,8 @@ public class Constants {
   public final static int ELEVATOR_TOP_POSITION = 25000;
   public final static int ELEVATOR_MID_POSITION = 8500;
   public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 16000;
+  public final static int ELEVATOR_SMALL_RAISE_POSITION = 2500;
+  public final static int ELEVATOR_FEEDER_STATION_POSITION = 19900;
   public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;
@@ -136,7 +138,9 @@ public class Constants {
   public final static int CLAMP_TOP_POSITION_1 = 295; //-130
   public final static int CLAMP_MID_POSITION = 0; /* TODO find these angles */
   public final static int CLAMP_LOW_POSITION = 0;/* */
-  public final static int CLAMP_GRAB_POSITION = 110;/* */
+  public final static int CLAMP_CUBE_POSITION = 110;/* */
+  public final static int CLAMP_CONE_POSITION = 110;/* */
+  public final static int CLAMP_FEEDER_STATION_POSITION = -51;/* */
   public final static double CLAMP_MOTOR_KP = 0.07; // .7
   public final static double CLAMP_MOTOR_KI = 0;/* */
   public final static double CLAMP_MOTOR_KD = .002; //.002

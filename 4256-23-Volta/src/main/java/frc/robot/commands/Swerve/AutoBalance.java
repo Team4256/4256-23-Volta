@@ -14,7 +14,7 @@ public class AutoBalance extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
-  private PIDController balancePID = new PIDController(-0.01, 0, -0.00); // Values must be negative
+  private PIDController balancePID = new PIDController(-0.008, 0, -0.00); // Values must be negative
   private double ySpeed;
 
   public AutoBalance(SwerveSubsystem swerve) {
@@ -40,7 +40,7 @@ public class AutoBalance extends CommandBase {
       ySpeed = Math.copySign(0.2, ySpeed);
     }
 
-    if (gyro.getPitch() < 8) {
+    if (Math.abs(gyro.getPitch()) < 10) {
       swerveDrive.formX();
     } else {
       swerveDrive.drive(-ySpeed, 0, 0, fieldOrient);
