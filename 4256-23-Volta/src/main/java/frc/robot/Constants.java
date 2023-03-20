@@ -67,10 +67,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.05);
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(165.08);
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(0.43);
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(6.41);
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.05);//324.75
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(165.08);//164.75
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(257.69);//257.69
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(6.41);//5.45
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -135,7 +135,7 @@ public class Constants {
   public final static int CLAMP_ENCODER_ID = 35;
   public final static int CLAMP_SOLENOID_FORWARD_CHANNEL = 1;
   public final static int CLAMP_SOLENOID_REVERSE_CHANNEL = 0;
-  public final static int CLAMP_TOP_POSITION_1 = 295; //-130
+  public final static int CLAMP_TOP_POSITION_1 = 295; //-130, 295
   public final static int CLAMP_MID_POSITION = 0; /* TODO find these angles */
   public final static int CLAMP_LOW_POSITION = 0;/* */
   public final static int CLAMP_CUBE_POSITION = 110;/* */
