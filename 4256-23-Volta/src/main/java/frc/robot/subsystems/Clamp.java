@@ -92,8 +92,8 @@ public class Clamp extends SubsystemBase {
   public void setClampTop() {
 
     double speed = clampPidController.calculate(getCANCoderAngle(), Constants.CLAMP_TOP_POSITION_1);
-    if (Math.abs(speed) > .5) {
-      speed = .5 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
 
     clampMotor.set(ControlMode.PercentOutput, speed);

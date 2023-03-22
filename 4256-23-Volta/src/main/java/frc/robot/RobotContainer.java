@@ -7,10 +7,12 @@ package frc.robot;
 import frc.robot.commands.Swerve.AlignToTarget;
 import frc.robot.commands.Swerve.AlignToZero;
 import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.AutoMoveToTarget;
 import frc.robot.commands.Swerve.BlankCommand;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.Swerve.MoveToTarget;
+import frc.robot.commands.System.ConeMidPosition;
 import frc.robot.commands.System.FeederStationPosition;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.PlaceMid;
@@ -43,6 +45,7 @@ import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorConeMid;
 import frc.robot.commands.Elevator.ElevatorFeederStation;
 import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
@@ -109,6 +112,7 @@ public class RobotContainer {
   private final Command elevatorBottom = new ElevatorBottom(elevator);
   private final Command elevatorSmallRaise = new ElevatorSmallRaise(elevator);
   private final Command elevatorFeederStationPosition = new FeederStationPosition();
+  private final Command elevatorConeMidPosition = new ConeMidPosition();
   private final Command incrementElevator = new IncrementElevator(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
@@ -131,6 +135,7 @@ public class RobotContainer {
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, driverController);
   private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
+  private final Command autoMoveToTarget = new AutoMoveToTarget(robotDrive, camera, driverController);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
 
@@ -211,6 +216,7 @@ public class RobotContainer {
     driverController.leftBumper().whileTrue(runIntake);
     driverController.rightBumper().whileTrue(runIntakeReverse);
     driverController.start().whileTrue(moveToTarget);
+    driverController.back().whileTrue(autoMoveToTarget);
     driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
     driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
     driverController.povUp().whileTrue(autoBalance);
@@ -227,7 +233,7 @@ public class RobotContainer {
     gunnerController.leftTrigger().whileTrue(resetToBottom);
     gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
-    gunnerController.povUp().whileTrue(placeMid);
+    gunnerController.povUp().whileTrue(elevatorConeMidPosition);
     gunnerController.povDown().whileTrue(elevatorFeederStationPosition);
     gunnerController.povLeft().whileTrue(setClampCube);
     gunnerController.povRight().whileTrue(setClampCone);

@@ -5,12 +5,13 @@
 package frc.robot.commands.System;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Clamp.SetClampFeederStation;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
+import frc.robot.commands.Elevator.ElevatorConeMid;
+import frc.robot.commands.Elevator.ElevatorFeederStation;
 import frc.robot.commands.Elevator.ElevatorHigh;
 import frc.robot.commands.Elevator.ElevatorUpMid;
 import frc.robot.commands.Elevator.TiltElevatorDown;
@@ -21,20 +22,20 @@ import frc.robot.subsystems.Elevator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class PlaceHigh extends SequentialCommandGroup {
+public class ConeMidPosition extends SequentialCommandGroup {
   /** Creates a new PlaceHigh. */
   private Elevator elevator = Elevator.getInstance();
   private Clamp clamp = Clamp.getInstance();
-  public PlaceHigh() {
+  public ConeMidPosition() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ElevatorUpMid(elevator),
-      new ParallelRaceGroup(new SetClampTop(clamp), new WaitCommand(3)),
+      new SetClampTop(clamp),
       new InstantCommand(() -> elevator.tiltElevatorUp()),
       new WaitCommand(1),
-      new ElevatorHigh(elevator),
-      new ParallelDeadlineGroup(new SetClampTop(clamp), new WaitCommand(3))
+      new ElevatorConeMid(elevator),
+      new SetClampTop(clamp)
     );
   }
 }

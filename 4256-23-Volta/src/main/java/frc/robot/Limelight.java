@@ -47,6 +47,10 @@ public class Limelight {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getNumber(0.0).intValue() == 1;
     }
 
+    public synchronized double getTargetArea() {
+        return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0.0);
+    }
+
     public synchronized double getTargetOffsetDegrees() {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0);
     }

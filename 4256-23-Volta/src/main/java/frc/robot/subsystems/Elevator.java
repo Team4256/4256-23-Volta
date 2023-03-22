@@ -79,8 +79,8 @@ public class Elevator extends SubsystemBase {
   public void setElevatorHigh() {
 
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TOP_POSITION);
-    if (Math.abs(speed) > .5) {
-      speed = .5 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     SmartDashboard.putNumber("Elevator Speed", speed);
@@ -90,8 +90,8 @@ public class Elevator extends SubsystemBase {
   public void setElevatorMid() {
 
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_MID_POSITION);
-    if (Math.abs(speed) > .5) {
-      speed = .5 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -100,8 +100,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorTeleopLimit() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TELEOP_LIMIT_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -109,8 +109,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorBottom() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_BASE_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -118,8 +118,8 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorSmallRaise() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_SMALL_RAISE_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);
@@ -127,8 +127,17 @@ public class Elevator extends SubsystemBase {
 
   public void setElevatorFeederStation() {
     double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_FEEDER_STATION_POSITION);
-    if (Math.abs(speed) > .3) {
-      speed = .3 * Math.signum(speed);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
+    }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setElevatorConeMid() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_CONE_MID_POSITION);
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
     }
     
     leftElevatorMotor.set(ControlMode.PercentOutput, speed);

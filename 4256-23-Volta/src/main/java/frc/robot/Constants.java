@@ -14,6 +14,8 @@ public class Constants {
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
 
+  public static final double LIMELIGHT_AREA_THRESHOLD = 0.371; // Thresholds: .35, .39 TARGET: .371
+
   // Gyro
   public static final byte GYRO_UPDATE_HZ = 50;
   public static final double GYRO_OFFSET = 0;
@@ -67,10 +69,10 @@ public class Constants {
 
   public static final double STEERING_GEAR_RATIO = 12.8;
 
-  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.05);//324.75
-  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(165.08);//164.75
-  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(257.69);//257.69
-  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(6.41);//5.45
+  public static final Rotation2d MODULE_A_ANGLE_OFFSET = Rotation2d.fromDegrees(324.22);//324.75
+  public static final Rotation2d MODULE_B_ANGLE_OFFSET = Rotation2d.fromDegrees(164.88);//164.75
+  public static final Rotation2d MODULE_C_ANGLE_OFFSET = Rotation2d.fromDegrees(256.01);//257.69
+  public static final Rotation2d MODULE_D_ANGLE_OFFSET = Rotation2d.fromDegrees(5.61);//5.45
 
   public static final int ROTATION_MOTOR_A_ID = 11; // Front Left //all done 2022
   public static final int ROTATION_MOTOR_B_ID = 12; // Front Right
@@ -116,11 +118,12 @@ public class Constants {
   public final static int ELEVATOR_SOLENOID_REVERSE_CHANNEL = 4;
   public final static int ELEVATOR_TOP_LIMIT_SWITCH_ID = 1;
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
-  public final static int ELEVATOR_TOP_POSITION = 25000;
-  public final static int ELEVATOR_MID_POSITION = 8500;
-  public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 16000;
-  public final static int ELEVATOR_SMALL_RAISE_POSITION = 2500;
-  public final static int ELEVATOR_FEEDER_STATION_POSITION = 19900;
+  public final static int ELEVATOR_TOP_POSITION = 25700;
+  public final static int ELEVATOR_CONE_MID_POSITION = 19600;
+  public final static int ELEVATOR_MID_POSITION = 8300;
+  public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 13500;
+  public final static int ELEVATOR_SMALL_RAISE_POSITION = 3500;
+  public final static int ELEVATOR_FEEDER_STATION_POSITION = 18000;
   public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;
