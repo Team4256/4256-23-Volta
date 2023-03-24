@@ -29,9 +29,8 @@ public class PlaceMid extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ElevatorUpMid(elevator),
-      new SetClampTop(clamp),
-      new ElevatorTeleopLimit(elevator),
       new SetClampTop(clamp)
+      
     );
   }
 }

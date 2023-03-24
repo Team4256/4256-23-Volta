@@ -42,9 +42,9 @@ public class AutoMoveToTarget extends CommandBase {
     double forwardSpeed = forwardPID.calculate(limelight.getTargetArea(), Constants.LIMELIGHT_AREA_THRESHOLD);
     double forwardMoveSpeed = Math.max(-.2, Math.min(forwardSpeed, .2));
     double xSpeed = -positionPID.calculate(limelight.getXOffset(),0);
-    double strafeSpeed = Math.max(-.4, Math.min(xSpeed, .4));
+    double strafeSpeed = Math.max(-.2, Math.min(xSpeed, .2));
     double angularSpeed = -orientationPID.calculate(gyro.getAngle(),0);
-    double spinSpeed = Math.max(-.4, Math.min(angularSpeed, .4));
+    double spinSpeed = Math.max(-.2, Math.min(angularSpeed, .2));
 
     SmartDashboard.putNumber("forwardSpeed", forwardMoveSpeed);
     

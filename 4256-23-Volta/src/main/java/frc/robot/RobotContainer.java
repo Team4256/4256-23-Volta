@@ -236,7 +236,7 @@ public class RobotContainer {
     gunnerController.povUp().whileTrue(elevatorConeMidPosition);
     gunnerController.povDown().whileTrue(elevatorFeederStationPosition);
     gunnerController.povLeft().whileTrue(setClampCube);
-    gunnerController.povRight().whileTrue(setClampCone);
+    gunnerController.povRight().whileTrue(placeMid);
   }
 
   // /**
