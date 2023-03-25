@@ -27,6 +27,7 @@ import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.AutoMoveToTarget;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
@@ -39,6 +40,7 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   Clamp clamp = Clamp.getInstance();
   Elevator elevator = Elevator.getInstance();
   Intake intake = Intake.getInstance();
+  Limelight limelight = Limelight.getInstance();
   PIDController xController = new PIDController(3, 0, 0);
   PIDController yController = new PIDController(3,0, 0);
   PIDController thetaController = new PIDController(-4, 0, 0);
@@ -102,7 +104,7 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       new InstantCommand(() -> intake.intakeDown()),
       new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
       new PlaceHigh(),
-      pathCommand1,
+      new AutoMoveToTarget(swerve, limelight),
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
       new SetClampCube(clamp),

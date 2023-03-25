@@ -94,8 +94,7 @@ public class RedCubePlaceAndMove extends SequentialCommandGroup {
       new PlaceHigh(),
       new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
       new ResetToBottom(),
-      new InstantCommand(() -> intake.intakeUp()),
-      pathCommand1
+      new ParallelDeadlineGroup(pathCommand1, new RunIntake(), new SuckClamp())
     );
   }
 }

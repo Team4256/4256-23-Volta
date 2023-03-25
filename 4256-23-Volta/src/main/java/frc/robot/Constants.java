@@ -123,7 +123,7 @@ public class Constants {
   public final static int ELEVATOR_MID_POSITION = 8300;
   public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 13500;
   public final static int ELEVATOR_SMALL_RAISE_POSITION = 3500;
-  public final static int ELEVATOR_FEEDER_STATION_POSITION = 18000;
+  public final static int ELEVATOR_FEEDER_STATION_POSITION = 17800;
   public final static int ELEVATOR_BASE_POSITION = 0;
   public final static double ELEVATOR_MOTOR_KP = -.0012;
   public final static double ELEVATOR_MOTOR_KI = 0;

@@ -16,20 +16,17 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class AutoMoveToTarget extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
-  private final CommandXboxController controller;
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.03, 0, -0.001); //Values must be negative
   private PIDController positionPID = new PIDController(0.04, 0, -0.0000); //Values must be negative (.02)
   private PIDController forwardPID = new PIDController(1.3, 0, -0.0000); //Values must be negative (.02)
 
-  public AutoMoveToTarget(SwerveSubsystem swerve, Limelight camera, CommandXboxController driverController) {
+  public AutoMoveToTarget(SwerveSubsystem swerve, Limelight camera) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
-    this.controller = driverController;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
   }
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -67,10 +64,11 @@ public class AutoMoveToTarget extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (limelight.getTargetArea() <= Constants.LIMELIGHT_AREA_THRESHOLD) {
-      return false;
-    } else {
-      return true;
-    }
+    // if (limelight.getTargetArea() <= Constants.LIMELIGHT_AREA_THRESHOLD) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+    return false;
   }
 }

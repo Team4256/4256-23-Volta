@@ -37,13 +37,11 @@ import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.ControllerClamp;
 import frc.robot.commands.Clamp.OpenClamp;
 import frc.robot.commands.Clamp.SetClampCone;
-import frc.robot.commands.Elevator.IncrementElevator;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.IntakeUp;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Intake.RunIntakeReverse;
 import frc.robot.commands.Elevator.ControllerElevator;
-import frc.robot.commands.Elevator.DecrementElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
 import frc.robot.commands.Elevator.ElevatorConeMid;
 import frc.robot.commands.Elevator.ElevatorFeederStation;
@@ -113,7 +111,6 @@ public class RobotContainer {
   private final Command elevatorSmallRaise = new ElevatorSmallRaise(elevator);
   private final Command elevatorFeederStationPosition = new FeederStationPosition();
   private final Command elevatorConeMidPosition = new ConeMidPosition();
-  private final Command incrementElevator = new IncrementElevator(elevator);
   private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
   // Clamp
@@ -134,8 +131,8 @@ public class RobotContainer {
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, driverController);
-  private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
-  private final Command autoMoveToTarget = new AutoMoveToTarget(robotDrive, camera, driverController);
+  private final Command moveToTarget = new MoveToTarget(robotDrive, camera);
+  private final Command autoMoveToTarget = new AutoMoveToTarget(robotDrive, camera);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
 
