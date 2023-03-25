@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.*;
@@ -27,7 +28,7 @@ import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Intake.IntakeDown;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Swerve.AutoBalance;
-import frc.robot.commands.Swerve.AutoMoveToTarget;
+import frc.robot.commands.Swerve.AutoMoveToTargetHigh;
 import frc.robot.commands.Swerve.FormX;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
@@ -47,7 +48,7 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
   PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Left Cone Place And Grab 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Left Cone Place And Grab 2", 1, 1);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Right Cone Place And Grab", 2, 2);
   PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Red Left Cone Place And Grab 3", 1, 1);
 
 
@@ -98,22 +99,24 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
         eventMap
     );
     addCommands(
+      new InstantCommand(() -> limelight.setPipeline(1)),
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
-      new InstantCommand(() -> swerve.resetOdometer(autoPath1.getInitialPose())),
       new InstantCommand(() -> intake.intakeDown()),
-      new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
+      //new InstantCommand(() -> clamp.clamp()),
+      //new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
       new PlaceHigh(),
-      new AutoMoveToTarget(swerve, limelight),
+      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(3)),
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
       new SetClampCube(clamp),
+      new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
       new ParallelDeadlineGroup(pathCommand2, new RunIntake()),
-      new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp()),
-      new PlaceHigh(),
-      pathCommand3,
-      new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
-      new ResetToBottom()
+      new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
+      // new PlaceHigh(),
+      // pathCommand3,
+      // new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
+      // new ResetToBottom()
     );
   }
 }

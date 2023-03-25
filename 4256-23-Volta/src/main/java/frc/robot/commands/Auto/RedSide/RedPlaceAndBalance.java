@@ -23,6 +23,7 @@ import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Elevator.ElevatorSmallRaise;
 import frc.robot.commands.Swerve.AutoBalance;
 import frc.robot.commands.Swerve.FormX;
+import frc.robot.commands.System.AutoResetToBottom;
 import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.PlaceMid;
 import frc.robot.commands.System.ResetToBottom;
@@ -40,7 +41,7 @@ public class RedPlaceAndBalance extends SequentialCommandGroup {
   PIDController thetaController = new PIDController(-4, 0, 0);
 
   PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Place And Balance 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Direct Balance", 1.5, 1.5);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Over and Back", 1.5, 1.5);
 
   PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
       autoPath1,
@@ -67,16 +68,14 @@ PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
   public RedPlaceAndBalance() {
     addCommands(
         new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
-        new InstantCommand(() -> swerve.resetOdometer(autoPath1.getInitialPose())),
         new InstantCommand(() -> intake.intakeDown()),
         new ParallelDeadlineGroup(new WaitCommand(.5), new SuckClamp()),
-        //new PlaceHigh(),
         new PlaceMid(),
         new ParallelDeadlineGroup(new WaitCommand(.5), new SpitClamp()),
         new ResetToBottom(),
         new InstantCommand(() -> intake.intakeUp()),
         new WaitCommand(.5),
-        //new ElevatorSmallRaise(elevator),
+        new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
         pathCommand2,
         new AutoBalance(swerve)
     );

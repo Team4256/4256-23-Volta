@@ -13,7 +13,7 @@ import frc.robot.Limelight;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class AutoMoveToTarget extends CommandBase {
+public class MoveToTargetMid extends CommandBase {
   private final SwerveSubsystem swerveDrive;
   private final Limelight limelight;
   private final Gyro gyro = Gyro.getInstance();
@@ -22,7 +22,7 @@ public class AutoMoveToTarget extends CommandBase {
   private PIDController positionPID = new PIDController(0.04, 0, -0.0000); //Values must be negative (.02)
   private PIDController forwardPID = new PIDController(1.3, 0, -0.0000); //Values must be negative (.02)
 
-  public AutoMoveToTarget(SwerveSubsystem swerve, Limelight camera) {
+  public MoveToTargetMid(SwerveSubsystem swerve, Limelight camera) {
     swerveDrive = swerve; // Set the private membeParametersr to the input drivetrain
     limelight = camera;
     addRequirements(swerveDrive); // Because this will be used as a default command, add the subsystem which will
@@ -36,7 +36,7 @@ public class AutoMoveToTarget extends CommandBase {
   @Override
   public void execute() {
 
-    double forwardSpeed = forwardPID.calculate(limelight.getTargetArea(), Constants.LIMELIGHT_AREA_THRESHOLD);
+    double forwardSpeed = forwardPID.calculate(limelight.getTargetArea(), Constants.LIMELIGHT_MID_CONE_AREA_THRESHOLD);
     double forwardMoveSpeed = Math.max(-.2, Math.min(forwardSpeed, .2));
     double xSpeed = -positionPID.calculate(limelight.getXOffset(),0);
     double strafeSpeed = Math.max(-.2, Math.min(xSpeed, .2));

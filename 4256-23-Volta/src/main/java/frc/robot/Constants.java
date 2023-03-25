@@ -14,7 +14,8 @@ public class Constants {
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
 
-  public static final double LIMELIGHT_AREA_THRESHOLD = 0.371; // Thresholds: .35, .39 TARGET: .371
+  public static final double LIMELIGHT_TOP_CONE_AREA_THRESHOLD = 0.371; // Thresholds: .35, .39 TARGET: .371
+  public static final double LIMELIGHT_MID_CONE_AREA_THRESHOLD = 0.27; // Thresholds: .35, .39 TARGET: .371
 
   // Gyro
   public static final byte GYRO_UPDATE_HZ = 50;
@@ -119,7 +120,7 @@ public class Constants {
   public final static int ELEVATOR_TOP_LIMIT_SWITCH_ID = 1;
   public final static int ELEVATOR_BOTTOM_LIMIT_SWITCH_ID = 2;
   public final static int ELEVATOR_TOP_POSITION = 25700;
-  public final static int ELEVATOR_CONE_MID_POSITION = 19600;
+  public final static int ELEVATOR_CONE_MID_POSITION = 21200;
   public final static int ELEVATOR_MID_POSITION = 8300;
   public final static int ELEVATOR_TELEOP_LIMIT_POSITION = 13500;
   public final static int ELEVATOR_SMALL_RAISE_POSITION = 3500;

@@ -96,6 +96,10 @@ public class Clamp extends SubsystemBase {
       speed = .8 * Math.signum(speed);
     }
 
+    if (getClampLimitSwitch()) {
+      speed = 0;
+    }
+
     clampMotor.set(ControlMode.PercentOutput, speed);
   }
 
