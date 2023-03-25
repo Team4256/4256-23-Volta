@@ -6,131 +6,192 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
-  
-  private DutyCycleEncoder elevatorEncoder;
-  private TalonFX elevatorMotor;
+
+  private DigitalInput elevatorTopLimitSwitch;
+  private DigitalInput elevatorBottomLimitSwitch;
+  private TalonSRX leftElevatorMotor;
+  private TalonSRX rightElevatorMotor;
   private DoubleSolenoid elevatorSolenoid;
+  private PIDController elevatorPidController;
+  private double targetHeight;
   public static Elevator instance = null;
-  public double targetAngle = 0;
-  private final TrapezoidProfile.Constraints pidConstraints =
-    new TrapezoidProfile.Constraints(1.75, 0.75);
-  private final ProfiledPIDController pidController =
-    new ProfiledPIDController(1.3, 0.0, 0.7, pidConstraints, 0.02);
-  
-  /** Creates a new Elevator. */
+
   public Elevator() {
-    this.elevatorEncoder = new DutyCycleEncoder(5);
-    this.elevatorMotor = new TalonFX(Constants.ELEVATOR_MOTOR_ID);
-    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
-    
+    this.leftElevatorMotor = new TalonSRX(Constants.ELEVATOR_LEFT_MOTOR_ID);
+    this.rightElevatorMotor = new TalonSRX(Constants.ELEVATOR_RIGHT_MOTOR_ID);
+    this.elevatorSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+        Constants.ELEVATOR_SOLENOID_FORWARD_CHANNEL, Constants.ELEVATOR_SOLENOID_REVERSE_CHANNEL);
+    this.elevatorTopLimitSwitch = new DigitalInput(Constants.ELEVATOR_TOP_LIMIT_SWITCH_ID);
+    this.elevatorBottomLimitSwitch = new DigitalInput(Constants.ELEVATOR_BOTTOM_LIMIT_SWITCH_ID);
+    this.elevatorPidController = new PIDController(Constants.ELEVATOR_MOTOR_KP, Constants.ELEVATOR_MOTOR_KI, Constants.ELEVATOR_MOTOR_KD);
     configElevatorMotor();
   }
 
   public static synchronized Elevator getInstance() {
-		if (instance == null) {
-			instance = new Elevator();
-			
-		} 
-		return instance;
-	}
+    if (instance == null) {
+      instance = new Elevator();
+
+    }
+    return instance;
+  }
 
   public double getElevatorEncoderPosition() {
-    return elevatorEncoder.getAbsolutePosition();
+    return leftElevatorMotor.getSelectedSensorPosition();
   }
 
   public void resetElevatorEncoder() {
-    elevatorEncoder.reset();
-    
+    leftElevatorMotor.setSelectedSensorPosition(0);
+  }
+
+  public boolean getElevatorBottomLimitSwitch() {
+
+    if (elevatorBottomLimitSwitch.get()) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
+
+  public boolean getElevatorTopLimitSwitch() {
+
+    if (elevatorTopLimitSwitch.get()) {
+      return false;
+    } else {
+      return true;
+    }
+
   }
 
   public void setElevatorHigh() {
 
-    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_HIGH);
-    } else {
-      stopElevator();
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TOP_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
-
+    
+    SmartDashboard.putNumber("Elevator Speed", speed);
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setElevatorMid() {
-    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_MID);
-    } else {
-      stopElevator();
+
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_MID_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+    
   }
 
-  public void setElevatorLow() {
-    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      pidController.calculate(elevatorEncoder.get(), Constants.ELEVATOR_POSITION_LOW);
-    } else {
-      stopElevator();
+  public void setElevatorTeleopLimit() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_TELEOP_LIMIT_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setElevatorBottom() {
-    if (elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) {
-      elevatorMotor.set(ControlMode.Position, Constants.ELEVATOR_POSITION_BOTTOM);
-    } else {
-      stopElevator();
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_BASE_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void incrementElevator() {
-    targetAngle = elevatorEncoder.get() + 5;
-    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
-    } else {
-      stopElevator();
+  public void setElevatorSmallRaise() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_SMALL_RAISE_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public void decrementElevator() {
-    targetAngle = elevatorEncoder.get() - 5;
-    if ((elevatorEncoder.get() <= Constants.ELEVATOR_UPPER_LIMIT) && (elevatorEncoder.get() <= Constants.ELEVATOR_BOTTOM_LIMIT)) {
-      elevatorMotor.set(ControlMode.PercentOutput, targetAngle);
-    } else {
-      stopElevator();
+  public void setElevatorFeederStation() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_FEEDER_STATION_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
     }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
   }
+
+  public void setElevatorConeMid() {
+    double speed = elevatorPidController.calculate(getElevatorEncoderPosition(), Constants.ELEVATOR_CONE_MID_POSITION);
+    if (Math.abs(speed) > .6) {
+      speed = .6 * Math.signum(speed);
+    }
+    
+    leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  // public void setElevatorMotor(double speed) {
+  //  leftElevatorMotor.set(TalonSRXControlMode.PercentOutput, speed);
+  // }
+
+  public void setElevatorMotor(double speed) {
+
+    if (getElevatorTopLimitSwitch() && speed < 0) {
+      stopElevator();
+    } else if (getElevatorBottomLimitSwitch() && speed > 0) {
+      stopElevator();
+    } else {
+      leftElevatorMotor.set(ControlMode.PercentOutput, speed);
+    }
+
+   }
 
   public void stopElevator() {
-    elevatorMotor.set(ControlMode.PercentOutput, 0);
+    leftElevatorMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public void tiltElevatorDown() {
     elevatorSolenoid.set(Value.kForward);
   }
-  
+
   public void tiltElevatorUp() {
-    elevatorSolenoid.set(Value.kForward);
+    elevatorSolenoid.set(Value.kReverse);
   }
 
   private void configElevatorMotor() {
-    elevatorMotor.configFactoryDefault();
-        elevatorMotor.config_kP(0, Constants.ELEVATOR_MOTOR_KP);
-        elevatorMotor.config_kI(0, Constants.ELEVATOR_MOTOR_KI);
-        elevatorMotor.config_kD(0, Constants.ELEVATOR_MOTOR_KD);
-        elevatorMotor.config_kF(0, Constants.ELEVATOR_MOTOR_KF);
-        elevatorMotor.setInverted(false);
-        elevatorMotor.setNeutralMode(NeutralMode.Brake);
+    leftElevatorMotor.configFactoryDefault();
+    leftElevatorMotor.config_kP(0, Constants.ELEVATOR_MOTOR_KP);
+    leftElevatorMotor.config_kI(0, Constants.ELEVATOR_MOTOR_KI);
+    leftElevatorMotor.config_kD(0, Constants.ELEVATOR_MOTOR_KD);
+    leftElevatorMotor.config_kF(0, Constants.ELEVATOR_MOTOR_KF);
+    leftElevatorMotor.setInverted(false);
+    leftElevatorMotor.setNeutralMode(NeutralMode.Brake);
+
+    rightElevatorMotor.configFactoryDefault();
+    rightElevatorMotor.follow(leftElevatorMotor);
+    rightElevatorMotor.setInverted(true);
+    rightElevatorMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  
+    SmartDashboard.putNumber("Elevator Encoder Counts", getElevatorEncoderPosition());
+    SmartDashboard.putBoolean("Elevator Top Limit Switch", getElevatorTopLimitSwitch());
+    SmartDashboard.putBoolean("Elevator Bottom Limit Switch", getElevatorBottomLimitSwitch());
   }
 }

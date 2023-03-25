@@ -17,6 +17,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private Gyro gyro = Gyro.getInstance();
   private static SwerveSubsystem instance = null;
   private final SlewRateLimiter xLimiter, yLimiter, angularLimiter;
+  private Boolean isCoastMode = false;
 
   public static synchronized SwerveSubsystem getInstance() {
     if (instance == null) {
@@ -98,10 +99,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void zeroHeading() {
     gyro.reset();
-  }
-
-  public void setXFormation() {
-
   }
 
   public void formX() {
@@ -198,13 +195,13 @@ public class SwerveSubsystem extends SubsystemBase {
         moduleD.getPosition()
     });
 
-    SmartDashboard.putString("moduleAOdometerFeed", moduleA.getState().toString());
+    //SmartDashboard.putString("moduleAOdometerFeed", moduleA.getState().toString());
     SmartDashboard.putString("Odometer", odometer.getPoseMeters().toString());
-
     SmartDashboard.putNumber("moduleAPosition", moduleA.getCANCoderAngle());
     SmartDashboard.putNumber("moduleBPosition", moduleB.getCANCoderAngle());
     SmartDashboard.putNumber("moduleCPosition", moduleC.getCANCoderAngle());
     SmartDashboard.putNumber("moduleDPosition", moduleD.getCANCoderAngle());
+    SmartDashboard.putBoolean("Is Coast Mode", isCoastMode);
 
   }
 
@@ -213,6 +210,22 @@ public class SwerveSubsystem extends SubsystemBase {
     moduleB.stop();
     moduleC.stop();
     moduleD.stop();
+  }
+
+  public void setBrakeMode() {
+    isCoastMode = false;
+    moduleA.setBrakeMode();
+    moduleB.setBrakeMode();
+    moduleC.setBrakeMode();
+    moduleD.setBrakeMode();
+  }
+
+  public void setCoastMode() {
+    isCoastMode = true;
+    moduleA.setCoastMode();
+    moduleB.setCoastMode();
+    moduleC.setCoastMode();
+    moduleD.setCoastMode();
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {

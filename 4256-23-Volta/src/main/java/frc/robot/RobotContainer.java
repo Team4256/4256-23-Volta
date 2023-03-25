@@ -7,25 +7,58 @@ package frc.robot;
 import frc.robot.commands.Swerve.AlignToTarget;
 import frc.robot.commands.Swerve.AlignToZero;
 import frc.robot.commands.Swerve.AutoBalance;
+import frc.robot.commands.Swerve.AutoMoveToTargetHigh;
+import frc.robot.commands.Swerve.AutoMoveToTargetMid;
 import frc.robot.commands.Swerve.BlankCommand;
 import frc.robot.commands.Swerve.ControllerDrive;
 import frc.robot.commands.Swerve.FormX;
-import frc.robot.commands.Swerve.MoveToTarget;
-import frc.robot.commands.Auto.DirectBalance;
-import frc.robot.commands.Auto.TwoConeAutoTop;
-import frc.robot.commands.Clamp.ClampBottom;
-import frc.robot.commands.Clamp.ClampHigh;
-import frc.robot.commands.Clamp.ClampMid;
+import frc.robot.commands.Swerve.MoveToTargetHigh;
+import frc.robot.commands.Swerve.MoveToTargetMid;
+import frc.robot.commands.System.ConeMidPosition;
+import frc.robot.commands.System.FeederStationPosition;
+import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.PlaceMid;
+import frc.robot.commands.System.ResetToBottom;
+import frc.robot.commands.Auto.RedSide.RedCubePlaceAndMove;
+import frc.robot.commands.Auto.RedSide.RedDirectBalance;
+import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
+import frc.robot.commands.Auto.RedSide.RedPlaceAndBalance;
+import frc.robot.commands.Auto.RedSide.RedRightCubePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BlueDirectBalance;
+import frc.robot.commands.Auto.BlueSide.BlueLeftCubePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BlueRightConePlaceAndGrab;
+import frc.robot.commands.Auto.BlueSide.BluePlaceAndBalance;
+import frc.robot.commands.Clamp.SetClampLow;
+import frc.robot.commands.Clamp.SetClampTop;
+import frc.robot.commands.Clamp.SetClampTopHold;
+import frc.robot.commands.Clamp.SpitClamp;
+import frc.robot.commands.Clamp.SuckClamp;
+import frc.robot.commands.Clamp.SetClampMid;
+import frc.robot.commands.Clamp.SetClampCube;
+import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.ControllerClamp;
-import frc.robot.commands.Elevator.IncrementElevator;
+import frc.robot.commands.Clamp.OpenClamp;
+import frc.robot.commands.Clamp.SetClampCone;
+import frc.robot.commands.Intake.IntakeDown;
+import frc.robot.commands.Intake.IntakeUp;
+import frc.robot.commands.Intake.RunIntake;
+import frc.robot.commands.Intake.RunIntakeReverse;
+import frc.robot.commands.Elevator.ControllerElevator;
 import frc.robot.commands.Elevator.ElevatorBottom;
+import frc.robot.commands.Elevator.ElevatorConeMid;
+import frc.robot.commands.Elevator.ElevatorFeederStation;
+import frc.robot.commands.Elevator.TiltElevatorDown;
 import frc.robot.commands.Elevator.ElevatorHigh;
-import frc.robot.commands.Elevator.ElevatorLow;
-import frc.robot.commands.Elevator.ElevatorMid;
+import frc.robot.commands.Elevator.ElevatorSmallRaise;
+import frc.robot.commands.Elevator.ElevatorTeleopLimit;
+import frc.robot.commands.Elevator.ElevatorUpMid;
+import frc.robot.commands.Elevator.TiltElevatorUp;
 import frc.robot.subsystems.Clamp;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -49,37 +82,76 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Subsystems
-  XboxController driverController = new XboxController(Constants.DRIVER_CONTROLLER_ID);
-  XboxController gunnerController = new XboxController(Constants.GUNNER_CONTROLLER_ID);
+  CommandXboxController driverController = new CommandXboxController(Constants.DRIVER_CONTROLLER_ID);
+  CommandXboxController gunnerController = new CommandXboxController(Constants.GUNNER_CONTROLLER_ID);
   private final SwerveSubsystem robotDrive = new SwerveSubsystem();
   private final Elevator elevator = Elevator.getInstance();
   private final Clamp clamp = Clamp.getInstance();
+  private final Intake intake = Intake.getInstance();
   private final Limelight camera = new Limelight();
   private final Gyro gyro = Gyro.getInstance();
 
+  // Intake
+  private final Command intakeDown = new IntakeDown();
+  private final Command intakeUp = new IntakeUp();
+  private final Command runIntake = new RunIntake();
+  private final Command runIntakeReverse = new RunIntakeReverse();
+
+  //System 
+  private final Command placeHigh = new PlaceHigh();
+  private final Command resetToBottom = new ResetToBottom();
+  private final Command blankCommand = new BlankCommand(robotDrive);
+  private final Command placeMid = new PlaceMid();
+
   // Elevator
+  private final Command tiltElevatorUp = new TiltElevatorUp(elevator);
+  private final Command tiltElevatorDown = new TiltElevatorDown(elevator);
   private final Command elevatorHigh = new ElevatorHigh(elevator);
-  private final Command elevatorMid = new ElevatorMid(elevator);
-  private final Command elevatorLow = new ElevatorLow(elevator);
+  private final Command elevatorMid = new ElevatorUpMid(elevator);
+  private final Command elevatorTeleopLimit = new ElevatorTeleopLimit(elevator);
   private final Command elevatorBottom = new ElevatorBottom(elevator);
-  private final Command incrementElevator = new IncrementElevator(elevator);
+  private final Command elevatorSmallRaise = new ElevatorSmallRaise(elevator);
+  private final Command elevatorFeederStationPosition = new FeederStationPosition();
+  private final Command elevatorConeMidPosition = new ConeMidPosition();
+  private final Command controllerElevator = new ControllerElevator(elevator, gunnerController);
 
   // Clamp
-  private final Command clampHigh = new ClampHigh(clamp);
-  private final Command clampMid = new ClampMid(clamp);
-  private final Command clampBottom = new ClampBottom(clamp);
+  private final Command setClampTop = new SetClampTop(clamp);
+  private final Command setClampTopHold = new SetClampTopHold(clamp);
+  private final Command setClampMid = new SetClampMid(clamp);
+  private final Command setClampLow = new SetClampLow(clamp);
+  private final Command setClampCube = new SetClampCube(clamp);
+  private final Command setClampCone = new SetClampCone(clamp);
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
+  private final Command openClamp = new OpenClamp();
+  private final Command closeClamp = new CloseClamp();
+  private final Command suckClamp = new SuckClamp();
+  private final Command spitClamp = new SpitClamp();
+
 
   // Swerve
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
-  private final Command alignToZero = new AlignToZero(robotDrive, camera, driverController);
-  private final Command moveToTarget = new MoveToTarget(robotDrive, camera, driverController);
+  private final Command alignToZero = new AlignToZero(robotDrive, driverController);
+  private final Command moveToTargetHigh = new MoveToTargetHigh(robotDrive, camera);
+  private final Command moveToTargetMid = new MoveToTargetMid(robotDrive, camera);
+  private final Command autoMoveToTargetHigh = new AutoMoveToTargetHigh(robotDrive, camera);
+  private final Command autoMoveToTargetMid = new AutoMoveToTargetMid(robotDrive, camera);
   private final Command autoBalance = new AutoBalance(robotDrive);
   private final Command formX = new FormX(robotDrive);
-  private final Command twoConeAutoTop = new TwoConeAutoTop();
-  private final Command directBalance = new DirectBalance();
-  private final Command blankCommand = new BlankCommand(robotDrive);
+
+  //Auto
+  private final Command bluePlaceAndBalance = new BluePlaceAndBalance();
+  private final Command blueDirectBalance = new BlueDirectBalance();
+  private final Command blueRightConePlaceAndGrab = new BlueRightConePlaceAndGrab();
+  private final Command blueLeftCubePlaceAndGrab = new BlueLeftCubePlaceAndGrab();
+
+  private final Command redPlaceAndBalance = new RedPlaceAndBalance();
+  private final Command redDirectBalance = new RedDirectBalance();
+  private final Command redLeftConePlaceAndGrab = new RedLeftConePlaceAndGrab();
+  private final Command redRightCubePlaceAndGrab = new RedRightCubePlaceAndGrab();
+  private final Command redCubePlaceAndMove = new RedCubePlaceAndMove();
+  
 
   SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -91,19 +163,33 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    chooser.setDefaultOption("Direct Balance", directBalance);
-    chooser.addOption("Two Cone Auto Top", twoConeAutoTop);
+    elevator.setDefaultCommand(controllerElevator);
+    clamp.setDefaultCommand(controllerClamp);
+
+    chooser.setDefaultOption("Red Direct Balance", redDirectBalance);
+    chooser.addOption("Red Place and Balance", redPlaceAndBalance);
+    chooser.addOption("Red Left Cone Place And Grab", redLeftConePlaceAndGrab);
+    chooser.addOption("Red Right Cube Place And Grab", redRightCubePlaceAndGrab);
+    chooser.addOption("Red Cube Place And Move", redCubePlaceAndMove);
+    chooser.addOption("Blue Direct Balance", blueDirectBalance);
+    chooser.addOption("Blue Place and Balance", bluePlaceAndBalance);
+    chooser.addOption("Blue Right Cone Place And Grab", blueRightConePlaceAndGrab);
+    chooser.addOption("Blue Left Cube Place And Grab", blueLeftCubePlaceAndGrab);
 
     // Put the chooser on the dashboard
-    //Shuffleboard.getTab("Competition").add(chooser);
     SmartDashboard.putData(chooser);
   }
 
-  public void setTeleopSwerveDefaultCommand() {
+  public void setTeleopDefaultCommands() {
     robotDrive.setDefaultCommand(controllerDrive);
   }
 
-  public void setAutoSwerveDefaultCommand() {
+  public void initMethods() {
+    elevator.resetElevatorEncoder();
+    clamp.resetClampEncoder();
+  }
+
+  public void setAutoDefaultCommands() {
     robotDrive.setDefaultCommand(blankCommand);
   }
 
@@ -123,48 +209,35 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    //Driver Button Bindings
-/**
- * A: Auto Balance
- * B: Reset Gyro
- * Y: Move To Target
- * X: Form X
- * Left Bumper: Align To Zero
- * Right Bumper: Reset Odometer
- */
-    new JoystickButton(driverController, Button.kA.value).whileTrue(autoBalance);
-    new JoystickButton(driverController, Button.kB.value).onTrue(new InstantCommand(() -> gyro.reset()));
-    new JoystickButton(driverController, Button.kY.value).whileTrue(moveToTarget);
-    new JoystickButton(driverController, Button.kX.value).whileTrue(formX);
-    //Sets AprilTag Pipeline
-    new JoystickButton(driverController, Button.kLeftBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
-    //Sets Reflective Tape Pipeline
-    new JoystickButton(driverController, Button.kRightBumper.value).whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
-        
-    //Gunner Button Bindings
-/*
- * Y: Elevator High
- * X: Elevator Mid
- * B: Elevator Low
- * A: Elevator Bottom
- * Start: Increment Elevator
- * Back: Controller Clamp
- * Left Bumper: Clamp High
- * Right Bumper: Clamp Mid
- * Right Stick: Clamp Bottom
- * 
- */
-    new JoystickButton(gunnerController, Button.kY.value).whileTrue(elevatorHigh);
-    new JoystickButton(gunnerController, Button.kX.value).whileTrue(elevatorMid);
-    new JoystickButton(gunnerController, Button.kB.value).whileTrue(elevatorLow);
-    new JoystickButton(gunnerController, Button.kA.value).whileTrue(elevatorBottom);
-    new JoystickButton(gunnerController, Button.kStart.value).whileTrue(incrementElevator);
+    // Driver Button Bindings
+    driverController.y().onTrue(intakeUp);
+    driverController.a().onTrue(intakeDown);
+    driverController.b().onTrue(new InstantCommand(() -> gyro.reset()));
+    driverController.x().whileTrue(formX);
+    driverController.leftBumper().whileTrue(runIntake);
+    driverController.rightBumper().whileTrue(runIntakeReverse);
+    driverController.start().whileTrue(moveToTargetHigh);
+    driverController.back().whileTrue(moveToTargetMid);
+    driverController.povLeft().whileTrue(new InstantCommand(() -> camera.setPipeline(0)));
+    driverController.povRight().whileTrue(new InstantCommand(() -> camera.setPipeline(1)));
+    driverController.povUp().whileTrue(autoBalance);
+    driverController.povDown().whileTrue(setClampTop);
 
-    new JoystickButton(gunnerController, Button.kLeftBumper.value).whileTrue(clampHigh);
-    new JoystickButton(gunnerController, Button.kRightBumper.value).whileTrue(clampMid);
-    new JoystickButton(gunnerController, Button.kRightStick.value).whileTrue(clampBottom);
-    new JoystickButton(gunnerController, Button.kBack.value).whileTrue(controllerClamp);
-
+    // Gunner Button Bindings
+    gunnerController.y().whileTrue(tiltElevatorUp);
+    gunnerController.a().whileTrue(tiltElevatorDown);
+    gunnerController.b().whileTrue(openClamp);
+    gunnerController.x().whileTrue(closeClamp);
+    gunnerController.leftBumper().whileTrue(suckClamp);
+    gunnerController.rightBumper().whileTrue(spitClamp);
+    gunnerController.rightTrigger().whileTrue(placeHigh);  
+    gunnerController.leftTrigger().whileTrue(resetToBottom);
+    gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
+    gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
+    gunnerController.povUp().whileTrue(elevatorConeMidPosition);
+    gunnerController.povDown().whileTrue(elevatorFeederStationPosition);
+    gunnerController.povLeft().whileTrue(setClampCube);
+    gunnerController.povRight().whileTrue(placeMid);
   }
 
   // /**

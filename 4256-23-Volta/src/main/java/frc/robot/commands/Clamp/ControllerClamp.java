@@ -4,19 +4,18 @@
 
 package frc.robot.commands.Clamp;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Clamp;
 
 public class ControllerClamp extends CommandBase {
 
-  private final XboxController controller;
-
+  private final CommandXboxController controller;
   private Clamp clamp;
   /** Creates a new ControllerampHigh. */
-  public ControllerClamp(Clamp clamp, XboxController controller) {
+  public ControllerClamp(Clamp clamp, CommandXboxController gunnerController) {
     this.clamp = clamp;
-    this.controller = controller;
+    this.controller = gunnerController;
     addRequirements(clamp);
   }
 
@@ -28,13 +27,15 @@ public class ControllerClamp extends CommandBase {
   @Override
   public void execute() {
 
-    clamp.setClampSpeed(-controller.getRightY());
+    clamp.setClampSpeed(-controller.getRightY() * 0.5);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    clamp.stop();
+  }
 
   // Returns true when the command should end.
   @Override

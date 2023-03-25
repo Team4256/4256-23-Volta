@@ -5,9 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gyro;
 
 /**
@@ -22,6 +24,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private Limelight limelight = new Limelight();
+  //private Elevator elevator = Elevator.getInstance();
   private Gyro gyro = Gyro.getInstance();
 
   /**
@@ -33,6 +36,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_robotContainer.initMethods();
+  
   }
 
   /**
@@ -50,12 +55,10 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     limelight.outputToSmartDashboard();
-    SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
-    SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
+    SmartDashboard.putNumber("Gyro Heading", gyro.getCurrentAngle());
+    SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
     SmartDashboard.putBoolean("Has Limelight Target", limelight.hasTarget());
-
     SmartDashboard.putNumber("Current Pipeline", limelight.getPipeline());
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -70,7 +73,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.setAutoSwerveDefaultCommand();
+    m_robotContainer.setAutoDefaultCommands();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -89,7 +92,7 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
 
 
-    m_robotContainer.setTeleopSwerveDefaultCommand();
+    m_robotContainer.setTeleopDefaultCommands();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

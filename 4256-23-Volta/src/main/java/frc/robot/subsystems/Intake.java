@@ -6,9 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -18,12 +16,12 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private DoubleSolenoid solenoid;
-  private TalonFX intakeMotor;
+  private VictorSPX intakeMotor;
   public static Intake instance = null;
   /** Creates a new Clamp. */
   public Intake() {
     this.solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_SOLENOID_FORWARD_CHANNEL , Constants.INTAKE_SOLENOID_REVERSE_CHANNEL);
-    this.intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_ID);
+    this.intakeMotor = new VictorSPX(Constants.INTAKE_MOTOR_ID);
     configIntakeMotor();
   }
 
@@ -40,7 +38,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void spit() {
-    solenoid.set(Value.kReverse);
+    intakeMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_MOTOR_SPEED);
   }
 
   public void intakeUp() {
@@ -57,10 +55,6 @@ public class Intake extends SubsystemBase {
 
   private void configIntakeMotor() {
     intakeMotor.configFactoryDefault();
-        intakeMotor.config_kP(0, Constants.CLAMP_MOTOR_KP);
-        intakeMotor.config_kI(0, Constants.CLAMP_MOTOR_KI);
-        intakeMotor.config_kD(0, Constants.CLAMP_MOTOR_KD);
-        intakeMotor.config_kF(0, Constants.CLAMP_MOTOR_KF);
         intakeMotor.setInverted(false);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
   }
