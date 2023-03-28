@@ -23,6 +23,7 @@ import frc.robot.commands.Auto.RedSide.RedCubePlaceAndMove;
 import frc.robot.commands.Auto.RedSide.RedDirectBalance;
 import frc.robot.commands.Auto.RedSide.RedLeftConePlaceAndGrab;
 import frc.robot.commands.Auto.RedSide.RedPlaceAndBalance;
+import frc.robot.commands.Auto.RedSide.RedRightConePlaceAndGrab;
 import frc.robot.commands.Auto.RedSide.RedRightCubePlaceAndGrab;
 import frc.robot.commands.Auto.BlueSide.BlueDirectBalance;
 import frc.robot.commands.Auto.BlueSide.BlueLeftCubePlaceAndGrab;
@@ -133,7 +134,7 @@ public class RobotContainer {
   private final ControllerDrive controllerDrive = new ControllerDrive(robotDrive, driverController);
   private final Command alignToTarget = new AlignToTarget(robotDrive, camera, driverController);
   private final Command alignToZero = new AlignToZero(robotDrive, driverController);
-  private final Command moveToTargetHigh = new MoveToTargetHigh(robotDrive, camera);
+  private final Command moveToTargetHigh = new MoveToTargetHigh(robotDrive, camera, driverController);
   private final Command moveToTargetMid = new MoveToTargetMid(robotDrive, camera);
   private final Command autoMoveToTargetHigh = new AutoMoveToTargetHigh(robotDrive, camera);
   private final Command autoMoveToTargetMid = new AutoMoveToTargetMid(robotDrive, camera);
@@ -149,6 +150,7 @@ public class RobotContainer {
   private final Command redPlaceAndBalance = new RedPlaceAndBalance();
   private final Command redDirectBalance = new RedDirectBalance();
   private final Command redLeftConePlaceAndGrab = new RedLeftConePlaceAndGrab();
+  private final Command redRightConePlaceAndGrab = new RedRightConePlaceAndGrab();
   private final Command redRightCubePlaceAndGrab = new RedRightCubePlaceAndGrab();
   private final Command redCubePlaceAndMove = new RedCubePlaceAndMove();
   
@@ -169,6 +171,7 @@ public class RobotContainer {
     chooser.setDefaultOption("Red Direct Balance", redDirectBalance);
     chooser.addOption("Red Place and Balance", redPlaceAndBalance);
     chooser.addOption("Red Left Cone Place And Grab", redLeftConePlaceAndGrab);
+    chooser.addOption("Red Right Cone Place And Grab", redRightConePlaceAndGrab);
     chooser.addOption("Red Right Cube Place And Grab", redRightCubePlaceAndGrab);
     chooser.addOption("Red Cube Place And Move", redCubePlaceAndMove);
     chooser.addOption("Blue Direct Balance", blueDirectBalance);

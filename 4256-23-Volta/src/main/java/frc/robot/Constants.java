@@ -153,6 +153,6 @@ public class Constants {
   public final static int INTAKE_MOTOR_ID = 15;
   public final static int INTAKE_SOLENOID_FORWARD_CHANNEL = 2;
   public final static int INTAKE_SOLENOID_REVERSE_CHANNEL = 3;
-  public final static double INTAKE_MOTOR_SPEED = 1;
+  public final static double INTAKE_MOTOR_SPEED = -1;
 
 }

@@ -34,7 +34,7 @@ import frc.robot.commands.System.PlaceHigh;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.subsystems.*;
 
-public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
+public class RedRightConePlaceAndGrab extends SequentialCommandGroup {
 
   SwerveSubsystem swerve = SwerveSubsystem.getInstance();
   Gyro gyro = Gyro.getInstance();
@@ -42,15 +42,20 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   Elevator elevator = Elevator.getInstance();
   Intake intake = Intake.getInstance();
   Limelight limelight = Limelight.getInstance();
-  PIDController xController = new PIDController(3, 0, 0);
-  PIDController yController = new PIDController(3,0, 0);
-  PIDController thetaController = new PIDController(-4, 0, 0);
+  PIDController xController = new PIDController(4, 0, 0);
+  PIDController yController = new PIDController(4,0, 0);
+  PIDController thetaController = new PIDController(-5, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Red Left Cone Place And Grab", 2, 2);
+  PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Left Cone Place And Grab 1", 1, 1);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Right Cone Place And Grab", 4, 3);
+  PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Red Left Cone Place And Grab 3", 1, 1);
 
-  PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
-      autoPath,
+
+  
+
+  PPSwerveControllerCommand pathCommand1 = new PPSwerveControllerCommand(
+      autoPath1,
       swerve::getPose,
       Constants.DRIVE_KINEMATICS,
       xController,
@@ -60,21 +65,53 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       false,
       swerve);
 
+  PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
+      autoPath2,
+      swerve::getPose,
+      Constants.DRIVE_KINEMATICS,
+      xController,
+      yController,
+      thetaController,
+      swerve::setModuleStates,
+      false,
+      swerve);
+
+  PPSwerveControllerCommand pathCommand3 = new PPSwerveControllerCommand(
+      autoPath3,
+      swerve::getPose,
+      Constants.DRIVE_KINEMATICS,
+      xController,
+      yController,
+      thetaController,
+      swerve::setModuleStates,
+      false,
+      swerve);
 
   /** Creates a new DirectBalance Command. */
-  public RedLeftConePlaceAndGrab() {
+  public RedRightConePlaceAndGrab() {
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("Stop Intake", new InstantCommand(() -> clamp.stopInnerClamp()));
+    eventMap.put("Intake", new RunIntake());
+    
+    FollowPathWithEvents command = new FollowPathWithEvents(
+        pathCommand2,
+        autoPath2.getMarkers(),
+        eventMap
+    );
     addCommands(
       new InstantCommand(() -> limelight.setPipeline(1)),
       new InstantCommand(() -> gyro.reset()),
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
       new InstantCommand(() -> intake.intakeDown()),
+      //new InstantCommand(() -> clamp.clamp()),
+      //new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
       new PlaceHigh(),
-      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(2.5)),
+      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(2)),
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
       new SetClampCube(clamp),
-      new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-      new ParallelDeadlineGroup(pathCommand, new RunIntake()),
+      new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
+      new ParallelDeadlineGroup(pathCommand2, new RunIntake()),
       new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
       // new PlaceHigh(),
       // pathCommand3,
