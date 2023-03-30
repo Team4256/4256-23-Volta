@@ -145,9 +145,10 @@ public class Constants {
   public final static int CLAMP_CUBE_POSITION = 110;/* */
   public final static int CLAMP_CONE_POSITION = 110;/* */
   public final static int CLAMP_FEEDER_STATION_POSITION = -51;/* */
-  public final static double CLAMP_MOTOR_KP = 0.07; // .7
+  public final static int CLAMP_HALF_RESET_POSITION = 85;/* */
+  public final static double CLAMP_MOTOR_KP = 0.05; // .7
   public final static double CLAMP_MOTOR_KI = 0;/* */
-  public final static double CLAMP_MOTOR_KD = .002; //.002
+  public final static double CLAMP_MOTOR_KD = .00; //.002
 
   // INTAKE
   public final static int INTAKE_MOTOR_ID = 15;

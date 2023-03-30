@@ -17,6 +17,7 @@ import frc.robot.commands.Swerve.MoveToTargetMid;
 import frc.robot.commands.System.ConeMidPosition;
 import frc.robot.commands.System.FeederStationPosition;
 import frc.robot.commands.System.PlaceHigh;
+import frc.robot.commands.System.PlaceHighHold;
 import frc.robot.commands.System.PlaceMid;
 import frc.robot.commands.System.ResetToBottom;
 import frc.robot.commands.Auto.RedSide.RedCubePlaceAndMove;
@@ -36,8 +37,10 @@ import frc.robot.commands.Clamp.SpitClamp;
 import frc.robot.commands.Clamp.SuckClamp;
 import frc.robot.commands.Clamp.SetClampMid;
 import frc.robot.commands.Clamp.SetClampCube;
+import frc.robot.commands.Clamp.SetClampCubeHold;
 import frc.robot.commands.Clamp.CloseClamp;
 import frc.robot.commands.Clamp.ControllerClamp;
+import frc.robot.commands.Clamp.ControllerClampHold;
 import frc.robot.commands.Clamp.OpenClamp;
 import frc.robot.commands.Clamp.SetClampCone;
 import frc.robot.commands.Intake.IntakeDown;
@@ -100,6 +103,7 @@ public class RobotContainer {
 
   //System 
   private final Command placeHigh = new PlaceHigh();
+  private final Command placeHighHold = new PlaceHighHold();
   private final Command resetToBottom = new ResetToBottom();
   private final Command blankCommand = new BlankCommand(robotDrive);
   private final Command placeMid = new PlaceMid();
@@ -122,8 +126,10 @@ public class RobotContainer {
   private final Command setClampMid = new SetClampMid(clamp);
   private final Command setClampLow = new SetClampLow(clamp);
   private final Command setClampCube = new SetClampCube(clamp);
+  private final Command setClampCubeHold = new SetClampCubeHold(clamp);
   private final Command setClampCone = new SetClampCone(clamp);
   private final Command controllerClamp = new ControllerClamp(clamp, gunnerController);
+  private final Command controllerClampHold = new ControllerClampHold(clamp, gunnerController);
   private final Command openClamp = new OpenClamp();
   private final Command closeClamp = new CloseClamp();
   private final Command suckClamp = new SuckClamp();
@@ -167,6 +173,8 @@ public class RobotContainer {
 
     elevator.setDefaultCommand(controllerElevator);
     clamp.setDefaultCommand(controllerClamp);
+    //clamp.setDefaultCommand(controllerClampHold);
+
 
     chooser.setDefaultOption("Red Direct Balance", redDirectBalance);
     chooser.addOption("Red Place and Balance", redPlaceAndBalance);
@@ -233,13 +241,15 @@ public class RobotContainer {
     gunnerController.x().whileTrue(closeClamp);
     gunnerController.leftBumper().whileTrue(suckClamp);
     gunnerController.rightBumper().whileTrue(spitClamp);
-    gunnerController.rightTrigger().whileTrue(placeHigh);  
+    //gunnerController.rightTrigger().whileTrue(placeHigh);  
+    gunnerController.rightTrigger().whileTrue(placeHighHold);  
     gunnerController.leftTrigger().whileTrue(resetToBottom);
     gunnerController.start().whileTrue(new InstantCommand(() -> clamp.resetClampEncoder()));
     gunnerController.back().whileTrue(new InstantCommand(() -> elevator.resetElevatorEncoder()));
     gunnerController.povUp().whileTrue(elevatorConeMidPosition);
     gunnerController.povDown().whileTrue(elevatorFeederStationPosition);
-    gunnerController.povLeft().whileTrue(setClampCube);
+    //gunnerController.povLeft().whileTrue(setClampCube);
+    gunnerController.povLeft().whileTrue(setClampCubeHold);
     gunnerController.povRight().whileTrue(placeMid);
   }
 

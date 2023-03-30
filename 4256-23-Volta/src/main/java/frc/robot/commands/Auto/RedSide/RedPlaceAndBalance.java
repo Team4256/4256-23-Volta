@@ -72,11 +72,11 @@ PPSwerveControllerCommand pathCommand2 = new PPSwerveControllerCommand(
         new ParallelDeadlineGroup(new WaitCommand(.5), new SuckClamp()),
         new PlaceMid(),
         new ParallelDeadlineGroup(new WaitCommand(.5), new SpitClamp()),
-        new ResetToBottom(),
+        //new ResetToBottom(),
         new InstantCommand(() -> intake.intakeUp()),
-        new WaitCommand(.5),
+        //new WaitCommand(.5),
         new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
-        pathCommand2,
+        new ParallelDeadlineGroup(pathCommand2, new AutoResetToBottom()),
         new AutoBalance(swerve)
     );
   }

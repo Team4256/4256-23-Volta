@@ -130,6 +130,14 @@ public class Clamp extends SubsystemBase {
     clampMotor.set(ControlMode.PercentOutput, -speed);
   }
 
+  public void setClampHalfReset() {
+    double speed = clampPidController.calculate(getCANCoderAngle(), placeInAppropriate0To360Scope(getCANCoderAngle(), Constants.CLAMP_HALF_RESET_POSITION));
+    if (Math.abs(speed) > .8) {
+      speed = .8 * Math.signum(speed);
+    }
+    clampMotor.set(ControlMode.PercentOutput, -speed);
+  }
+
   public void setClampCone() {
     double speed = clampPidController.calculate(getCANCoderAngle(), placeInAppropriate0To360Scope(getCANCoderAngle(), Constants.CLAMP_CONE_POSITION));
     if (Math.abs(speed) > .8) {
