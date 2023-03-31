@@ -20,7 +20,7 @@ public class MoveToTargetHigh extends CommandBase {
   private final CommandXboxController driverController;
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.03, 0, -0.001); //Values must be negative
-  private PIDController positionPID = new PIDController(0.04, 0, 0.001); //Values must be negative (.02)
+  private PIDController positionPID = new PIDController(0.02, 0, 0.0000); //Values must be negative (.02)
   private PIDController forwardPID = new PIDController(1.3, 0, -0.0000); //Values must be negative (.02)
 
   public MoveToTargetHigh(SwerveSubsystem swerve, Limelight camera, CommandXboxController driverController) {

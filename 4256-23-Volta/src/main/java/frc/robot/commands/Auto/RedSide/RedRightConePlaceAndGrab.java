@@ -111,8 +111,8 @@ public class RedRightConePlaceAndGrab extends SequentialCommandGroup {
       new ResetToBottom(),
       new SetClampCube(clamp),
       new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
-      new ParallelDeadlineGroup(pathCommand2, new RunIntake()),
-      new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
+      new ParallelDeadlineGroup(pathCommand2, new SuckClamp())
+      //new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
       // new PlaceHigh(),
       // pathCommand3,
       // new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),
