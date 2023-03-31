@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Clamp.SetClampCube;
+import frc.robot.commands.Clamp.SetClampHalfReset;
 import frc.robot.commands.Clamp.SetClampMid;
 import frc.robot.commands.Clamp.SetClampTop;
 import frc.robot.commands.Clamp.SetClampTopHold;
@@ -35,7 +36,8 @@ public class ResetToBottom extends SequentialCommandGroup {
       new ElevatorDownMid(elevator),
       new InstantCommand(() -> elevator.tiltElevatorDown()),
       new WaitCommand(1.5),
-      new SetClampCube(clamp),
+      //new SetClampCube(clamp),
+      new SetClampHalfReset(clamp),
       new ElevatorBottom(elevator)
     );
   }
