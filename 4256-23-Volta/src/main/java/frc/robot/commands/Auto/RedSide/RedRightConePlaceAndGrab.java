@@ -48,7 +48,7 @@ public class RedRightConePlaceAndGrab extends SequentialCommandGroup {
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
   PathPlannerTrajectory autoPath1 = PathPlanner.loadPath("Red Left Cone Place And Grab 1", 1, 1);
-  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Right Cone Place And Grab", 4, 3);
+  PathPlannerTrajectory autoPath2 = PathPlanner.loadPath("Red Right Cone Place And Grab", 1.5, 1.5);
   PathPlannerTrajectory autoPath3 = PathPlanner.loadPath("Red Left Cone Place And Grab 3", 1, 1);
 
 
@@ -106,12 +106,13 @@ public class RedRightConePlaceAndGrab extends SequentialCommandGroup {
       //new InstantCommand(() -> clamp.clamp()),
       //new ParallelDeadlineGroup(new WaitCommand(.5), new InstantCommand(() -> clamp.clamp()), new SuckClamp()),
       new PlaceHigh(),
-      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(2)),
+      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(2.5)),
+      new InstantCommand(() -> swerve.formX()),
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
       new SetClampCube(clamp),
       new InstantCommand(() -> swerve.resetOdometer(autoPath2.getInitialPose())),
-      new ParallelDeadlineGroup(pathCommand2, new SuckClamp())
+      new ParallelDeadlineGroup(pathCommand2, new SuckClamp(), new RunIntake())
       //new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
       // new PlaceHigh(),
       // pathCommand3,

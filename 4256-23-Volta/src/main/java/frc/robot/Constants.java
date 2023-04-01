@@ -14,7 +14,7 @@ public class Constants {
   public static final int DRIVER_CONTROLLER_ID = 0;
   public static final int GUNNER_CONTROLLER_ID = 1;
 
-  public static final double LIMELIGHT_TOP_CONE_AREA_THRESHOLD = 0.371; // Thresholds: .35, .39 TARGET: .371
+  public static final double LIMELIGHT_TOP_CONE_AREA_THRESHOLD = 0.36; // Thresholds: .35, .39 TARGET: .371
   public static final double LIMELIGHT_MID_CONE_AREA_THRESHOLD = 0.27; // Thresholds: .35, .39 TARGET: .371
 
   // Gyro

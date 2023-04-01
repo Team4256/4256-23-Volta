@@ -47,7 +47,7 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
   PIDController thetaController = new PIDController(-4, 0, 0);
   //PathPlannerTrajectory autoPath = PathPlanner.loadPath("Left Cone Place And Grab", 1, 1);
 
-  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Red Left Cone Place And Grab", 2, 2);
+  PathPlannerTrajectory autoPath = PathPlanner.loadPath("Red Left Cone Place And Grab", 1.5, 1.5);
 
   PPSwerveControllerCommand pathCommand = new PPSwerveControllerCommand(
       autoPath,
@@ -69,13 +69,14 @@ public class RedLeftConePlaceAndGrab extends SequentialCommandGroup {
       new InstantCommand(() -> thetaController.enableContinuousInput(-180, 180)),
       new InstantCommand(() -> intake.intakeDown()),
       new PlaceHigh(),
-      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(3)),
+      new ParallelRaceGroup(new AutoMoveToTargetHigh(swerve, limelight), new WaitCommand(2.5)),
+      new InstantCommand(() -> swerve.formX()),
       new InstantCommand(() -> clamp.unclamp()),
       new ResetToBottom(),
       new SetClampCube(clamp),
       new InstantCommand(() -> swerve.resetOdometer(autoPath.getInitialPose())),
-      new ParallelDeadlineGroup(pathCommand, new RunIntake(), new SuckClamp()),
-      new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
+      new ParallelDeadlineGroup(pathCommand, new RunIntake(), new SuckClamp())
+      //new ParallelDeadlineGroup(new WaitCommand(1), new RunIntake(), new SuckClamp())
       // new PlaceHigh(),
       // pathCommand3,
       // new ParallelDeadlineGroup(new WaitCommand(.2), new SpitClamp()),

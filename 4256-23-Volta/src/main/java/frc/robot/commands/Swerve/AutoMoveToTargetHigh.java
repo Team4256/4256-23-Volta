@@ -19,7 +19,7 @@ public class AutoMoveToTargetHigh extends CommandBase {
   private final Gyro gyro = Gyro.getInstance();
   private boolean fieldOrient = true;
   private PIDController orientationPID = new PIDController(-0.03, 0, -0.001); //Values must be negative
-  private PIDController positionPID = new PIDController(0.04, 0, -0.0000); //Values must be negative (.02)
+  private PIDController positionPID = new PIDController(0.03, 0, -0.0000); //Values must be negative (.02)
   private PIDController forwardPID = new PIDController(1.3, 0, -0.0000); //Values must be negative (.02)
 
   public AutoMoveToTargetHigh(SwerveSubsystem swerve, Limelight camera) {
